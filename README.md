@@ -8,4 +8,4 @@ Also, it as exercise for creating web applications.
 - in /backend... source env/bin/activate (deactivate)
 - in /trackapi... python manage.py runserver
 - migrations when models are updated
-- 
+- Note to myself: you may need recreate the the database in the beginning stages
