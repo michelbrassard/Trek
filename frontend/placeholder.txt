@@ -1,3 +1,0 @@
-Placeholder file
-In this folder there will be minimum of 2 projects for the frontend
-Web + Mobile, tablet etc.
