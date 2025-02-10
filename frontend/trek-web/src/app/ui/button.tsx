@@ -19,9 +19,12 @@ export function Button({
 
     const baseStyles = 'flex items-center py-2 px-4 rounded-xl text-base font-medium text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 aria-disabled:cursor-not-allowed aria-disabled:opacity-50';
     const primaryStyles = 'bg-blue-500 hover:bg-blue-400 focus-visible:outline-blue-500 active:bg-blue-600'
-    const secondaryStyles = 'bg-gray-500 hover:bg-gray-400 focus-visible:outline-gray-500 active:bg-gray-600 '
+    const secondaryStyles = 'bg-gray-500 hover:bg-gray-400 focus-visible:outline-gray-500 active:bg-gray-600'
     const dangerStyles = 'bg-red-500 hover:bg-red-400 focus-visible:outline-red-500 active:bg-red-600'
     const disabledStyles = 'opacity-50 cursor-not-allowed'
+
+    //const fullWidthButton = '' styling for a button that is going to be fullwidth
+    //is large? for larger buttons?
 
     return (
         <button
