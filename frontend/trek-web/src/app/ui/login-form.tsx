@@ -1,1 +1,5 @@
-// create the UI for the login form, the validation and sanitization 
+export default function LoginForm() {
+    return(
+        <div>Log-in form</div>
+    )
+}
