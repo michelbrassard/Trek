@@ -1,1 +1,5 @@
-// create the UI for the sign up page 
+export default function SignupForm() {
+    return(
+        <div>Sign up form</div>
+    )
+}
