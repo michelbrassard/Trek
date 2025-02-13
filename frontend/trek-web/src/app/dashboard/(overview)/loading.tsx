@@ -1,1 +1,5 @@
-//loading of the dashboard contet, Skeletons will be here
+export default function LoadingSkeleton() {
+    return (
+        <div>Loading...</div>
+    )
+}
