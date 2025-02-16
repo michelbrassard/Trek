@@ -5,7 +5,7 @@ export default function Footer() {
     const footerSectionStyle = 'flex flex-col gap-1 md:mx-8 md:my-0 my-5'
 
     return(
-        <footer className="flex flex-col bg-gray-800 p-8 text-sm">
+        <footer className="flex flex-col bg-neutral-800 p-8 text-sm">
         <div className="md:flex md:flex-row justify-between">
           <div className="max-w-md">
             <div className="font-bold">Trek</div>
@@ -32,7 +32,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <hr className="mt-10 mb-3 border-gray-600 border-t-2"></hr>
+        <hr className="mt-10 mb-3 border-neutral-600 border-t-2"></hr>
         <p className="text-sm">Copyright and other bs</p>
       </footer>
     );

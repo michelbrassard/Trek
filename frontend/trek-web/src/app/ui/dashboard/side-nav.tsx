@@ -4,10 +4,10 @@ import TrekLogo from "../trek-logo";
 
 export default function SideNav() {
 
-    const baseStyle = 'py-2 px-4 rounded-xl text-base font-medium hover:bg-gray-600 transition-colors flex items-center gap-2'
+    const baseStyle = 'py-2 px-4 rounded-xl text-base font-medium hover:bg-neutral-600 transition-colors flex items-center gap-2'
 
     return (
-        <nav className="w-60 flex flex-col justify-between gap-8 bg-gray-800 h-screen p-4">
+        <nav className="w-60 flex flex-col justify-between gap-8 bg-neutral-800 h-screen p-4">
             <div className="flex flex-col gap-2">
                 <div className="px-4 mb-5 mt-2">
                     <TrekLogo />
@@ -26,7 +26,7 @@ export default function SideNav() {
                     <Settings size={20} />
                     <span>Settings</span>
                 </Link>
-                <hr className="my-2 border-gray-600 border-t-2"></hr>
+                <hr className="my-2 border-neutral-600 border-t-2"></hr>
                 <Link href="/" className="border border-opacity-0 rounded-xl transition-all flex items-center gap-2 py-2 px-4 hover:text-red-500 border-red-500 hover:border-opacity-100">
                     <LogOut size={20} />
                     <span className="">Log out</span>
