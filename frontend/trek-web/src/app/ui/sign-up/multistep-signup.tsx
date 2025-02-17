@@ -6,9 +6,13 @@ import RolePanel from '../../ui/sign-up/role-panel';
 import { useState } from "react";
 import InputField from "../input-field";
 
+//Separate this into multiple components
 export default function MultiStepSignUp() {
-    const [role, setRole] = useState("independent")
-    const [step, setStep] = useState("choose-role")
+    const [role, setRole] = useState("independent");
+    const [step, setStep] = useState("choose-role");
+    const [coachID, setCoachID] = useState("")
+    const [isCoachIDEmpty, setCoachIDState] = useState(false)
+    const [alertCoachID, setAlertCoachID] = useState("")
     
     const handleClick = (role: string, step: string) => {
         setRole(role);
@@ -17,7 +21,7 @@ export default function MultiStepSignUp() {
 
 
     return(
-        <div className="p-3">
+        <form className="p-3">
             {step === "choose-role" && (
                 <div className="p-3 m-1">
                 <Link href="/">
@@ -44,7 +48,11 @@ export default function MultiStepSignUp() {
             )}
             {step === "add-coach-id" && (
                 <div className="p-3 m-1 flex flex-col gap-3 bg-neutral-100 dark:bg-neutral-900 md:w-[400px] w-full rounded-3xl">
-                    <button onClick={() => setStep("choose-role")}>
+                    <button onClick={() => {
+                            setCoachID("")
+                            setStep("choose-role");
+                        }
+                    }>
                         <div className='mx-5 md:mx-0 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
                             <ArrowLeft size={18}/> Choose a role
                         </div>
@@ -54,27 +62,59 @@ export default function MultiStepSignUp() {
                         Current role: 
                         <span className="capitalize font-bold"> {role}</span>
                     </p>
-                    <InputField type={"text"} name={"coach-id"} id={"coach-id"} label={"coach id"} />
+                    <InputField 
+                        type={"text"} 
+                        name={"coach-id"} 
+                        id={"coach-id"} 
+                        label={"coach id"} 
+                        value={coachID}
+                        hasProblems={isCoachIDEmpty}
+                        onChange={(e) => setCoachID(e.target.value)}
+                        alertMessage={alertCoachID}
+                    />
                     <p className="text-xs text-neutral-400 dark:text-neutral-600 px-2">The special coach id should be given to you here...</p>
                     <div>
-                        <button onClick={() => setStep("sign-up")} className="w-fit float-right">
+                        <button onClick={() => {
+                                if (coachID.length === 0) {
+                                    setCoachIDState(true)
+                                    setAlertCoachID("Provide a coach ID before sign up or change the role.")
+                                }
+                                else {
+                                    setCoachIDState(false)
+                                    setAlertCoachID("")
+                                    setStep("sign-up");
+                                }
+                            }
+                            } className="w-fit float-right">
                             <div className='mx-5 md:mx-0 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
                                 Go to Sign Up <ArrowRight size={18}/> 
                             </div>
                         </button>
                     </div>
-                    
                 </div>
             )}
             {step === "sign-up" && (
                 <div className="p-3 m-1 flex flex-col gap-3">
                     <h2 className="text-xl font-bold">Sign up</h2>
                     <p className="capitalize">{role}</p>
-                    <button onClick={() => setStep("choose-role")}>Back</button>
+
+                    {role === "athlete" && (
+                        <div>
+                            <button onClick={() => setStep("add-coach-id")}>Change coach ID</button>
+                            <p>Coach ID: {coachID}</p>
+                        </div>
+                    )}
+
+                    <button onClick={() => {
+                            setCoachID("")
+                            setStep("choose-role")
+                        }
+                    }>Back</button>
                     <Link href="/dashboard">Dashboard</Link>
+                    
                 </div>
             )}
-        </div>
+        </form>
         
     )
 }
