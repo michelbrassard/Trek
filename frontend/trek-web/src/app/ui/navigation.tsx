@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function Navigation() {
     const baseLinkStyle = 'py-2 px-4 font-medium hover:underline'
-    const signUpStyle = 'font-medium mx-4 py-2 px-4 rounded-xl transition-colors bg-blue-500 hover:bg-blue-400 focus-visible:outline-blue-500 active:bg-blue-600'
+    const signUpStyle = 'text-white font-medium mx-4 py-2 px-4 rounded-xl transition-colors bg-blue-500 hover:bg-blue-400 focus-visible:outline-blue-500 active:bg-blue-600'
     const mobileLinkStyle = "text-4xl font-medium hover:underline"
     const [isOpen, setIsOpen] = useState(false);
     const toggleMenu = () => setIsOpen(!isOpen);
@@ -54,7 +54,7 @@ export default function Navigation() {
             <Link href="/about" className = {baseLinkStyle}>About</Link>
             <div className="flex flex-row gap-2">
               <Link href="/login" className = {baseLinkStyle}>Log in</Link>
-              <div className="w-[2px] bg-neutral-800"></div>
+              <div className="w-[2px] bg-neutral-200 dark:bg-neutral-800"></div>
               <Link href="/signup" className = {signUpStyle}>Sign up</Link>
             </div>
           </div>
