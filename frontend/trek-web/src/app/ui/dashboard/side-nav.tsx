@@ -14,7 +14,7 @@ export default function SideNav() {
                 </div>
                 <Link href="/dashboard" className={baseStyle}>
                     <LayoutDashboard size={20} />
-                    <span>Dashboard</span>
+                    <span>Overview</span>
                 </Link>
                 <Link href="/dashboard/athletes" className={baseStyle}>
                     <Users size={20} />
