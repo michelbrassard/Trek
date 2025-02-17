@@ -4,7 +4,7 @@ import Link from "next/link"
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import RolePanel from '../../ui/sign-up/role-panel';
 import { useState } from "react";
-import InputField from "../input-field";
+import InputField from "../form/input-field";
 
 //Separate this into multiple components
 export default function MultiStepSignUp() {

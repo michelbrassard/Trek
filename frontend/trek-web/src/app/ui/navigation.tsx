@@ -48,7 +48,7 @@ export default function Navigation() {
         
         {/* Desktop Navigation */}
         <div className="md:flex flex-row justify-between p-5 hidden">
-          <Link href="/" className = {baseLinkStyle}>Trek</Link>
+          <Link href="/" className = {baseLinkStyle}><TrekLogo /></Link>
           <div className="flex flex-row gap-8">
             <Link href="/" className = {baseLinkStyle}>Home</Link>
             <Link href="/about" className = {baseLinkStyle}>About</Link>

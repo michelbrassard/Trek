@@ -1,6 +1,8 @@
-import InputField from "./input-field";
+"use client"
+
+import InputField from "./form/input-field";
 import TrekLogo from '../ui/trek-logo';
-import InputSubmit from "./input-submit";
+import InputSubmit from "./form/input-submit";
 
 export default function LoginForm() {
     return(
@@ -10,8 +12,8 @@ export default function LoginForm() {
                 <TrekLogo />
             </div>
             <form className="flex flex-col gap-2 mt-3">
-                <InputField type="email" name="email" id="email" label="email" />
-                <InputField type="password" name="password" id="password" label="password" />
+                <InputField type="email" name="email" id="email" label="email" onChange={() => console.log("validate")}/>
+                <InputField type="password" name="password" id="password" label="password" onChange={() => console.log("validate")}/>
                 <InputSubmit name="submit" id="submit" value="Log in" />
             </form>
         </div>
