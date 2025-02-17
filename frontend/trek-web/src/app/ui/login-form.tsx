@@ -9,12 +9,11 @@ export default function LoginForm() {
             <div className="flex items-center justify-center">
                 <TrekLogo />
             </div>
-            <div className="flex flex-col gap-2 mt-3">
+            <form className="flex flex-col gap-2 mt-3">
                 <InputField type="email" name="email" id="email" label="email" />
                 <InputField type="password" name="password" id="password" label="password" />
                 <InputSubmit name="submit" id="submit" value="Log in" />
-            </div>
-            
+            </form>
         </div>
     )
 }
