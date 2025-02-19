@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import RolePanel from '../../ui/sign-up/role-panel';
 import { useState } from "react";
 import InputField from "../form/input-field";
+import InputSubmit from "../form/input-submit";
 
 //Separate this into multiple components
 export default function MultiStepSignUp() {
@@ -21,11 +22,11 @@ export default function MultiStepSignUp() {
 
 
     return(
-        <form className="p-3">
+        <form className="m-5 md:m-0 p-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900">
             {step === "choose-role" && (
-                <div className="p-3 m-1">
+                <div className="">
                 <Link href="/">
-                    <div className='mx-5 md:mx-0 md:m-2 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
+                    <div className='text-blue-500 mx-5 md:mx-0 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
                       <ArrowLeft size={18}/> Home
                     </div>
                 </Link>
@@ -47,32 +48,36 @@ export default function MultiStepSignUp() {
               </div>
             )}
             {step === "add-coach-id" && (
-                <div className="p-3 m-1 flex flex-col gap-3 bg-neutral-100 dark:bg-neutral-900 md:w-[400px] w-full rounded-3xl">
+                <div className="flex flex-col gap-3 md:w-[400px] w-full rounded-3xl">
                     <button onClick={() => {
                             setCoachID("")
                             setStep("choose-role");
                         }
                     }>
-                        <div className='mx-5 md:mx-0 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
+                        <div className='text-blue-500 mx-5 md:mx-0 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
                             <ArrowLeft size={18}/> Choose a role
                         </div>
                     </button>
-                    <h2 className="text-2xl font-bold">Add Coach ID</h2>
-                    <p>
-                        Current role: 
-                        <span className="capitalize font-bold"> {role}</span>
-                    </p>
-                    <InputField 
-                        type={"text"} 
-                        name={"coach-id"} 
-                        id={"coach-id"} 
-                        label={"coach id"} 
-                        value={coachID}
-                        hasProblems={isCoachIDEmpty}
-                        onChange={(e) => setCoachID(e.target.value)}
-                        alertMessage={alertCoachID}
-                    />
-                    <p className="text-xs text-neutral-400 dark:text-neutral-600 px-2">The special coach id should be given to you here...</p>
+
+                    <div className="m-3 flex flex-col gap-3">
+                        <h2 className="text-2xl font-bold">Add Coach ID</h2>
+                        <p>
+                            Role: 
+                            <span className="capitalize font-bold"> {role}</span>
+                        </p>
+                        <InputField 
+                            type={"text"} 
+                            name={"coach-id"} 
+                            id={"coach-id"} 
+                            label={"coach id"} 
+                            value={coachID}
+                            hasProblems={isCoachIDEmpty}
+                            onChange={(e) => setCoachID(e.target.value)}
+                            alertMessage={alertCoachID}
+                        />
+                        <p className="text-xs text-neutral-400 dark:text-neutral-600 px-2">The special coach id should be given to you here...</p>
+                    </div>
+                    
                     <div>
                         <button onClick={() => {
                                 if (coachID.length === 0) {
@@ -86,7 +91,7 @@ export default function MultiStepSignUp() {
                                 }
                             }
                             } className="w-fit float-right">
-                            <div className='mx-5 md:mx-0 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
+                            <div className='text-blue-500 mx-5 md:mx-0 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
                                 Go to Sign Up <ArrowRight size={18}/> 
                             </div>
                         </button>
@@ -94,26 +99,53 @@ export default function MultiStepSignUp() {
                 </div>
             )}
             {step === "sign-up" && (
-                <div className="p-3 m-1 flex flex-col gap-3">
-                    <h2 className="text-xl font-bold">Sign up</h2>
-                    <p className="capitalize">{role}</p>
-
+                <div className="flex flex-col gap-2 md:w-[400px] w-full">
+                    <div className="flex flex-row gap-3 justify-between">
+                        <button onClick={() => {
+                                setCoachID("")
+                                setStep("choose-role")
+                            }
+                        }>
+                            <div className='text-blue-500 hover:bg-neutral-200 hover:dark:bg-neutral-800  transition-colors w-fit p-2 rounded-xl flex items-center gap-1'>
+                                <ArrowLeft size={18}/> Change Role
+                            </div>
+                        </button>
+                        <p className="p-2 text-right">
+                            Role: 
+                            <span className="capitalize font-bold"> {role}</span>
+                        </p>
+                    </div>
                     {role === "athlete" && (
-                        <div>
-                            <button onClick={() => setStep("add-coach-id")}>Change coach ID</button>
-                            <p>Coach ID: {coachID}</p>
+                        <div className="flex flex-row text-sm">
+                            <p className="p-2">Coach ID: <span className="font-bold">{coachID}</span></p>
+                            <button onClick={() => setStep("add-coach-id")}>
+                                <div className='text-blue-500 hover:underline w-fit'>
+                                    Change
+                                </div>
+                            </button>
+                            
                         </div>
                     )}
 
-                    <button onClick={() => {
-                            setCoachID("")
-                            setStep("choose-role")
-                        }
-                    }>Back</button>
-                    <Link href="/dashboard">Dashboard</Link>
-                    
+                    <div className="flex flex-col gap-3 px-3">
+                        <h1 className="text-3xl font-bold text-center">Sign up</h1>
+                        <InputField type={"text"} name={"full-name"} id={"full-name"} label={"full name"} onChange={() => {} } />
+                        <InputField type={"text"} name={"username"} id={"username"} label={"username"} onChange={() => {} } />
+                        <InputField type={"email"} name={"email"} id={"email"} label={"email"} onChange={() =>  {} } /> 
+                        <InputField type={"date"} name={"date-of-birth"} id={"date-of-birth"} label={"date of birth"} onChange={() =>  {} } />
+                        
+                        <div className="flex flex-row gap-2">
+                            <InputField type={"password"} name={"password"} id={"password"} label={"password"} onChange={() =>  {} } />
+                            <InputField type={"password"} name={"repeat-password"} id={"repeat-password"} label={"repeat password"} onChange={() =>  {} } />
+                        </div>
+                        <InputSubmit name="submit" id="submit" value="Sign up" />
+                    </div>
                 </div>
             )}
+            <p className='p-1 mt-5 text-sm text-center'>
+                Already have an account?  
+                <Link href="/login" className='px-1 font-medium hover:underline text-blue-500'>Log in</Link>
+            </p>
         </form>
         
     )
