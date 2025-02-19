@@ -138,7 +138,19 @@ export default function MultiStepSignUp() {
                             <InputField type={"password"} name={"password"} id={"password"} label={"password"} onChange={() =>  {} } />
                             <InputField type={"password"} name={"repeat-password"} id={"repeat-password"} label={"repeat password"} onChange={() =>  {} } />
                         </div>
-                        <InputSubmit name="submit" id="submit" value="Sign up" />
+                        <div className="flex flex-col gap-3">
+                            <InputSubmit name="submit" id="submit" value="Sign up" />
+                            <hr className="bg-neutral-400 dark:bg-neutral-600"></hr>
+                            <button onClick={() => {
+                                    //
+                                }
+                            }>
+                                <div className=' bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 hover:dark:bg-neutral-700  transition-colors w-full p-3 rounded-2xl flex justify-center items-center gap-1'>
+                                    Sign up with Google
+                                </div>
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
             )}
