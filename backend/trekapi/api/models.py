@@ -1,12 +1,14 @@
 from django.db import models # type: ignore - works normally
+import uuid
 
 class Role(models.Model):
-    role_name = models.CharField(max_length=15)
+    name = models.CharField(max_length=15)
     class Meta:
-        ordering = ['role_name']
+        ordering = ['name']
 
 # Create your models here.
 class User(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30)
@@ -14,7 +16,7 @@ class User(models.Model):
     email = models.EmailField()
     password = models.CharField(max_length=60)
     phone = models.CharField(max_length=15)
-    date_of_Birth = models.DateTimeField()
+    date_of_birth = models.DateTimeField()
     role = models.ForeignKey(Role, on_delete=models.RESTRICT)
     
     #add for filtering?
