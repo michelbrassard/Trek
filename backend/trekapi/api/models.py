@@ -2,9 +2,9 @@ from django.db import models # type: ignore - works normally
 import uuid
 
 class Role(models.Model):
-    role_name = models.CharField(max_length=15)
+    name = models.CharField(max_length=15)
     class Meta:
-        ordering = ['role_name']
+        ordering = ['name']
 
 # Create your models here.
 class User(models.Model):
