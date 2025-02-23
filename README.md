@@ -13,7 +13,9 @@ Also, it as exercise for creating web applications.
 - Note to myself: you may need recreate the the database in the beginning stages
 
 - if database is empty
-- python manage.py flush -> a new admin user needs to be added so that you can login to dashboard
+- python manage.py flush -> a new admin user needs to be added so that you can 
+- python manage.py createsuperuser
+login to dashboard
 
 - python manage.py makemigrations
 - python manage.py migrate
