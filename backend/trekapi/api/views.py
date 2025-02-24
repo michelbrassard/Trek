@@ -6,11 +6,12 @@ from api.serializers import UserSerializer
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.utils.dateparse import parse_datetime
-from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+from datetime import timedelta
 
 #remove the @csrf_exempt later on!!!
 @csrf_exempt
@@ -53,7 +54,6 @@ def register_view(request):
         except ValueError:
             return Response({"error": "Invalid date format."}, status=400)
     
-    # Create new user instance
     user = User(
         username=username,
         email=email,
@@ -67,11 +67,8 @@ def register_view(request):
     user.save()
     
     refresh = RefreshToken.for_user(user)
-
-    return Response({
+    response = Response({
         "message": "User registered successfully",
-        "access": str(refresh.access_token),
-        "refresh": str(refresh),
         "user": {
             "id": user.id,
             "email": user.email,
@@ -80,9 +77,28 @@ def register_view(request):
             "username": user.username,
             "phone": user.phone,
             "date_of_birth": user.date_of_birth,
-            "role":  user.role,
+            "role": user.role,
         }
     }, status=201)
+    response.set_cookie(
+        'access_token',
+        str(refresh.access_token),
+        httponly=True,
+        secure=settings.SECURE_SSL_REDIRECT,
+        samesite='Lax',
+        max_age=timedelta(minutes=30),  
+    )
+    access_token = refresh.access_token
+    access_token["role"] = user.role
+    response.set_cookie(
+        'refresh_token',
+        str(refresh),
+        httponly=True,
+        secure=settings.SECURE_SSL_REDIRECT, 
+        samesite='Lax',
+        max_age=timedelta(days=7),
+    )
+    return response
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -95,9 +111,8 @@ def login_view(request):
         return Response({"error": "Invalid credentials"}, status=400)
     
     refresh = RefreshToken.for_user(user)
-    return Response({
-        "access": str(refresh.access_token),
-        "refresh": str(refresh),
+    response = Response({
+        "message": "Login successful",
         "user": {
             "id": user.id,
             "email": user.email,
@@ -109,8 +124,30 @@ def login_view(request):
             "role": user.role,
         },
     })
+     
+    response.set_cookie(
+        'access_token',
+        str(refresh.access_token),
+        httponly=True,
+        secure=settings.SECURE_SSL_REDIRECT,  # Make sure this is True in production (use False in dev if not using HTTPS)
+        samesite='Lax',
+        max_age=timedelta(minutes=30),  # Access token expiration time
+    )
+    access_token = refresh.access_token
+    access_token["role"] = user.role
+    response.set_cookie(
+        'refresh_token',
+        str(refresh),
+        httponly=True,
+        secure=settings.SECURE_SSL_REDIRECT,  # Same as above
+        samesite='Lax',
+        max_age=timedelta(days=7),  # Refresh token expiration time
+    )
+    return response
+    
 
-@csrf_exempt
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def user_list(request):
     if request.method == 'GET':
         users = User.objects.all()
@@ -125,27 +162,26 @@ def user_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
     
-@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def user_detail(request, pk):
     try:
         user = User.objects.get(pk=pk)
     except User.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response(status=404)
     
     if request.method == 'GET':
         serializer = UserSerializer(user)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
     
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         serializer = UserSerializer(user, data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
     
     elif request.method == 'DELETE':
         user.delete()
-        return HttpResponse(status=204)
-    
-    # def user_delete()
+        return Response(status=404)
