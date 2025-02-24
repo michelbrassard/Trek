@@ -80,7 +80,7 @@ def register_view(request):
             "username": user.username,
             "phone": user.phone,
             "date_of_birth": user.date_of_birth,
-            "role": user.role.id if user.role else None,
+            "role":  user.role,
         }
     }, status=201)
 
@@ -147,3 +147,5 @@ def user_detail(request, pk):
     elif request.method == 'DELETE':
         user.delete()
         return HttpResponse(status=204)
+    
+    # def user_delete()
