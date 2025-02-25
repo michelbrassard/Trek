@@ -7,7 +7,7 @@ Also, it as exercise for creating web applications.
 
 - Stao ovdje u tutorialu: <https://www.django-rest-framework.org/tutorial/2-requests-and-responses/>
 - generate requirements.txt after its developed
-- in /backend... source env/bin/activate (deactivate)
+- in /backend... source venv/bin/activate (deactivate)
 - in /trackapi... python manage.py runserver
 - migrations when models are updated
 - Note to myself: you may need recreate the the database in the beginning stages
