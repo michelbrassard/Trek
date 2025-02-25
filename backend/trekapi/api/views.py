@@ -124,7 +124,12 @@ def login_view(request):
             "role": user.role,
         },
     })
-     
+    
+    access_token = refresh.access_token
+    access_token["role"] = user.role
+    access_token["email"] = user.email
+    access_token["username"] = user.username
+    
     response.set_cookie(
         'access_token',
         str(refresh.access_token),
@@ -133,8 +138,6 @@ def login_view(request):
         samesite='Lax',
         max_age=timedelta(minutes=30),  # Access token expiration time
     )
-    access_token = refresh.access_token
-    access_token["role"] = user.role
     response.set_cookie(
         'refresh_token',
         str(refresh),
