@@ -53,7 +53,7 @@ export default function LoginForm() {
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 <div className="flex flex-col gap-3">
                     <InputSubmit name="submit" id="submit" value="Log in" />
-                    <hr className="bg-neutral-400 dark:bg-neutral-600"></hr>
+                    <hr className="border border-neutral-300 dark:border-neutral-700"></hr>
                     <button
                         type="button"
                         onClick={() => signIn("google")}
