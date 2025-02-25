@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */ //REMOVE THIS LATER
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
@@ -11,7 +12,7 @@ export async function middleware(request: NextRequest) {
   
     //return NextResponse.next();
     console.log("Middleware Executed!")
-    return NextResponse.redirect(new URL("/login", request.url));
+    //return NextResponse.redirect(new URL("/login", request.url));
   }
   
   // Define which routes to protect
