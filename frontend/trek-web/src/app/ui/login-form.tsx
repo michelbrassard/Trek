@@ -16,26 +16,14 @@ export default function LoginForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // const result = await signIn("credentials", {
-        //     email,
-        //     password,
-        //     redirect: false,
-        // });
-
-        // if (result?.error) {
-        //     setError("Invalid email or password");
-        // } else {
-        //     router.push("/dashboard");
-        // }
-
         try {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const response = await axios.post(
               'http://localhost:8000/auth/login/',
               { email, password },
               { withCredentials: true } // Include credentials (cookies)
             );
-            sessionStorage.setItem("role", response.data.user.role)
+            //sessionStorage.setItem("role", response.data.user.role)
             router.push('/dashboard');
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } catch (error: any) {
