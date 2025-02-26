@@ -13,12 +13,12 @@ from django.utils.dateparse import parse_datetime
 from django.conf import settings
 from datetime import timedelta
 
+User = get_user_model()
+
 #remove the @csrf_exempt later on!!!
 @csrf_exempt
 def home(request):
     return HttpResponse("Welcome to the API!")
-
-User = get_user_model()
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -80,6 +80,13 @@ def register_view(request):
             "role": user.role,
         }
     }, status=201)
+    
+    access_token = refresh.access_token
+    access_token["role"] = user.role
+    access_token["email"] = user.email
+    access_token["username"] = user.username
+    access_token["id"] = user.id
+    
     response.set_cookie(
         'access_token',
         str(refresh.access_token),
@@ -88,8 +95,6 @@ def register_view(request):
         samesite='Lax',
         max_age=timedelta(minutes=30),  
     )
-    access_token = refresh.access_token
-    access_token["role"] = user.role
     response.set_cookie(
         'refresh_token',
         str(refresh),
@@ -122,13 +127,14 @@ def login_view(request):
             "phone": user.phone,
             "date_of_birth": user.date_of_birth,
             "role": user.role,
-        },
+        }
     })
     
     access_token = refresh.access_token
     access_token["role"] = user.role
     access_token["email"] = user.email
     access_token["username"] = user.username
+    access_token["id"] = user.id
     
     response.set_cookie(
         'access_token',
@@ -142,12 +148,13 @@ def login_view(request):
         'refresh_token',
         str(refresh),
         httponly=True,
-        secure=settings.SECURE_SSL_REDIRECT,  # Same as above
+        secure=settings.SECURE_SSL_REDIRECT, 
         samesite='Lax',
         max_age=timedelta(days=7),  # Refresh token expiration time
     )
     return response
-    
+
+# add mobile view or some check in the request so that it knows if its mobile or desktop
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -167,9 +174,10 @@ def user_list(request):
     
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
-def user_detail(request, pk):
+def user_detail(request):
+    user = request.user
     try:
-        user = User.objects.get(pk=pk)
+        user = User.objects.get(id=user.id)
     except User.DoesNotExist:
         return Response(status=404)
     
