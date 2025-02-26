@@ -3,9 +3,10 @@
 import InputField from "./form/input-field";
 import TrekLogo from '../ui/trek-logo';
 import InputSubmit from "./form/input-submit";
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from 'axios';
 
 export default function LoginForm() {
     const router = useRouter();
@@ -16,17 +17,34 @@ export default function LoginForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const result = await signIn("credentials", {
-            email,
-            password,
-            redirect: false,
-        });
+        // const result = await signIn("credentials", {
+        //     email,
+        //     password,
+        //     redirect: false,
+        // });
 
-        if (result?.error) {
-            setError("Invalid email or password");
-        } else {
-            router.push("/dashboard");
-        }
+        // if (result?.error) {
+        //     setError("Invalid email or password");
+        // } else {
+        //     router.push("/dashboard");
+        // }
+
+        try {
+            const response = await axios.post(
+              'http://localhost:8000/auth/login/',
+              { email, password },
+              { withCredentials: true } // Include credentials (cookies)
+            );
+            sessionStorage.setItem("role", response.data.user.role)
+            router.push('/dashboard');
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } catch (error: any) {
+            if (error.response) {
+              setError(error.response.data.error || 'Login failed');
+            } else {
+              setError('An error occurred.');
+            }
+          }
     };
 
     return(
@@ -56,7 +74,7 @@ export default function LoginForm() {
                     <hr className="border border-neutral-300 dark:border-neutral-700"></hr>
                     <button
                         type="button"
-                        onClick={() => signIn("google")}
+                        //onClick={() => signIn("google")}
                         className="bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 hover:dark:bg-neutral-700 transition-colors w-full p-3 rounded-2xl flex justify-center items-center gap-1">
                         Log in with Google
                     </button>
