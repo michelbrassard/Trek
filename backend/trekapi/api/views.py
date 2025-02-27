@@ -32,6 +32,8 @@ def register_view(request):
     date_of_birth = request.data.get("date_of_birth")
     role = request.data.get("role")
     
+    # add isMobile or something like that
+    
     # Ensure required fields are present
     if not username or not email or not password or not first_name or not last_name:
         return Response({"error": "Missing required fields"}, status=400)
@@ -110,6 +112,7 @@ def register_view(request):
 def login_view(request):
     email = request.data.get("email")
     password = request.data.get("password")
+    # add isMobile or something like that
     
     user = authenticate(email=email, password=password)
     if user is None:
@@ -155,6 +158,7 @@ def login_view(request):
     return response
 
 # add mobile view or some check in the request so that it knows if its mobile or desktop
+# so that a user recevies in the response or use a check of sort
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])

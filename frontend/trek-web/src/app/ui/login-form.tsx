@@ -16,6 +16,9 @@ export default function LoginForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        //VALIDATE AND SANITIZE
+
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const response = await axios.post(
