@@ -15,11 +15,6 @@ from datetime import timedelta
 
 User = get_user_model()
 
-#remove the @csrf_exempt later on!!!
-@csrf_exempt
-def home(request):
-    return HttpResponse("Welcome to the API!")
-
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register_view(request):
@@ -159,44 +154,3 @@ def login_view(request):
 
 # add mobile view or some check in the request so that it knows if its mobile or desktop
 # so that a user recevies in the response or use a check of sort
-
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
-def user_list(request):
-    if request.method == 'GET':
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    
-@api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
-def user_detail(request):
-    user = request.user
-    try:
-        user = User.objects.get(id=user.id)
-    except User.DoesNotExist:
-        return Response(status=404)
-    
-    if request.method == 'GET':
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-    
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(user, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
-    
-    elif request.method == 'DELETE':
-        user.delete()
-        return Response(status=404)
