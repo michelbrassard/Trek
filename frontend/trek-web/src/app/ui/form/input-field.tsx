@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import DOMPurify from 'dompurify';
+//import DOMPurify from 'dompurify';
 
 interface InputFieldProps {
     type: string,
@@ -29,7 +29,7 @@ export default function InputField(
                     buttonStyle,
                     hasProblems && alertStyle
                 )}
-                value={DOMPurify.sanitize(value as string)}
+                value={value}
                 onChange={onChange}
                 required
             />
