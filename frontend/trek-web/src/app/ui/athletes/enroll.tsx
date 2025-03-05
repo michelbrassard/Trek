@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Button } from "../button";
 
 interface TemporaryCoachCodeProps {
     id: string,
@@ -10,14 +11,16 @@ interface TemporaryCoachCodeProps {
 }
 
 export default function Enroll() {
-    const [data, setData] = useState<TemporaryCoachCodeProps>();
+    const [data, setData] = useState<TemporaryCoachCodeProps[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get("http://localhost:8000/enroll/temporaryCodes", {
+            const response = await axios.get("http://localhost:3000/api/proxy/temporary_coach_codes", {
                 withCredentials: true,
             });
+
+            console.log(response.data)
             setData(response.data);
           } catch (error) {
             console.error("Failed to fetch data:", error);
@@ -27,15 +30,34 @@ export default function Enroll() {
         fetchData();
       }, []);
 
+      const handleGenerateCode = async () => {
+        try {
+          const response = await axios.post("http://localhost:3000/api/proxy/temporary_coach_codes", {
+              withCredentials: true,
+          });
+          setData((prevData) => [...prevData, response.data]);
+        } catch (error) {
+          console.error("Failed to create new code:", error);
+        }
+      }
+
       return (
         <div>
             {data ? 
-            <div>
-                <p>{data?.id}</p>
-                <p>{data?.createdAt}</p>
-                <p>{data?.coachID}</p>
-            </div>
-            : "No codes..."}
+            <ul>
+                {data.map((item) => (
+                    <li key={item.id}>
+                        {item.id} - {item.createdAt} - {item.coachID}
+                    </li>
+                ))}
+            </ul> : "No codes"}
+
+            <Button 
+              isPrimary = {true}
+              onClick={handleGenerateCode}
+            >
+              Generate code
+            </Button> 
         </div>
       );
 }
