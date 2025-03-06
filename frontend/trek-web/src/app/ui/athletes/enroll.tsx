@@ -35,7 +35,10 @@ export default function Enroll() {
           const response = await axios.post("http://localhost:3000/api/proxy/temporary_coach_codes", {
               withCredentials: true,
           });
-          setData((prevData) => [...prevData, response.data]);
+          if (response.status === 201) {
+            setData((prevData) => [...prevData, response.data]);
+          }
+          
         } catch (error) {
           console.error("Failed to create new code:", error);
         }
@@ -44,13 +47,15 @@ export default function Enroll() {
       return (
         <div>
             {data ? 
-            <ul>
+            <div>
                 {data.map((item) => (
-                    <li key={item.id}>
-                        {item.id} - {item.createdAt} - {item.coachID}
-                    </li>
+                    <div key={item.id}>
+                        <p>Code: {item.id}</p> 
+                        <p>Created at: {item.createdAt}</p> 
+                        <p>Coach ID: {item.coachID}</p>
+                    </div>
                 ))}
-            </ul> : "No codes"}
+            </div> : "No codes"}
 
             <Button 
               isPrimary = {true}
