@@ -53,6 +53,8 @@ export default function Enroll() {
                         <p>Code: {item.id}</p> 
                         <p>Created at: {item.createdAt}</p> 
                         <p>Coach ID: {item.coachID}</p>
+                        <hr></hr>
+                        <a href={`http://localhost:3000/signup?enroll=${item.id}`}>http://localhost:3000/signup?enroll={item.id}</a>
                     </div>
                 ))}
             </div> : "No codes"}
