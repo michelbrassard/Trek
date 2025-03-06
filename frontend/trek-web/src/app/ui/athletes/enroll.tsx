@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "../button";
+import QRCode from "./qrcode";
 
 interface TemporaryCoachCodeProps {
     id: string,
@@ -49,14 +50,22 @@ export default function Enroll() {
             {data ? 
             <div>
                 {data.map((item) => (
-                    <div key={item.id}>
+                    <div key={item.id} className="flex flex-col gap-4">
                         <p>Code: {item.id}</p> 
                         <p>Created at: {item.createdAt}</p> 
                         <p>Coach ID: {item.coachID}</p>
                         <hr></hr>
-                        <a href={`http://localhost:3000/signup?enroll=${item.id}`}>http://localhost:3000/signup?enroll={item.id}</a>
+                        <a 
+                          href={`http://localhost:3000/signup?enroll=${item.id}`}
+                          className="hover:underline"
+                        >
+                          http://localhost:3000/signup?enroll={item.id}
+                        </a>
+                        <QRCode url={`http://localhost:3000/signup?enroll=${item.id}`} />
                     </div>
                 ))}
+
+                
             </div> : "No codes"}
 
             <Button 
