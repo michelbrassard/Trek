@@ -7,6 +7,7 @@ import InputSubmit from "./form/input-submit";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from 'axios';
+import DOMPurify from "dompurify";
 
 export default function LoginForm() {
     const router = useRouter();
@@ -18,12 +19,14 @@ export default function LoginForm() {
         e.preventDefault();
 
         //VALIDATE AND SANITIZE
+        const sanitizedEmail = DOMPurify.sanitize(email);
+        const sanitizedPassword = DOMPurify.sanitize(password);
 
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const response = await axios.post(
               'http://localhost:8000/auth/login/',
-              { email, password },
+              { email: sanitizedEmail, password: sanitizedPassword },
               { withCredentials: true } // Include credentials (cookies)
             );
             //sessionStorage.setItem("role", response.data.user.role)

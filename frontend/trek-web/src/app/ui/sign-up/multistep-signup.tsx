@@ -8,6 +8,7 @@ import InputField from "../form/input-field";
 import InputSubmit from "../form/input-submit";
 import axios from 'axios';
 import { useRouter } from "next/navigation";
+import DOMPurify from "dompurify";
 
 //Separate this into multiple components?
 export default function MultiStepSignUp() {
@@ -37,12 +38,21 @@ export default function MultiStepSignUp() {
         e.preventDefault();
 
         //VALIDATE AND SANITIZE
-        if (password !== repeatPassword) {
+        const sanitizedUsername = DOMPurify.sanitize(username);
+        const sanitizedEmail = DOMPurify.sanitize(email);
+        const sanitizedPassword = DOMPurify.sanitize(password);
+        const sanitizedRepeatPassword = DOMPurify.sanitize(repeatPassword);
+        const sanitizedFullName = DOMPurify.sanitize(fullName);
+        const sanitizedPhone = DOMPurify.sanitize(phone);
+        const sanitizedDateOfBirth = DOMPurify.sanitize(dateOfBirth);
+        const sanitizedRole = DOMPurify.sanitize(role);
+
+        if (sanitizedPassword !== sanitizedRepeatPassword) {
             setError("Passwords need to be the same!");
             return;
          }
 
-        const nameElements = fullName.split(" ")
+        const nameElements = sanitizedFullName.split(" ")
         const first_name = nameElements[0]
         const last_name = nameElements.slice(1).join(" ");
         
@@ -50,14 +60,14 @@ export default function MultiStepSignUp() {
             const response = await axios.post(
                 'http://localhost:8000/auth/register/',
                 { 
-                    username, 
-                    email, 
-                    password, 
+                    username: sanitizedUsername, 
+                    email: sanitizedEmail, 
+                    password: sanitizedPassword, 
                     first_name, 
                     last_name, 
-                    phone, 
-                    "date_of_birth": dateOfBirth,
-                    role
+                    phone: sanitizedPhone, 
+                    date_of_birth: sanitizedDateOfBirth,
+                    role: sanitizedRole
                 },
                 { withCredentials: true }
             );
