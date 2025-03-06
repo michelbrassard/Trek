@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { LayoutDashboard, Users, Settings, LogOut, CalendarCheck, Medal, Dumbbell, ChartLine, Briefcase } from "lucide-react";
+import { LayoutDashboard, Users, Settings, LogOut, CalendarCheck, Medal, Dumbbell, ChartLine, Briefcase, StickyNote } from "lucide-react";
 import TrekLogo from "../trek-logo";
 
 export default function SideNav() {
@@ -39,6 +39,10 @@ export default function SideNav() {
                 <Link href="/dashboard/equipment" className={baseStyle}>
                     <Briefcase size={16} />
                     <span>Equipment</span>
+                </Link>
+                <Link href="/dashboard/notes" className={baseStyle}>
+                    <StickyNote size={16} />
+                    <span>Notes</span>
                 </Link>
             </div>
             <div className="flex flex-col gap-2 mb-5">
