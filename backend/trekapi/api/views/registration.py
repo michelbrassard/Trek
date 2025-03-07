@@ -152,5 +152,24 @@ def login_view(request):
     )
     return response
 
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def logout_view(request):
+    response = Response({"message": "Logout successful"}, status=200)
+    response.delete_cookie('access_token', path='/')
+    response.delete_cookie('refresh_token', path='/')
+    
+    refresh_token = request.COOKIES.get('refresh_token')
+    if refresh_token:
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except Exception as e:
+            response.data["warning"] = "Could not blacklist token."
+    
+    request.session.flush()
+    return response
+    
+
 # add mobile view or some check in the request so that it knows if its mobile or desktop
 # so that a user recevies in the response or use a check of sort

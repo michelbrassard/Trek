@@ -1,6 +1,7 @@
 import Link from "next/link"
-import { LayoutDashboard, Users, Settings, LogOut, CalendarCheck, Medal, Dumbbell, ChartLine, Briefcase, StickyNote } from "lucide-react";
+import { LayoutDashboard, Users, Settings, CalendarCheck, Medal, Dumbbell, ChartLine, Briefcase, StickyNote } from "lucide-react";
 import TrekLogo from "../trek-logo";
+import LogOutButton from "./logout-button";
 
 export default function SideNav() {
 
@@ -51,10 +52,7 @@ export default function SideNav() {
                     <span>Settings</span>
                 </Link>
                 <hr className="my-2 border-neutral-400 dark:border-neutral-600 border-t-2"></hr>
-                <Link href="/" className="border border-opacity-0 rounded-xl transition-all flex items-center gap-2 py-2 px-4 hover:text-red-500 border-red-500 hover:border-opacity-100">
-                    <LogOut size={16} />
-                    <span className="">Log out</span>
-                </Link>
+                <LogOutButton />
             </div>
         </nav>
     )
