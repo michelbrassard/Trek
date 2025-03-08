@@ -58,6 +58,7 @@ export default function MultiStepSignUp() {
         const sanitizedPhone = DOMPurify.sanitize(phone);
         const sanitizedDateOfBirth = DOMPurify.sanitize(dateOfBirth);
         const sanitizedRole = DOMPurify.sanitize(role);
+        const sanitizedCoachCode = DOMPurify.sanitize(coachCode);
 
         if (sanitizedPassword !== sanitizedRepeatPassword) {
             setError("Passwords need to be the same!");
@@ -79,7 +80,8 @@ export default function MultiStepSignUp() {
                     last_name, 
                     phone: sanitizedPhone, 
                     date_of_birth: sanitizedDateOfBirth,
-                    role: sanitizedRole
+                    role: sanitizedRole,
+                    coach_code: sanitizedCoachCode
                 },
                 { withCredentials: true }
             );
@@ -114,13 +116,13 @@ export default function MultiStepSignUp() {
                   <h1 className='text-4xl font-bold text-center my-2'>Choose a role</h1>
                   <div className='text-center'>Choose a role before signing up to the platform...</div>
                   <div className='flex flex-col md:flex-row gap-5 mt-8 mx-5 md:mx-0'>
-                    <button className="text-left" onClick={() => handleClick("coach", "sign-up")}>
+                    <button className="text-left" onClick={() => handleClick("Coach", "sign-up")}>
                         <RolePanel title='Coach' description='description' image=''/>
                     </button>
-                    <button className="text-left" onClick={() => handleClick("athlete", "add-coach-id")}>
+                    <button className="text-left" onClick={() => handleClick("Athlete", "add-coach-id")}>
                         <RolePanel title='Athlete' description='description' image=''/>
                     </button>
-                    <button className="text-left" onClick={() => handleClick("independent", "sign-up")}>
+                    <button className="text-left" onClick={() => handleClick("Independent", "sign-up")}>
                         <RolePanel title='Independent' description='description' image=''/>
                     </button>
                   </div>

@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse # type: ignore
 from django.views.decorators.csrf import csrf_exempt # type: ignore
 from rest_framework.parsers import JSONParser # type: ignore
-from api.models import User
+from api.models import User, TemporaryCoachCode, Team
 from api.serializers import UserSerializer
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
@@ -27,16 +27,16 @@ def register_view(request):
     date_of_birth = request.data.get("date_of_birth")
     role = request.data.get("role")
     
+    coachCode = request.data.get("coach_code")
+    
     # add isMobile or something like that
     
-    # Ensure required fields are present
     if not username or not email or not password or not first_name or not last_name:
         return Response({"error": "Missing required fields"}, status=400)
     
     if '@' not in email:
         return Response({"error": "Invalid email format"}, status=400)
     
-    # Check if email or username is already taken
     if User.objects.filter(email=email).exists():
         return Response({"error": "Email already in use"}, status=400)
     if User.objects.filter(username=username).exists():
@@ -44,7 +44,6 @@ def register_view(request):
     
     if date_of_birth:
         try:
-            # Attempt to parse date_of_birth to ensure it's a valid datetime string
             date_of_birth = parse_datetime(date_of_birth)
             if date_of_birth is None:
                 return Response({"error": "Invalid date format. Please use a valid datetime."}, status=400)
@@ -58,7 +57,7 @@ def register_view(request):
         last_name=last_name,
         phone=phone,
         date_of_birth=date_of_birth,
-        role=role  # Assign role if applicable
+        role=role 
     )
     user.set_password(password)
     user.save()
@@ -100,6 +99,14 @@ def register_view(request):
         samesite='Lax',
         max_age=timedelta(days=7),
     )
+    
+    if coachCode:
+        temp_code = TemporaryCoachCode.objects.filter(id=coachCode)
+        
+        #get first from the list
+        coach = temp_code[0].coachID
+        team = Team.objects.create(coachID=coach, athleteID=user)
+    
     return response
 
 @api_view(["POST"])
