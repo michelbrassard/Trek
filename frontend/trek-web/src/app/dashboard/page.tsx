@@ -1,10 +1,11 @@
+import Title from "../ui/dashboard/title";
 import Welcome from "../ui/dashboard/welcome";
 
 export default function Overview() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold">Overview</h1>
+      <Title text="Overview"/>
       <Welcome />
     </div>
   );

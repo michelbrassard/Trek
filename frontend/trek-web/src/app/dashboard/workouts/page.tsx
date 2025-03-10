@@ -1,7 +1,9 @@
+import Title from "@/app/ui/dashboard/title";
+
 export default function Workouts() {
     return (
         <div>
-            <h1 className="text-3xl font-bold">Workouts</h1>
+            <Title text="Workouts"/>
             <div>list of workouts and under visualizations...</div>
         </div>
     )

@@ -1,7 +1,9 @@
+import Title from "@/app/ui/dashboard/title";
+
 export default function Notes() {
     return (
         <div>
-            <h1 className="text-3xl font-bold">Notes</h1>
+            <Title text="Notes"/>
             <div>Notes, reminders and whatever is needed</div>
         </div>
     )

@@ -1,7 +1,9 @@
+import Title from "@/app/ui/dashboard/title";
+
 export default function Equipment() {
     return (
         <div>
-            <h1 className="text-3xl font-bold">Equipment</h1>
+            <Title text="Equipment"/>
             <div>Set equipment</div>
         </div>
     )

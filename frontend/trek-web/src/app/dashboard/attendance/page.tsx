@@ -1,7 +1,9 @@
+import Title from "@/app/ui/dashboard/title"
+
 export default function Attendance() {
     return (
         <div>
-            <h1 className="text-3xl font-bold">Attendance</h1>
+            <Title text="Attendance"/>
             <div>Attendece data for workouts</div>
         </div>
     )

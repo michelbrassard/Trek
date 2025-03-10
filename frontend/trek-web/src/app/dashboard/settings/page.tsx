@@ -1,7 +1,9 @@
+import Title from "@/app/ui/dashboard/title";
+
 export default function AccountSettings() {
     return(
         <div>
-            <h1 className="text-3xl font-bold">Settings</h1>
+            <Title text="Settings"/>
             <div>Some text...</div>
         </div>
     )
