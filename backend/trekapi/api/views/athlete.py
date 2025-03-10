@@ -21,10 +21,10 @@ def athlete_list(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def athlete_detail(athlete_id):
+def athlete_detail(request, athlete_id):
     try:
         athlete = User.objects.get(id=athlete_id)
-        serializer = AthleteSerializer(athlete, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        serializer = AthleteSerializer(athlete)
+        return Response(serializer.data)
     except User.DoesNotExist:
         return Response(status=404)

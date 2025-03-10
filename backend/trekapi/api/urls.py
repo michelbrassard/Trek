@@ -9,5 +9,6 @@ urlpatterns = [
     path('users/', views.user_list),
     path('user/details/', views.user_detail),
     path('enroll/temporaryCodes', views.get_coach_codes),
-    path('athletes/', views.athlete_list)
+    path('athletes/', views.athlete_list),
+    path('athletes/<uuid:athlete_id>/', views.athlete_detail),
 ]
