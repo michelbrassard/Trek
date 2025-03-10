@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-interface AthletesRowProps {
+interface AthleteRowProps {
     id: string,
     first_name: string,
     last_name: string,
@@ -17,7 +17,7 @@ interface AthletesRowProps {
 }
 
 export default function Table() {
-    const [tableData, setTableData] = useState<AthletesRowProps[]>([]);
+    const [tableData, setTableData] = useState<AthleteRowProps[]>([]);
     
     useEffect(() => {
         const fetchData = async () => {
@@ -25,8 +25,6 @@ export default function Table() {
             const response = await axios.get("/api/proxy/athletes", {
                 withCredentials: true,
             });
-
-            console.log(response.data)
             setTableData(response.data);
           } catch (error) {
             console.error("Failed to fetch data:", error);
@@ -58,7 +56,7 @@ export default function Table() {
                             <td className={cellStyling}>{athlete.last_name}</td>
                             <td className={cellStyling}>{athlete.email}</td>
                             <td className={cellStyling}>
-                                <Link href="/" className="float-end flex items-center gap-2 text-blue-500">
+                                <Link href={`athletes/${athlete.id}`} className="float-end flex items-center gap-2 text-blue-500">
                                     Details <ArrowRight size={16} />
                                 </Link>
                             </td>
