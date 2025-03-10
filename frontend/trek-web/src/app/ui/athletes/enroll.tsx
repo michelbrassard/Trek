@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "../button";
 import QRCode from "./qrcode";
-import { Copy, QrCode, X } from "lucide-react";
+import { Check, Copy, QrCode, X } from "lucide-react";
 
 interface TemporaryCoachCodeProps {
     id: string,
@@ -15,6 +15,7 @@ interface TemporaryCoachCodeProps {
 export default function Enroll() {
     const [data, setData] = useState<TemporaryCoachCodeProps[]>([]);
     const [isQRCodeOpen, setIsQRCodeOpen] = useState(false);
+    const [isLinkCopied, setIsLinkCopied] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,8 +23,6 @@ export default function Enroll() {
             const response = await axios.get("http://localhost:3000/api/proxy/temporary_coach_codes", {
                 withCredentials: true,
             });
-
-            console.log(response.data)
             setData(response.data);
           } catch (error) {
             console.error("Failed to fetch data:", error);
@@ -49,6 +48,10 @@ export default function Enroll() {
 
       const handleCopyLink = () => {
         navigator.clipboard.writeText(`http://localhost:3000/signup?enroll=${data[0].id}`);
+        setIsLinkCopied(true);
+        setTimeout(() => {
+          setIsLinkCopied(false);
+        }, 2000); 
       }
 
       const handleShowQRCode = () => {
@@ -67,8 +70,19 @@ export default function Enroll() {
                 {data.map((item) => (
                     <div key={item.id} className="flex flex-row gap-2">
                       <div>
-                        <Button isPrimary = {true} className="flex items-center gap-2" onClick={handleCopyLink}>
-                            Copy registration link <Copy size={16}/>
+                        <Button isPrimary = {true} onClick={handleCopyLink}>
+                            {isLinkCopied ? 
+                              <div className="flex items-center gap-2">
+                                Registration Link Copied
+                                <Check size={16}/>
+                              </div> : 
+                              
+                              <div className="flex items-center gap-2">
+                                Copy Registration Link
+                                <Copy size={16}/>
+                              </div>
+                            }
+                             
                         </Button>
                       </div>
                       <div>
@@ -85,7 +99,6 @@ export default function Enroll() {
                           </div>
                         </div>}
                       </div>
-                      
                     </div>
                 ))}
             </div> : 
