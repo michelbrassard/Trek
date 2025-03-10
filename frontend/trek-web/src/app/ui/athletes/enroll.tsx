@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "../button";
 import QRCode from "./qrcode";
+import { Copy, QrCode, X } from "lucide-react";
 
 interface TemporaryCoachCodeProps {
     id: string,
@@ -13,6 +14,7 @@ interface TemporaryCoachCodeProps {
 
 export default function Enroll() {
     const [data, setData] = useState<TemporaryCoachCodeProps[]>([]);
+    const [isQRCodeOpen, setIsQRCodeOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,31 +47,52 @@ export default function Enroll() {
         }
       }
 
+      const handleCopyLink = () => {
+        navigator.clipboard.writeText(`http://localhost:3000/signup?enroll=${data[0].id}`);
+      }
+
+      const handleShowQRCode = () => {
+        if (isQRCodeOpen) {
+          setIsQRCodeOpen(false)
+        }
+        else {
+          setIsQRCodeOpen(true)
+        }
+      }
+
       return (
-        <div>
+        <div className="mb-4">
             {data ? 
             <div>
                 {data.map((item) => (
-                    <div key={item.id} className="flex flex-col gap-4">
-                        <a 
-                          href={`http://localhost:3000/signup?enroll=${item.id}`}
-                          className="hover:underline"
-                        >
-                          http://localhost:3000/signup?enroll={item.id}
-                        </a>
-                        <QRCode url={`http://localhost:3000/signup?enroll=${item.id}`} />
+                    <div key={item.id} className="flex flex-row gap-2">
+                      <div>
+                        <Button isPrimary = {true} className="flex items-center gap-2" onClick={handleCopyLink}>
+                            Copy registration link <Copy size={16}/>
+                        </Button>
+                      </div>
+                      <div>
+                        <Button isSecondary = {true} className="flex items-center gap-2" onClick={handleShowQRCode}>
+                          View QR Code <QrCode size={16}/>
+                        </Button>
+                        {isQRCodeOpen && 
+                        <div className="backdrop-blur-md p-5 fixed inset-0 z-50 transition-all flex justify-center">
+                          <div className="mt-10">
+                            <Button onClick={handleShowQRCode} className="flex items-center gap-2 float-end">
+                              Close <X size={22}/>
+                            </Button>
+                            <QRCode url={`http://localhost:3000/signup?enroll=${item.id}`} />
+                          </div>
+                        </div>}
+                      </div>
+                      
                     </div>
                 ))}
-
-                
-            </div> : "No codes"}
-
-            <Button 
-              isPrimary = {true}
-              onClick={handleGenerateCode}
-            >
+            </div> : 
+            <Button isPrimary = {true} onClick={handleGenerateCode}>
               Generate code
             </Button> 
+          }
         </div>
       );
 }
