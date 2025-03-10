@@ -20,7 +20,7 @@ export default function Table() {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get("http://localhost:3000/api/proxy/athletes", {
+            const response = await axios.get("/api/proxy/athletes", {
                 withCredentials: true,
             });
 
