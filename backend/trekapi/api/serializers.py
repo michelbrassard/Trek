@@ -1,16 +1,17 @@
 from rest_framework import serializers # type: ignore - it works
-from api.models import User
+from api.models import User, TemporaryCoachCode
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 
-                  'created', 
-                  'first_name', 
-                  'last_name', 
-                  'username', 
-                  'email', 
-                  'password', 
-                  'phone', 
-                  'date_of_birth', 
-                  'role']
+        exclude = ['password']
+        
+class AthleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'phone', 'date_of_birth']
+
+class TemporaryCoachCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TemporaryCoachCode
+        fields = '__all__'

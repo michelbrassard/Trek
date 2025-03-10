@@ -14,6 +14,7 @@ db.sqlite3  # Ignore SQLite database file
 
 # Django environment settings
 .env  # Environment variables (if using dotenv)
+.venv
 
 # IDE & Editor Files
 .vscode/

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'api',
     "corsheaders",
     "rest_framework_simplejwt",
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -151,6 +152,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "AUTH_HEADER_TYPES": ("Bearer",),
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ROTATE_REFRESH_TOKENS": True,
 }
 
 AUTH_USER_MODEL = "api.User"

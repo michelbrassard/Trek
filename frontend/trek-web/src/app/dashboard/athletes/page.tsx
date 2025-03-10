@@ -1,8 +1,13 @@
+import Enroll from "@/app/ui/athletes/enroll";
+import Table from "@/app/ui/athletes/table";
+import Title from "@/app/ui/dashboard/title";
+
 export default function Athletes() {
     return (
-        <div>
-            <h1 className="text-3xl font-bold">Athletes</h1>
-            <div>Some text...</div>
+        <div className="">
+            <Title text="Athletes" />
+            <Enroll />
+            <Table />
         </div>
     )
 }

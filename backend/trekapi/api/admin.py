@@ -1,5 +1,5 @@
 from django.contrib import admin # type: ignore (it works)
-from .models import User
+from .models import User, Team, TemporaryCoachCode
 from django.urls import path
 
 class UserAdmin(admin.ModelAdmin):
@@ -13,3 +13,5 @@ class UserAdmin(admin.ModelAdmin):
 
 # Register your models here so that they appear in the admin site
 admin.site.register(User, UserAdmin)
+admin.site.register(Team)
+admin.site.register(TemporaryCoachCode)

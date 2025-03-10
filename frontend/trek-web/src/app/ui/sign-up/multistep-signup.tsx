@@ -3,18 +3,21 @@
 import Link from "next/link"
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import RolePanel from '../../ui/sign-up/role-panel';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputField from "../form/input-field";
 import InputSubmit from "../form/input-submit";
 import axios from 'axios';
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import DOMPurify from "dompurify";
 
 //Separate this into multiple components?
 export default function MultiStepSignUp() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+
     const [step, setStep] = useState("choose-role");
-    const [coachID, setCoachID] = useState("")
-    const [isCoachIDEmpty, setCoachIDState] = useState(false)
+    const [coachCode, setCoachCode] = useState("")
+    const [isCoachCodeEmpty, setCoachCodeState] = useState(false)
     const [alertCoachID, setAlertCoachID] = useState("")
 
     const [username, setUsername] = useState("")
@@ -27,6 +30,16 @@ export default function MultiStepSignUp() {
     const [role, setRole] = useState("Independent");
 
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        if (searchParams.has("enroll")) {
+            const queryCoachCode = searchParams.get('enroll');
+            setRole("Athlete");
+            setCoachCode(queryCoachCode!);
+            setCoachCodeState(false);
+            setStep("sign-up");
+        }
+    }, [searchParams]);
     
     const handleClick = (role: string, step: string) => {
         setRole(role);
@@ -37,12 +50,22 @@ export default function MultiStepSignUp() {
         e.preventDefault();
 
         //VALIDATE AND SANITIZE
-        if (password !== repeatPassword) {
+        const sanitizedUsername = DOMPurify.sanitize(username);
+        const sanitizedEmail = DOMPurify.sanitize(email);
+        const sanitizedPassword = DOMPurify.sanitize(password);
+        const sanitizedRepeatPassword = DOMPurify.sanitize(repeatPassword);
+        const sanitizedFullName = DOMPurify.sanitize(fullName);
+        const sanitizedPhone = DOMPurify.sanitize(phone);
+        const sanitizedDateOfBirth = DOMPurify.sanitize(dateOfBirth);
+        const sanitizedRole = DOMPurify.sanitize(role);
+        const sanitizedCoachCode = DOMPurify.sanitize(coachCode);
+
+        if (sanitizedPassword !== sanitizedRepeatPassword) {
             setError("Passwords need to be the same!");
             return;
          }
 
-        const nameElements = fullName.split(" ")
+        const nameElements = sanitizedFullName.split(" ")
         const first_name = nameElements[0]
         const last_name = nameElements.slice(1).join(" ");
         
@@ -50,14 +73,15 @@ export default function MultiStepSignUp() {
             const response = await axios.post(
                 'http://localhost:8000/auth/register/',
                 { 
-                    username, 
-                    email, 
-                    password, 
+                    username: sanitizedUsername, 
+                    email: sanitizedEmail, 
+                    password: sanitizedPassword, 
                     first_name, 
                     last_name, 
-                    phone, 
-                    "date_of_birth": dateOfBirth,
-                    role
+                    phone: sanitizedPhone, 
+                    date_of_birth: sanitizedDateOfBirth,
+                    role: sanitizedRole,
+                    coach_code: sanitizedCoachCode
                 },
                 { withCredentials: true }
             );
@@ -92,13 +116,13 @@ export default function MultiStepSignUp() {
                   <h1 className='text-4xl font-bold text-center my-2'>Choose a role</h1>
                   <div className='text-center'>Choose a role before signing up to the platform...</div>
                   <div className='flex flex-col md:flex-row gap-5 mt-8 mx-5 md:mx-0'>
-                    <button className="text-left" onClick={() => handleClick("coach", "sign-up")}>
+                    <button className="text-left" onClick={() => handleClick("Coach", "sign-up")}>
                         <RolePanel title='Coach' description='description' image=''/>
                     </button>
-                    <button className="text-left" onClick={() => handleClick("athlete", "add-coach-id")}>
+                    <button className="text-left" onClick={() => handleClick("Athlete", "add-coach-id")}>
                         <RolePanel title='Athlete' description='description' image=''/>
                     </button>
-                    <button className="text-left" onClick={() => handleClick("independent", "sign-up")}>
+                    <button className="text-left" onClick={() => handleClick("Independent", "sign-up")}>
                         <RolePanel title='Independent' description='description' image=''/>
                     </button>
                   </div>
@@ -108,7 +132,7 @@ export default function MultiStepSignUp() {
             {step === "add-coach-id" && (
                 <div className="flex flex-col gap-3 md:w-[400px] w-full rounded-3xl">
                     <button onClick={() => {
-                            setCoachID("")
+                            setCoachCode("")
                             setStep("choose-role");
                         }
                     }>
@@ -128,9 +152,9 @@ export default function MultiStepSignUp() {
                             name={"coach-id"} 
                             id={"coach-id"} 
                             label={"coach id"} 
-                            value={coachID}
-                            hasProblems={isCoachIDEmpty}
-                            onChange={(e) => setCoachID(e.target.value)}
+                            value={coachCode}
+                            hasProblems={isCoachCodeEmpty}
+                            onChange={(e) => setCoachCode(e.target.value)}
                             alertMessage={alertCoachID}
                         />
                         <p className="text-xs text-neutral-400 dark:text-neutral-600 px-2">The special coach id should be given to you here...</p>
@@ -138,12 +162,12 @@ export default function MultiStepSignUp() {
                     
                     <div>
                         <button onClick={() => {
-                                if (coachID.length === 0) {
-                                    setCoachIDState(true)
+                                if (coachCode.length === 0) {
+                                    setCoachCodeState(true)
                                     setAlertCoachID("Provide a coach ID before sign up or change the role.")
                                 }
                                 else {
-                                    setCoachIDState(false)
+                                    setCoachCodeState(false)
                                     setAlertCoachID("")
                                     setStep("sign-up");
                                 }
@@ -160,7 +184,7 @@ export default function MultiStepSignUp() {
                 <div className="flex flex-col gap-2 md:w-[400px] w-full">
                     <div className="flex flex-row gap-3 justify-between">
                         <button onClick={() => {
-                                setCoachID("")
+                                setCoachCode("")
                                 setStep("choose-role")
                             }
                         }>
@@ -173,9 +197,9 @@ export default function MultiStepSignUp() {
                             <span className="capitalize font-bold"> {role}</span>
                         </p>
                     </div>
-                    {role === "athlete" && (
+                    {role === "Athlete" && (
                         <div className="flex flex-row text-sm">
-                            <p className="p-2">Coach ID: <span className="font-bold">{coachID}</span></p>
+                            <p className="p-2">Enroll Code: <span className="font-bold">{coachCode}</span></p>
                             <button onClick={() => setStep("add-coach-id")}>
                                 <div className='text-blue-500 hover:underline w-fit'>
                                     Change
@@ -241,7 +265,7 @@ export default function MultiStepSignUp() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <InputSubmit name="submit" id="submit" value="Sign up" />
-                            <hr className="bg-neutral-400 dark:bg-neutral-600"></hr>
+                            <hr className="border border-neutral-400 dark:border-neutral-600"></hr>
                             <p className="text-red-500">{error}</p>
                             <button onClick={() => {
                                     //go to google sign up

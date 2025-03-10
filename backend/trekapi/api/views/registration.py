@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse # type: ignore
 from django.views.decorators.csrf import csrf_exempt # type: ignore
 from rest_framework.parsers import JSONParser # type: ignore
-from api.models import User
+from api.models import User, TemporaryCoachCode, Team
 from api.serializers import UserSerializer
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
@@ -15,11 +15,6 @@ from datetime import timedelta
 
 User = get_user_model()
 
-#remove the @csrf_exempt later on!!!
-@csrf_exempt
-def home(request):
-    return HttpResponse("Welcome to the API!")
-
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register_view(request):
@@ -32,16 +27,16 @@ def register_view(request):
     date_of_birth = request.data.get("date_of_birth")
     role = request.data.get("role")
     
+    coachCode = request.data.get("coach_code")
+    
     # add isMobile or something like that
     
-    # Ensure required fields are present
     if not username or not email or not password or not first_name or not last_name:
         return Response({"error": "Missing required fields"}, status=400)
     
     if '@' not in email:
         return Response({"error": "Invalid email format"}, status=400)
     
-    # Check if email or username is already taken
     if User.objects.filter(email=email).exists():
         return Response({"error": "Email already in use"}, status=400)
     if User.objects.filter(username=username).exists():
@@ -49,7 +44,6 @@ def register_view(request):
     
     if date_of_birth:
         try:
-            # Attempt to parse date_of_birth to ensure it's a valid datetime string
             date_of_birth = parse_datetime(date_of_birth)
             if date_of_birth is None:
                 return Response({"error": "Invalid date format. Please use a valid datetime."}, status=400)
@@ -63,7 +57,7 @@ def register_view(request):
         last_name=last_name,
         phone=phone,
         date_of_birth=date_of_birth,
-        role=role  # Assign role if applicable
+        role=role 
     )
     user.set_password(password)
     user.save()
@@ -105,6 +99,14 @@ def register_view(request):
         samesite='Lax',
         max_age=timedelta(days=7),
     )
+    
+    if coachCode:
+        temp_code = TemporaryCoachCode.objects.filter(id=coachCode)
+        
+        #get first from the list
+        coach = temp_code[0].coachID
+        team = Team.objects.create(coachID=coach, athleteID=user)
+    
     return response
 
 @api_view(["POST"])
@@ -157,46 +159,24 @@ def login_view(request):
     )
     return response
 
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def logout_view(request):
+    response = Response({"message": "Logout successful"}, status=200)
+    response.delete_cookie('access_token', path='/')
+    response.delete_cookie('refresh_token', path='/')
+    
+    refresh_token = request.COOKIES.get('refresh_token')
+    if refresh_token:
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except Exception as e:
+            response.data["warning"] = "Could not blacklist token."
+    
+    request.session.flush()
+    return response
+    
+
 # add mobile view or some check in the request so that it knows if its mobile or desktop
 # so that a user recevies in the response or use a check of sort
-
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
-def user_list(request):
-    if request.method == 'GET':
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    
-@api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
-def user_detail(request):
-    user = request.user
-    try:
-        user = User.objects.get(id=user.id)
-    except User.DoesNotExist:
-        return Response(status=404)
-    
-    if request.method == 'GET':
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-    
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(user, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
-    
-    elif request.method == 'DELETE':
-        user.delete()
-        return Response(status=404)

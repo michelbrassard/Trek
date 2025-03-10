@@ -2,7 +2,6 @@ import uuid
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
-# Create your models here.
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
         if not email:
@@ -21,7 +20,7 @@ class CustomUserManager(BaseUserManager):
     
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created = models.DateTimeField(auto_now_add=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30)
     username = models.CharField(max_length=15, unique=True)
@@ -48,5 +47,3 @@ class User(AbstractBaseUser, PermissionsMixin):
             ("can_view_reports", "Can view reports"),
             ("can_edit_users", "Can edit users"),
         ] """
-
-
