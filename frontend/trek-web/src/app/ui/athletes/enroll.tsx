@@ -51,10 +51,6 @@ export default function Enroll() {
             <div>
                 {data.map((item) => (
                     <div key={item.id} className="flex flex-col gap-4">
-                        <p>Code: {item.id}</p> 
-                        <p>Created at: {item.createdAt}</p> 
-                        <p>Coach ID: {item.coachID}</p>
-                        <hr></hr>
                         <a 
                           href={`http://localhost:3000/signup?enroll=${item.id}`}
                           className="hover:underline"

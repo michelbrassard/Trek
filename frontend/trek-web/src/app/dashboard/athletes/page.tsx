@@ -1,11 +1,12 @@
 import Enroll from "@/app/ui/athletes/enroll";
+import Table from "@/app/ui/athletes/table";
 
 export default function Athletes() {
     return (
-        <div>
-            <h1 className="text-3xl font-bold">Athletes</h1>
-            <div>List of all athletes and a link to their details page</div>
+        <div className="">
+            <h1 className="text-3xl font-bold mb-2">Athletes</h1>
             <Enroll />
+            <Table />
         </div>
     )
 }

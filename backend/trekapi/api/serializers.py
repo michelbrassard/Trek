@@ -5,6 +5,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = ['password']
+        
+class AthleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'phone', 'date_of_birth']
 
 class TemporaryCoachCodeSerializer(serializers.ModelSerializer):
     class Meta:
