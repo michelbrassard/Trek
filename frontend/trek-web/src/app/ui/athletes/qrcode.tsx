@@ -13,7 +13,7 @@ export default function QRCode(
           text={url}
           options={{
             margin: 2,
-            width: 200,
+            width: 400,
             color: {
               dark: '#000000',
               light: '#FFFFFF',
