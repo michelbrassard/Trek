@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function Navigation() {
     const baseLinkStyle = 'py-2 px-4 font-medium hover:underline'
     const signUpStyle = 'text-white font-medium mx-4 py-2 px-4 rounded-xl transition-colors bg-blue-500 hover:bg-blue-400 focus-visible:outline-blue-500 active:bg-blue-600'
-    const mobileLinkStyle = "text-4xl font-medium hover:underline"
+    const mobileLinkStyle = "text-3xl font-medium hover:underline"
     const [isOpen, setIsOpen] = useState(false);
     const toggleMenu = () => setIsOpen(!isOpen);
 
