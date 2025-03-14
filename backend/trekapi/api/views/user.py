@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse # type: ignore
 from django.views.decorators.csrf import csrf_exempt # type: ignore
 from rest_framework.parsers import JSONParser # type: ignore
 from api.models import User
-from api.serializers import UserSerializer
+from api.serializers import RoleSerializer, UserSerializer
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -55,3 +55,11 @@ def user_detail(request):
     elif request.method == 'DELETE':
         user.delete()
         return Response(status=404)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_role(request):
+    user = request.user
+    serializer = RoleSerializer(user)
+    return Response(serializer.data)
+        

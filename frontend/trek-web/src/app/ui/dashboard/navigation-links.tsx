@@ -1,7 +1,10 @@
+"use client"
+
 import Link from "next/link";
 import TrekLogo from "../trek-logo";
-import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, Medal, Settings, StickyNote, Users } from "lucide-react";
+import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, Settings, StickyNote, Users } from "lucide-react";
 import LogOutButton from "./logout-button";
+import { useEffect, useState } from "react";
 
 interface DashboardNavigationLinksProps {
     styles: string,
@@ -9,7 +12,51 @@ interface DashboardNavigationLinksProps {
     toggleNavigation?: () => void
 }
 
+interface NavigationLink {
+    href: string;
+    label: string;
+    icon: LucideIcon;
+    roles: string[];
+}
+
 export default function DashboardNavigationLinks({styles, isDesktop, toggleNavigation}: DashboardNavigationLinksProps) {
+    const [userRole, setUserRole] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
+          try {
+            console.log("Role fetched!")
+            const response = await fetch("/api/proxy/role", { 
+              method: "GET",
+              credentials: "include",
+            });
+    
+            if (!response.ok) throw new Error("Failed to fetch user role");
+    
+            const data = await response.json();
+            setUserRole(data.role);
+            console.log(userRole);
+          } catch (error) {
+            console.error("Error fetching user role:", error);
+          }
+        };
+    
+        fetchUserRole();
+      }, [userRole]);
+
+    const navigationLinks: NavigationLink[] = [
+        { href: "/dashboard", label: "Overview", icon: LayoutDashboard, roles: ["COACH", "ATHLETE"] },
+        { href: "/dashboard/workouts", label: "Workouts", icon: Dumbbell, roles: ["COACH", "ATHLETE"] },
+        { href: "/dashboard/attendance", label: "Attendance", icon: CalendarCheck, roles: ["COACH", "ATHLETE"] },
+        { href: "/dashboard/athletes", label: "Athletes", icon: Users, roles: ["COACH"] },
+        { href: "/dashboard/progress", label: "Progress", icon: ChartLine, roles: ["COACH", "ATHLETE"] },
+        { href: "/dashboard/competitions", label: "Competitions", icon: Medal, roles: ["COACH", "ATHLETE"] },
+        { href: "/dashboard/equipment", label: "Equipment", icon: Briefcase, roles: ["COACH", "ATHLETE"] },
+        { href: "/dashboard/notes", label: "Notes", icon: StickyNote, roles: ["COACH", "ATHLETE"] }
+    ];
+
+    const filteredLinks = navigationLinks.filter(link => userRole && link.roles.includes(userRole.toUpperCase()));
+
     return(
         <div className="flex flex-col gap-2">
             {isDesktop && 
@@ -18,16 +65,7 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
                 </div>
             }
             
-            {[
-                { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
-                { href: "/dashboard/workouts", label: "Workouts", icon: Dumbbell },
-                { href: "/dashboard/attendance", label: "Attendance", icon: CalendarCheck },
-                { href: "/dashboard/athletes", label: "Athletes", icon: Users },
-                { href: "/dashboard/progress", label: "Progress", icon: ChartLine },
-                { href: "/dashboard/competitions", label: "Competitions", icon: Medal },
-                { href: "/dashboard/equipment", label: "Equipment", icon: Briefcase },
-                { href: "/dashboard/notes", label: "Notes", icon: StickyNote },
-            ].map(({ href, label, icon: Icon }) => (
+            {filteredLinks.map(({ href, label, icon: Icon }) => (
                 <Link
                     key={href}
                     href={href}
