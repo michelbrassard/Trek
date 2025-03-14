@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import TrekLogo from "../trek-logo";
-import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, Settings, StickyNote, Users } from "lucide-react";
+import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, Settings, StickyNote, Users, Video } from "lucide-react";
 import LogOutButton from "./logout-button";
 import { useEffect, useState } from "react";
 
@@ -52,7 +52,8 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
         { href: "/dashboard/progress", label: "Progress", icon: ChartLine, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/competitions", label: "Competitions", icon: Medal, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/equipment", label: "Equipment", icon: Briefcase, roles: ["COACH", "ATHLETE"] },
-        { href: "/dashboard/notes", label: "Notes", icon: StickyNote, roles: ["COACH", "ATHLETE"] }
+        { href: "/dashboard/notes", label: "Notes", icon: StickyNote, roles: ["COACH", "ATHLETE"] },
+        { href: "/dashboard/videos", label: "Videos", icon: Video, roles: ["COACH"] },
     ];
 
     const filteredLinks = navigationLinks.filter(link => userRole && link.roles.includes(userRole.toUpperCase()));
