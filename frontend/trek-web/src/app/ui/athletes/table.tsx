@@ -36,9 +36,9 @@ export default function Table() {
     
     //TODO: make it a better table and view the overview of each athlete
     const cellStyling = "border-t border-collapse px-4 py-2 border-neutral-300 dark:border-neutral-700 text-left";
-    const headerCellStyling = "px-4 py-2 text-left"
+    const headerCellStyling = "px-4 py-2 text-left text-nowrap"
     return(
-        <div className="my-5 rounded-md overflow-hidden border border-neutral-300 dark:border-neutral-700">
+        <div className="my-5 rounded-md overflow-scroll border border-neutral-300 dark:border-neutral-700">
             {tableData ? 
             <table className="w-full border-collapse border-neutral-300 dark:border-neutral-700">
                 <thead className="dark:bg-neutral-900 bg-neutral-100">
