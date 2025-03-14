@@ -10,6 +10,11 @@ class AthleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'username', 'email', 'phone', 'date_of_birth']
+        
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["role"]
 
 class TemporaryCoachCodeSerializer(serializers.ModelSerializer):
     class Meta:
