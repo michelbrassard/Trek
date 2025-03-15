@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Title from "../dashboard/title";
 import { Button } from "../button";
+import { useRouter } from 'next/navigation';
 
 interface WorkoutOverviewDataProps {
     id: string
@@ -21,6 +22,7 @@ interface DataProps {
 
 export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
     const [overview, setOverview] = useState<DataProps>();
+    const router = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,6 +39,15 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
 
     fetchData();
     }, [id]);
+
+    const handleEdit = () => {
+        router.push(`edit/${id}`);
+    }
+
+    const handleDelete = () => {
+        //delete...
+        router.push("/dashboard/workouts");
+    }
     
     return(
         <div className="my-5">
@@ -45,8 +56,8 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                 <div className="flex row justify-between">
                     <Title text={overview.title} />
                     <div className="flex row gap-2">
-                        <Button isSecondary = {true} >Edit</Button>
-                        <Button isDanger = {true} >Delete</Button>
+                        <Button isSecondary = {true} onClick={handleEdit}>Edit</Button>
+                        <Button isDanger = {true} onClick={handleDelete}>Delete</Button>
                     </div>
                     
                 </div>
