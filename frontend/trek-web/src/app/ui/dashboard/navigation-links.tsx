@@ -69,7 +69,14 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
             }
             
             {filteredLinks.map(({ href, label, icon: Icon }) => {
-                const isActive = pathname === href; 
+                let isActive = pathname === href
+                // used so that the active link indicator persits 
+                // when a details page or a form from a section is opened
+                if(href.startsWith("/dashboard/")) {
+                    isActive = pathname.startsWith(href);
+                }
+                
+                
                 return(
                     <Link
                         key={href}
