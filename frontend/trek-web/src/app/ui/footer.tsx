@@ -1,4 +1,5 @@
 import Link from "next/link"
+import TrekLogo from "./trek-logo";
 
 export default function Footer() {
     const footerLinkStyle = "text-sm hover:underline"
@@ -8,7 +9,10 @@ export default function Footer() {
         <footer className="flex flex-col bg-neutral-200 dark:bg-neutral-800 p-8 text-sm">
         <div className="md:flex md:flex-row justify-between">
           <div className="max-w-md">
-            <div className="font-bold">Trek</div>
+            <div className="flex row gap-2 mb-5">
+                <TrekLogo size={28} color="fill-neutral-900 dark:fill-neutral-100" />
+                <p className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">Trek</p>
+            </div>
             <p>This is some text that will explain what the platform is blablabla some more text
               is here so. This is some text that will explain what the platform is blablabla some more text
               is here so.

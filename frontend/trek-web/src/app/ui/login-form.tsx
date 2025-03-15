@@ -42,7 +42,10 @@ export default function LoginForm() {
         <div className="flex flex-col gap-3 p-3">
             <h1 className="text-4xl font-bold m-2 antialiased text-center">Log in</h1>
             <div className="flex items-center justify-center">
-                <TrekLogo />
+                <div className="flex row gap-2">
+                    <TrekLogo size={28} color="fill-neutral-600 dark:fill-neutral-400" />
+                    <p className="text-2xl text-neutral-600 dark:text-neutral-400">Trek</p>
+                </div>
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2 mt-3">
                 <InputField 

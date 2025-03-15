@@ -5,6 +5,7 @@ import TrekLogo from "../trek-logo";
 import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, Settings, StickyNote, Users, Video } from "lucide-react";
 import LogOutButton from "./logout-button";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 interface DashboardNavigationLinksProps {
     styles: string,
@@ -21,6 +22,7 @@ interface NavigationLink {
 
 export default function DashboardNavigationLinks({styles, isDesktop, toggleNavigation}: DashboardNavigationLinksProps) {
     const [userRole, setUserRole] = useState<string | null>(null);
+    const pathname = usePathname();
 
     useEffect(() => {
         const fetchUserRole = async () => {
@@ -55,26 +57,31 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
     ];
 
     const filteredLinks = navigationLinks.filter(link => userRole && link.roles.includes(userRole.toUpperCase()));
-
     return(
         <div className="flex flex-col gap-2">
             {isDesktop && 
-                <div className="px-4 mb-5 mt-4">
-                    <TrekLogo />
+                <div className="px-3 py-3 mb-10">
+                    <div className="flex row gap-2">
+                        <TrekLogo size={28} color="fill-blue-500" />
+                        <p className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">Trek</p>
+                    </div>
                 </div>
             }
             
-            {filteredLinks.map(({ href, label, icon: Icon }) => (
-                <Link
-                    key={href}
-                    href={href}
-                    className={styles}
-                    onClick={!isDesktop ? toggleNavigation : undefined}
-                >
-                    {isDesktop && <Icon size={16} />}
-                    <span>{label}</span>
-                </Link>
-            ))}
+            {filteredLinks.map(({ href, label, icon: Icon }) => {
+                const isActive = pathname === href; 
+                return(
+                    <Link
+                        key={href}
+                        href={href}
+                        className={`${styles} ${isActive ? "bg-neutral-200 dark:bg-neutral-800" : ""}`}
+                        onClick={!isDesktop ? toggleNavigation : undefined}
+                    >
+                        {isDesktop && <Icon size={16} />}
+                        <span>{label}</span>
+                    </Link>
+                );
+            })}
 
             <div className="flex flex-col gap-2 mb-5">
                 <Link href="/dashboard/settings" className={styles} onClick={toggleNavigation}>

@@ -1,5 +1,6 @@
 import Footer from "./ui/footer";
 import Navigation from "./ui/navigation";
+import TrekLogo from "./ui/trek-logo";
 
 export default function Home() {
   return (
@@ -7,7 +8,12 @@ export default function Home() {
         <Navigation />
         <main className="flex-1 p-3 flex justify-center">
           <div className="text-center">
-            <h1 className="text-4xl font-bold m-1">Trek</h1>
+            <div className="flex col justify-center mb-3 ">
+              <div className="flex row gap-2 mb-5">
+                <TrekLogo size={60} color="fill-blue-500" />
+                <h1 className="text-5xl font-bold m-1">Trek</h1>
+              </div>
+            </div>
             <p>This is an athlete dashboard...</p>
           </div>
         </main>
