@@ -23,13 +23,10 @@ export default function LoginForm() {
         const sanitizedPassword = DOMPurify.sanitize(password);
 
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const response = await axios.post(
-              'http://localhost:8000/auth/login/',
+            await axios.post('http://localhost:8000/auth/login/',
               { email: sanitizedEmail, password: sanitizedPassword },
               { withCredentials: true } // Include credentials (cookies)
             );
-            //sessionStorage.setItem("role", response.data.user.role)
             router.push('/dashboard');
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } catch (error: any) {

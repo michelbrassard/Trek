@@ -5,24 +5,22 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-interface AthleteRowProps {
+interface WorkoutRowProps {
     id: string,
-    first_name: string,
-    last_name: string,
-    email: string,
-    username: string,
-    date_of_birth: string
-    phone: string
-
+    title: string,
+    description: string,
+    workout: string,
+    length: number,
+    unit: string,
 }
 
-export default function AthletesTable() {
-    const [tableData, setTableData] = useState<AthleteRowProps[]>([]);
+export default function WorkoutsTable() {
+    const [tableData, setTableData] = useState<WorkoutRowProps[]>([]);
     
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get("/api/proxy/athletes", {
+            const response = await axios.get("/api/proxy/workouts", {
                 withCredentials: true,
             });
             setTableData(response.data);
@@ -44,20 +42,22 @@ export default function AthletesTable() {
                 <table className="w-full border-collapse border-neutral-300 dark:border-neutral-700">
                     <thead className="dark:bg-neutral-900 bg-neutral-100">
                         <tr>
-                            <th className={headerCellStyling}>First Name</th>
-                            <th className={headerCellStyling}>Last Name</th>
-                            <th className={headerCellStyling}>Email</th>
+                            <th className={headerCellStyling}>Title</th>
+                            <th className={headerCellStyling}>Description</th>
+                            <th className={headerCellStyling}>Length</th>
+                            <th className={headerCellStyling}>Unit</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {tableData.map((athlete) => (
-                            <tr key={athlete.id}>
-                                <td className={cellStyling}>{athlete.first_name}</td>
-                                <td className={cellStyling}>{athlete.last_name}</td>
-                                <td className={cellStyling}>{athlete.email}</td>
+                        {tableData.map((workout) => (
+                            <tr key={workout.id}>
+                                <td className={cellStyling}>{workout.title}</td>
+                                <td className={cellStyling}>{workout.description}</td>
+                                <td className={cellStyling}>{workout.length}</td>
+                                <td className={cellStyling}>{workout.unit}</td>
                                 <td className={cellStyling}>
-                                    <Link href={`athletes/${athlete.id}`} className="float-end flex items-center gap-2 text-blue-500">
+                                    <Link href={`workouts/${workout.id}`} className="float-end flex items-center gap-2 text-blue-500">
                                         Details <ArrowRight size={16} />
                                     </Link>
                                 </td>
@@ -65,10 +65,10 @@ export default function AthletesTable() {
                         ))}
                     </tbody>
                 </table> 
-            </div>
+            </div> 
             : 
             <div>
-                <p className="text-center">No athletes found</p>
+                <p className="text-center">No workouts found</p>
             </div>
             }
         </>

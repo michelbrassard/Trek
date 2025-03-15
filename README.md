@@ -35,3 +35,8 @@ Frontend has a proxy that adds the bearer from the cookies into the headers when
 ## Organizing
 
 Models, views and other files can be separated into multiple files saved into the folder, but use the init.py so that it recognizes what to import
+
+## Making a Change
+
+Backend: models -> serializers -> views -> urls
+Frontend: page -> components -> proxy -> direct api call

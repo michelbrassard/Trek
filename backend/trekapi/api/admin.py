@@ -1,5 +1,5 @@
 from django.contrib import admin # type: ignore (it works)
-from .models import User, Team, TemporaryCoachCode
+from .models import User, Team, TemporaryCoachCode, Workout
 from django.urls import path
 
 class UserAdmin(admin.ModelAdmin):
@@ -15,3 +15,4 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(Team)
 admin.site.register(TemporaryCoachCode)
+admin.site.register(Workout)

@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 from api.models import User
 from api.serializers import AthleteSerializer
 from rest_framework.decorators import api_view, permission_classes
@@ -16,7 +15,7 @@ def athlete_list(request):
     if request.method == 'GET':
         athletes = User.objects.filter(athlete_teams__coachID=coach.id).distinct()
         serializer = AthleteSerializer(athletes, many=True)
-        return JsonResponse(serializer.data, status=200, safe=False)
+        return Response(serializer.data, status=200)
     
 
 @api_view(["GET"])
