@@ -1,21 +1,50 @@
 "use client"
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Title from "../dashboard/title";
 import InputField from "../form/input-field";
 import InputSubmit from "../form/input-submit";
 import DOMPurify from "dompurify";
 
-export default function CreateWorkoutForm() {
-    const [error, setError] = useState("");
+interface WorkoutFormProps {
+    formTitle: string,
+    isEdit: boolean,
+    id?: string
+}
 
+export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
+    const [error, setError] = useState("");
+    const initialFormData = {};
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [workout, setWorkout] = useState("");
     const [length, setLength] = useState(0);
     const [unit, setUnit] = useState("");
+
+    useEffect(() => {
+        if (isEdit && id) {
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:3000/api/proxy/workouts/${id}`, {
+                        withCredentials: true,
+                    });
+                    console.log(response.data)
+                
+                } catch (error) {
+                    console.error("Failed to fetch data:", error);
+                }
+            };
+            fetchData()
+            // setTitle(initialFormData.title);
+            // setDescription(initialFormData.description);
+            // setDate(initialFormData.date);
+            // setWorkout(initialFormData.workout);
+            // setLength(initialFormData.length);
+            // setUnit(initialFormData.unit);
+        }
+      }, [id, isEdit]);
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,19 +58,29 @@ export default function CreateWorkoutForm() {
         //const sanitizedLength = length.replace(/[^0-9.]/g, '');
 
         const sanitizedUnit = DOMPurify.sanitize(unit);
+        const responseBody = {
+            title: sanitizedTitle, 
+            description: sanitizedDescription,
+            date: sanitizedDate,
+            workout: sanitizedWorkout,
+            length,
+            unit: sanitizedUnit
+        }
 
         try {
-            await axios.post('http://localhost:3000/api/proxy/workouts',
-              { 
-                title: sanitizedTitle, 
-                description: sanitizedDescription,
-                date: sanitizedDate,
-                workout: sanitizedWorkout,
-                length,
-                unit: sanitizedUnit
-            },
-              { withCredentials: true }
-            );
+            if (isEdit) {
+                await axios.put('http://localhost:3000/api/proxy/workouts',
+                    responseBody,
+                    { withCredentials: true }
+                );
+            }
+            else {
+                await axios.post('http://localhost:3000/api/proxy/workouts',
+                    responseBody,
+                    { withCredentials: true }
+                );
+            }
+            
             
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } catch (error: any) {
@@ -54,11 +93,10 @@ export default function CreateWorkoutForm() {
     };
     
     return(
-        <div>
+        <div className="my-5">
             {error && <p className="text-red-500">{error}</p>}
-            
             <form onSubmit={handleSubmit}>
-                <Title text={"Create a Workout"} />
+                <Title text={formTitle} />
                 <InputField 
                     type="text"
                     name="title"
