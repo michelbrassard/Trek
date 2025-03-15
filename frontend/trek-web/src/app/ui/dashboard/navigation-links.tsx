@@ -25,7 +25,6 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
     useEffect(() => {
         const fetchUserRole = async () => {
           try {
-            console.log("Role fetched!")
             const response = await fetch("/api/proxy/role", { 
               method: "GET",
               credentials: "include",
@@ -35,7 +34,6 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
     
             const data = await response.json();
             setUserRole(data.role);
-            console.log(userRole);
           } catch (error) {
             console.error("Error fetching user role:", error);
           }
