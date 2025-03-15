@@ -7,7 +7,7 @@ interface BackButtonProps {
 
 export default function BackButton({url}: BackButtonProps) {
     return(
-        <Link href={url} className="">
+        <Link href={url}>
             <div className="flex items-center gap-2">
                 <ArrowLeft size={16}/>
                 Back
