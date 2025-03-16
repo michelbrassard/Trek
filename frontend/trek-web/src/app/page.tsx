@@ -14,7 +14,7 @@ export default function Home() {
                 <h1 className="text-5xl font-bold m-1">Trek</h1>
               </div>
             </div>
-            <p>This is an athlete dashboard...</p>
+            <p>This is a dashboard blablabla promo text...</p>
           </div>
         </main>
         <Footer />
