@@ -60,7 +60,7 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
     return(
         <div className="flex flex-col gap-2">
             {isDesktop && 
-                <div className="px-3 py-3 mb-10">
+                <div className="px-5 py-3 mb-10">
                     <div className="flex row gap-2">
                         <TrekLogo size={28} color="fill-blue-500" />
                         <p className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">Trek</p>

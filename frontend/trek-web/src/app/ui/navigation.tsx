@@ -49,7 +49,7 @@ export default function Navigation() {
         </div>
         
         {/* Desktop Navigation */}
-        <div className="md:flex flex-row justify-between p-5 hidden items-center">
+        <div className="md:flex flex-row justify-between p-3 hidden items-center">
           <Link href="/" className = {baseLinkStyle}>
             <div className="flex items-center justify-center">
               <TrekLogo size={40} color="fill-neutral-500" />
