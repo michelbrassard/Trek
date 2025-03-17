@@ -15,7 +15,6 @@ interface WorkoutFormProps {
 
 export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
     const [error, setError] = useState("");
-    const initialFormData = {};
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
@@ -30,19 +29,18 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     const response = await axios.get(`http://localhost:3000/api/proxy/workouts/${id}`, {
                         withCredentials: true,
                     });
-                    console.log(response.data)
+                    setTitle(response.data.title);
+                    setDescription(response.data.description);
+                    setDate(response.data.date);
+                    setWorkout(response.data.workout);
+                    setLength(response.data.length);
+                    setUnit(response.data.unit);
                 
                 } catch (error) {
                     console.error("Failed to fetch data:", error);
                 }
             };
             fetchData()
-            // setTitle(initialFormData.title);
-            // setDescription(initialFormData.description);
-            // setDate(initialFormData.date);
-            // setWorkout(initialFormData.workout);
-            // setLength(initialFormData.length);
-            // setUnit(initialFormData.unit);
         }
       }, [id, isEdit]);
     
@@ -85,24 +83,27 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } catch (error: any) {
             if (error.response) {
-              setError(error.response.data.error || 'Workout creation failed');
+                const message = isEdit ? 'Workout edit failed' : 'Workout creation failed'
+              setError(error.response.data.error || message);
             } else {
               setError('An error occurred.');
             }
           }
     };
-    
+
     return(
         <div className="my-5">
-            {error && <p className="text-red-500">{error}</p>}
+            
             <form onSubmit={handleSubmit}>
                 <Title text={formTitle} />
+                {error && <p className="text-red-500">{error}</p>}
                 <InputField 
                     type="text"
                     name="title"
                     id="title"
                     label="title"
                     onChange={(e) => setTitle(e.target.value)}
+                    value={title}
                 />
                 <InputField 
                     type="text"
@@ -110,6 +111,7 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     id="description"
                     label="description"
                     onChange={(e) => setDescription(e.target.value)}
+                    value={description}
                 />
                 <InputField 
                     type="date"
@@ -117,6 +119,7 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     id="date"
                     label="date"
                     onChange={(e) => setDate(e.target.value)}
+                    value={date}
                 />
                 <InputField 
                     type="text"
@@ -124,6 +127,7 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     id="workout"
                     label="workout"
                     onChange={(e) => setWorkout(e.target.value)}
+                    value={workout}
                 />
                 <InputField 
                     type="number"
@@ -131,6 +135,7 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     id="length"
                     label="length"
                     onChange={(e) => setLength(+e.target.value)}
+                    value={length + ""}
                 />
                 <InputField 
                     type="text"
@@ -138,6 +143,7 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     id="unit"
                     label="unit"
                     onChange={(e) => setUnit(e.target.value)}
+                    value={unit}
                 />
                 <InputSubmit name={"submit-workout"} id={"submit-workout"} value={"Save"} />
             </form>
