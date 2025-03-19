@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button } from "../button";
+import { Button } from "../buttons/button";
 import QRCode from "./qrcode";
 import { Check, Copy, QrCode, X } from "lucide-react";
 
