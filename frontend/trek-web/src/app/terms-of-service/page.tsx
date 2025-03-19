@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Footer from "../ui/footer";
+import Footer from "../ui/layout/footer";
 import Navigation from "../ui/navigation";
 
 export const metadata: Metadata = {

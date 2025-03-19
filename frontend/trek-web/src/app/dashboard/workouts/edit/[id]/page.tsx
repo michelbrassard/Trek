@@ -1,5 +1,5 @@
 import WorkoutForm from "@/app/ui/workouts/form";
-import BackButton from "@/app/ui/back-button";
+import BackButton from "@/app/ui/buttons/back-button";
 
 export default async function EditWorkout({ params }: { params: { id: string } }) {
     const {id} = await params;

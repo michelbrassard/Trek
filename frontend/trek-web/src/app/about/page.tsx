@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Navigation from '../ui/navigation';
-import Footer from '../ui/footer';
+import Footer from '../ui/layout/footer';
 
 export const metadata: Metadata = {
     title: 'About',

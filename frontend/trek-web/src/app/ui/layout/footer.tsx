@@ -1,5 +1,5 @@
 import Link from "next/link"
-import TrekLogo from "./logo/trek-logo";
+import TrekLogo from "../logo/trek-logo";
 
 export default function Footer() {
     const footerLinkStyle = "text-sm hover:underline"
