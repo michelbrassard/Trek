@@ -1,7 +1,7 @@
 "use client"
 
 import InputField from "./form/input-field";
-import TrekLogo from '../ui/trek-logo';
+import TrekLogo from './logo/trek-logo';
 import InputSubmit from "./form/input-submit";
 // import { signIn } from "next-auth/react";
 import { useState } from "react";

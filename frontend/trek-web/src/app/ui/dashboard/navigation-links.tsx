@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import TrekLogo from "../trek-logo";
+import TrekLogo from "../logo/trek-logo";
 import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, Settings, StickyNote, Users, Video } from "lucide-react";
 import LogOutButton from "./logout-button";
 import { useEffect, useState } from "react";

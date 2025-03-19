@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link"
-import TrekLogo from "./trek-logo";
+import TrekLogo from "./logo/trek-logo";
 import { AlignRight, X } from "lucide-react";
 import { useState } from "react";
 
