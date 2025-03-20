@@ -1,5 +1,5 @@
 import Footer from "./ui/layout/footer";
-import Navigation from "./ui/navigation";
+import Navigation from "./ui/layout/navigation";
 import TrekLogo from "./ui/logo/trek-logo";
 
 export default function Home() {
