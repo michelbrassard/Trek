@@ -54,6 +54,7 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
         { href: "/dashboard/equipment", label: "Equipment", icon: Briefcase, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/notes", label: "Notes", icon: StickyNote, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/videos", label: "Videos", icon: Video, roles: ["COACH"] },
+        { href: "/dashboard/settings", label: "Settings", icon: Settings, roles: ["COACH", "ATHLETE"] },
     ];
 
     const filteredLinks = navigationLinks.filter(link => userRole && link.roles.includes(userRole.toUpperCase()));
@@ -81,7 +82,10 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
                     <Link
                         key={href}
                         href={href}
-                        className={`${styles} ${isActive ? "bg-neutral-200 dark:bg-neutral-800" : ""}`}
+                        className={`
+                            ${styles} 
+                            ${isActive && isDesktop ? "bg-neutral-200 dark:bg-neutral-800" : ""}
+                            ${isActive && !isDesktop ? "underline" : ""}`}
                         onClick={!isDesktop ? toggleNavigation : undefined}
                     >
                         {isDesktop && <Icon size={16} />}
@@ -91,10 +95,6 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
             })}
 
             <div className="flex flex-col gap-2 mb-5">
-                <Link href="/dashboard/settings" className={styles} onClick={toggleNavigation}>
-                    {isDesktop && <Settings size={16} />}
-                    <span>Settings</span>
-                </Link>
                 <hr className="my-2 border-neutral-400 dark:border-neutral-600 border-t-2"></hr>
                 <LogOutButton isDesktop={isDesktop} />
             </div>
