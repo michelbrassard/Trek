@@ -19,8 +19,18 @@ export default function LoginForm() {
         e.preventDefault();
 
         //VALIDATE AND SANITIZE
+        //DOMPurify is not needed here?
         const sanitizedEmail = DOMPurify.sanitize(email);
         const sanitizedPassword = DOMPurify.sanitize(password);
+
+        if (!email || !/\S+@\S+\.\S+/.test(email)) {
+            setError("Invalid email format");
+            return;
+        }
+        if (!password || password.length < 4) {
+            setError("Password must be at least 4 characters long");
+            return;
+        }
 
         try {
             await axios.post('http://localhost:8000/auth/login/',
