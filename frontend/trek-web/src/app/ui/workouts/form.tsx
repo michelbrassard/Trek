@@ -6,6 +6,7 @@ import Title from "../dashboard/title";
 import InputField from "../form/input-field";
 import InputSubmit from "../form/input-submit";
 import DOMPurify from "dompurify";
+import { useRouter } from 'next/navigation';
 
 interface WorkoutFormProps {
     formTitle: string,
@@ -21,6 +22,7 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
     const [workout, setWorkout] = useState("");
     const [length, setLength] = useState(0);
     const [unit, setUnit] = useState("");
+    const router = useRouter();
 
     useEffect(() => {
         if (isEdit && id) {
@@ -67,18 +69,19 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
 
         try {
             if (isEdit) {
-                await axios.put('http://localhost:3000/api/proxy/workouts',
+                await axios.put(`http://localhost:3000/api/proxy/workouts/${id}`,
                     responseBody,
                     { withCredentials: true }
                 );
+                router.push(`/dashboard/workouts/${id}`);
             }
             else {
                 await axios.post('http://localhost:3000/api/proxy/workouts',
                     responseBody,
                     { withCredentials: true }
                 );
+                router.push("/dashboard/workouts");
             }
-            
             
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } catch (error: any) {

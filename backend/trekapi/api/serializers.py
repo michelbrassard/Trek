@@ -22,6 +22,11 @@ class WorkoutSerializer(serializers.ModelSerializer):
         model = Workout
         fields = '__all__'
 
+class EditWorkoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Workout
+        fields = ["title", "description", "workout", "date", "length", "unit"]
+
 class TemporaryCoachCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = TemporaryCoachCode

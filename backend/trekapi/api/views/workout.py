@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from api.serializers import WorkoutSerializer
+from api.serializers import WorkoutSerializer, EditWorkoutSerializer
 from rest_framework.parsers import JSONParser
 
 User = get_user_model()
@@ -41,7 +41,7 @@ def workout_detail(request, workout_id):
     
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
-        serializer = WorkoutSerializer(workout, data=data)
+        serializer = EditWorkoutSerializer(workout, data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -49,4 +49,4 @@ def workout_detail(request, workout_id):
     
     elif request.method == 'DELETE':
         workout.delete()
-        return Response(status=404)
+        return Response({"message": "Workout deleted successfully"}, status=200)

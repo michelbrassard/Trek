@@ -44,8 +44,14 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
         router.push(`edit/${id}`);
     }
 
-    const handleDelete = () => {
-        //delete...
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`http://localhost:3000/api/proxy/workouts/${id}`, {
+                withCredentials: true,
+            });
+        } catch (error) {
+            console.error("Failed to delete workout:", error);
+        }
         router.push("/dashboard/workouts");
     }
     
