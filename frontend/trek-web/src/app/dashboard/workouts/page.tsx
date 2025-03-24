@@ -1,10 +1,18 @@
 import Title from "@/app/ui/dashboard/title";
+import WorkoutsTable from "@/app/ui/workouts/table";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default function Workouts() {
     return (
         <div>
             <Title text="Workouts"/>
-            <div>list of workouts and under visualizations...</div>
+            <Link href={'workouts/create'} >
+                <div className="flex items-center gap-2 text-blue-500">
+                    <Plus size={16}/> New
+                </div>
+            </Link>
+            <WorkoutsTable />
         </div>
     )
 }

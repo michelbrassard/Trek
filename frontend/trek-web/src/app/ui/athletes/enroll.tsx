@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button } from "../button";
+import { Button } from "../buttons/button";
 import QRCode from "./qrcode";
 import { Check, Copy, QrCode, X } from "lucide-react";
 
@@ -92,7 +92,7 @@ export default function Enroll() {
                         {isQRCodeOpen && 
                         <div className="backdrop-blur-md p-5 fixed inset-0 z-50 transition-all flex justify-center">
                           <div className="mt-10">
-                            <Button onClick={handleShowQRCode} className="flex items-center gap-2 float-end">
+                            <Button onClick={handleShowQRCode} className="flex items-center gap-2 float-end text-neutral-800 dark:text-neutral-100">
                               Close <X size={22}/>
                             </Button>
                             <QRCode url={`http://localhost:3000/signup?enroll=${item.id}`} />

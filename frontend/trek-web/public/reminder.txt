@@ -1,3 +1,0 @@
-Add "promo" images here
-
-delete the .svg 

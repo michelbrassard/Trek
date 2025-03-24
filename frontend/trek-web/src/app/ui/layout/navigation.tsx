@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link"
-import TrekLogo from "./trek-logo";
+import TrekLogo from "../logo/trek-logo";
 import { AlignRight, X } from "lucide-react";
 import { useState } from "react";
 
@@ -17,7 +17,9 @@ export default function Navigation() {
         
         {/* Mobile Navigation */}
         <div className="md:hidden flex flex-row justify-between">
-          <TrekLogo />
+          <div className="p-2">
+            <TrekLogo size={35} color="fill-neutral-500" />
+          </div>
           <button onClick={toggleMenu}>
             <div className="inline-block text-neutral-400 dark:text-neutral-600 hover:dark:bg-neutral-900 hover:bg-neutral-100 hover:dark:text-neutral-100 hover:text-neutral-800 transition-colors px-3 py-2.5 rounded-xl">
               <AlignRight size={30}/>
@@ -47,8 +49,12 @@ export default function Navigation() {
         </div>
         
         {/* Desktop Navigation */}
-        <div className="md:flex flex-row justify-between p-5 hidden">
-          <Link href="/" className = {baseLinkStyle}><TrekLogo /></Link>
+        <div className="md:flex flex-row justify-between p-3 hidden items-center">
+          <Link href="/" className = {baseLinkStyle}>
+            <div className="flex items-center justify-center">
+              <TrekLogo size={40} color="fill-neutral-500" />
+            </div>
+          </Link>
           <div className="flex flex-row gap-8">
             <Link href="/" className = {baseLinkStyle}>Home</Link>
             <Link href="/about" className = {baseLinkStyle}>About</Link>

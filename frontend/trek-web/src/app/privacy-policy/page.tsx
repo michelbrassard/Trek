@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import Navigation from '../ui/navigation';
-import Footer from '../ui/footer';
+import Navigation from '../ui/layout/navigation';
+import Footer from '../ui/layout/footer';
 
 export const metadata: Metadata = {
     title: 'Privacy Policy',

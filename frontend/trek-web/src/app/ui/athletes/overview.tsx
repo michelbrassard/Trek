@@ -35,7 +35,7 @@ export default function AthleteOverviewData({id}: AthleteOverviewDataProps) {
         };
 
     fetchData();
-    }, []);
+    }, [id]);
     
     return(
         <div className="my-5">
