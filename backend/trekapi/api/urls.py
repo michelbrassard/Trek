@@ -21,5 +21,8 @@ urlpatterns = [
     
     #workouts
     path('workouts/', views.workout_list),
-    path('workouts/<uuid:workout_id>/', views.workout_detail)
+    path('workouts/<uuid:workout_id>/', views.workout_detail),
+    
+    #attendance
+    path('attendance/', views.attendance_list)
 ]

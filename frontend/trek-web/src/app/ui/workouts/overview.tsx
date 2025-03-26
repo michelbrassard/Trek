@@ -10,7 +10,7 @@ interface WorkoutOverviewDataProps {
     id: string
 }
 
-interface DataProps {
+interface WorkoutData {
     id: string,
     title: string,
     description: string,
@@ -21,7 +21,7 @@ interface DataProps {
 }
 
 export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
-    const [overview, setOverview] = useState<DataProps>();
+    const [overview, setOverview] = useState<WorkoutData>();
     const router = useRouter();
 
     useEffect(() => {
@@ -72,7 +72,6 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                 <p>{`${overview.length} ${overview.unit}`}</p>
                 <p>{overview.date}</p>
                 <p className="whitespace-pre">{overview.workout}</p>
-                <hr className="border border-neutral-300 dark:border-neutral-700 my-2"></hr>
                 <p>{overview.length} {overview.unit}</p>
             </div> 
             : "Loading data..."}

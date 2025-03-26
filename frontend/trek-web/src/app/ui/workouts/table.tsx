@@ -12,6 +12,7 @@ interface WorkoutRowProps {
     workout: string,
     length: number,
     unit: string,
+    date: string
 }
 
 export default function WorkoutsTable() {
@@ -46,6 +47,7 @@ export default function WorkoutsTable() {
                             <th className={headerCellStyling}>Description</th>
                             <th className={headerCellStyling}>Length</th>
                             <th className={headerCellStyling}>Unit</th>
+                            <th className={headerCellStyling}>Date</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -56,6 +58,7 @@ export default function WorkoutsTable() {
                                 <td className={cellStyling}>{workout.description}</td>
                                 <td className={cellStyling}>{workout.length}</td>
                                 <td className={cellStyling}>{workout.unit}</td>
+                                <td className={cellStyling}>{workout.date}</td>
                                 <td className={cellStyling}>
                                     <Link href={`workouts/${workout.id}`} className="float-end flex items-center gap-2 text-blue-500">
                                         Details <ArrowRight size={16} />
