@@ -68,10 +68,12 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                     
                 </div>
                 
-                <p>{overview.description}</p>
+                <p className="whitespace-pre">{overview.description}</p>
                 <p>{`${overview.length} ${overview.unit}`}</p>
                 <p>{overview.date}</p>
-                <p>{overview.workout}</p>
+                <p className="whitespace-pre">{overview.workout}</p>
+                <hr className="border border-neutral-300 dark:border-neutral-700 my-2"></hr>
+                <p>{overview.length} {overview.unit}</p>
             </div> 
             : "Loading data..."}
         </div>
