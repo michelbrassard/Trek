@@ -7,6 +7,7 @@ import InputField from "../form/input-field";
 import InputSubmit from "../form/input-submit";
 import DOMPurify from "dompurify";
 import { useRouter } from 'next/navigation';
+import TextArea from "../form/textarea";
 
 interface WorkoutFormProps {
     formTitle: string,
@@ -108,12 +109,12 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
                 />
-                <InputField 
-                    type="text"
-                    name="description"
-                    id="description"
-                    label="description"
-                    onChange={(e) => setDescription(e.target.value)}
+                <TextArea 
+                    label={"description"} 
+                    id={"description"} 
+                    name={"description"} 
+                    onChange={(e) => setDescription(e.target.value)} 
+                    rows={4} 
                     value={description}
                 />
                 <InputField 
@@ -124,12 +125,12 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     onChange={(e) => setDate(e.target.value)}
                     value={date}
                 />
-                <InputField 
-                    type="text"
-                    name="workout"
-                    id="workout"
-                    label="workout"
-                    onChange={(e) => setWorkout(e.target.value)}
+                <TextArea 
+                    label={"workout"} 
+                    id={"workout"} 
+                    name={"workout"} 
+                    onChange={(e) => setWorkout(e.target.value)} 
+                    rows={30} 
                     value={workout}
                 />
                 <InputField 
