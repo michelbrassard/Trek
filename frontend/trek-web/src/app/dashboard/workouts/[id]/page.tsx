@@ -1,5 +1,6 @@
 import BackButton from "@/app/ui/buttons/back-button";
 import WorkoutOverviewData from "@/app/ui/workouts/overview";
+import WorkoutAttendance from "@/app/ui/workouts/save-attendance";
 
 export default async function WorkoutDetails({ params }: { params: { id: string } }) {
     const {id} = await params;
@@ -7,6 +8,7 @@ export default async function WorkoutDetails({ params }: { params: { id: string 
         <div>
             <BackButton url="/dashboard/workouts" />
             <WorkoutOverviewData id={id} />
+            <WorkoutAttendance />
         </div>
     );
 }
