@@ -12,6 +12,7 @@ export default function Workouts() {
                     <Plus size={16}/> New
                 </div>
             </Link>
+            <p>Vidi još kako ide sa usability perspektive jel bolje samo kao attendance page tj. spojit to dvoje u jedan</p>
             <WorkoutsTable />
         </div>
     )
