@@ -101,14 +101,26 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
             <form onSubmit={handleSubmit}>
                 <Title text={formTitle} />
                 {error && <p className="text-red-500">{error}</p>}
-                <InputField 
-                    type="text"
-                    name="title"
-                    id="title"
-                    label="title"
-                    onChange={(e) => setTitle(e.target.value)}
-                    value={title}
-                />
+                <div className="flex flex-row gap-3">
+                    <div className="flex-1">
+                        <InputField 
+                            type="text"
+                            name="title"
+                            id="title"
+                            label="title"
+                            onChange={(e) => setTitle(e.target.value)}
+                            value={title}
+                        />
+                    </div>
+                    <InputField 
+                        type="date"
+                        name="date"
+                        id="date"
+                        label="date"
+                        onChange={(e) => setDate(e.target.value)}
+                        value={date}
+                    />
+                </div>
                 <TextArea 
                     label={"description"} 
                     id={"description"} 
@@ -116,14 +128,6 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     onChange={(e) => setDescription(e.target.value)} 
                     rows={4} 
                     value={description}
-                />
-                <InputField 
-                    type="date"
-                    name="date"
-                    id="date"
-                    label="date"
-                    onChange={(e) => setDate(e.target.value)}
-                    value={date}
                 />
                 <TextArea 
                     label={"workout"} 
@@ -133,25 +137,30 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
                     rows={30} 
                     value={workout}
                 />
-                <InputField 
-                    type="number"
-                    name="length"
-                    id="length"
-                    label="length"
-                    onChange={(e) => setLength(+e.target.value)}
-                    value={length + ""}
-                />
-                <InputField 
-                    type="text"
-                    name="unit"
-                    id="unit"
-                    label="unit"
-                    onChange={(e) => setUnit(e.target.value)}
-                    value={unit}
-                />
-                <InputSubmit name={"submit-workout"} id={"submit-workout"} value={"Save"} />
+                <div className="flex flex-row gap-3">
+                    <div className="flex-1">
+                        <InputField 
+                            type="number"
+                            name="length"
+                            id="length"
+                            label="length"
+                            onChange={(e) => setLength(+e.target.value)}
+                            value={length + ""}
+                        />
+                    </div>
+                    <InputField 
+                        type="text"
+                        name="unit"
+                        id="unit"
+                        label="unit"
+                        onChange={(e) => setUnit(e.target.value)}
+                        value={unit}
+                    />
+                </div>
+                <div className="w-full md:w-[80px]">
+                    <InputSubmit name={"submit-workout"} id={"submit-workout"} value={"Save"} />
+                </div>
             </form>
         </div>
-        
     );
 }

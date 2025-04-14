@@ -69,7 +69,6 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                 </div>
                 
                 <p className="whitespace-pre">{overview.description}</p>
-                <p>{`${overview.length} ${overview.unit}`}</p>
                 <p>{overview.date}</p>
                 <p className="whitespace-pre">{overview.workout}</p>
                 <p>{overview.length} {overview.unit}</p>
