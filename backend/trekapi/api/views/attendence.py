@@ -26,4 +26,5 @@ def attendance_list(request):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def add_attendence(request):
+    print(request.data)
     return Response({}, status=200)
