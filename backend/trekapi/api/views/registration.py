@@ -104,8 +104,8 @@ def register_view(request):
         temp_code = TemporaryCoachCode.objects.filter(id=coachCode)
         
         #get first from the list
-        coach = temp_code[0].coachID
-        team = Team.objects.create(coachID=coach, athleteID=user)
+        coach = temp_code[0].coachId
+        team = Team.objects.create(coachId=coach, athleteId=user)
     
     return response
 

@@ -5,7 +5,7 @@ import uuid
 class Workout(models.Model):
     # uuid used here because the workout ID will be used in the link
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    creatorID = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', related_name="creator_workouts")
+    creatorId = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', related_name="creator_workouts")
     title = models.CharField(max_length=50)
     description = models.TextField()
     workout = models.TextField()

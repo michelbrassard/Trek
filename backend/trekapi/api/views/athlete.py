@@ -13,7 +13,7 @@ def athlete_list(request):
     coach = request.user
     
     if request.method == 'GET':
-        athletes = User.objects.filter(athlete_teams__coachID=coach.id).distinct()
+        athletes = User.objects.filter(athlete_teams__coachId=coach.id).distinct()
         serializer = AthleteSerializer(athletes, many=True)
         return Response(serializer.data, status=200)
     

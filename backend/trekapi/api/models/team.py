@@ -4,13 +4,14 @@ from datetime import timedelta
 from django.utils.timezone import now
 from .user import User
 
+# fix ID -> id
 class TemporaryCoachCode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     createdAt = models.DateTimeField(auto_now_add=True)
-    coachID = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
+    coachId = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
 
-
+# fix ID -> id
 class Team(models.Model):
-    coachID = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', related_name="coached_teams")
-    athleteID = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', related_name="athlete_teams")
+    coachId = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', related_name="coached_teams")
+    athleteId = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', related_name="athlete_teams")
     createdAt = models.DateTimeField(auto_now_add=True)

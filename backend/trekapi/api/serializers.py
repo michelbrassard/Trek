@@ -21,7 +21,7 @@ class RoleSerializer(serializers.ModelSerializer):
 
 #workouts
 class WorkoutSerializer(serializers.ModelSerializer):
-    creatorID = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    creatorId = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     class Meta:
         model = Workout
         fields = '__all__'
@@ -51,7 +51,7 @@ class WorkoutWithAttendeesSerializer(serializers.ModelSerializer):
 
     def get_attendees(self, obj):
         if hasattr(obj, "attendances"):
-            attendees = [attendance.attendentID for attendance in obj.attendances]
+            attendees = [attendance.attendentId for attendance in obj.attendances]
         else:
-            attendees = User.objects.filter(user_attendence__workoutID=obj)
+            attendees = User.objects.filter(user_attendence__workoutId=obj)
         return AttendeeSerializer(attendees, many=True).data

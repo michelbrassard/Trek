@@ -14,10 +14,10 @@ User = get_user_model()
 def attendance_list(request):
     coach = request.user
     if request.method == 'GET':
-        workouts = Workout.objects.filter(creatorID=coach).prefetch_related('workout_attendence__attendentID')
+        workouts = Workout.objects.filter(creatorId=coach).prefetch_related('workout_attendence__attendentId')
         
-        workout_attendances = WorkoutAttendance.objects.select_related("attendentID")
-        workouts = Workout.objects.filter(creatorID=coach).prefetch_related(
+        workout_attendances = WorkoutAttendance.objects.select_related("attendentId")
+        workouts = Workout.objects.filter(creatorId=coach).prefetch_related(
             Prefetch("workout_attendence", queryset=workout_attendances, to_attr="attendances")
         )
         serializer = WorkoutWithAttendeesSerializer(workouts, many=True)
