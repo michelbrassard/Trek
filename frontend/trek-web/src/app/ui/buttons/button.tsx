@@ -9,7 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
 }
 
-export function Button({
+export default function Button({
     children, 
     className, 
     isPrimary = false, 

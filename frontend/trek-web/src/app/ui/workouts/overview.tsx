@@ -3,8 +3,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Title from "../dashboard/title";
-import { Button } from "../buttons/button";
+
 import { useRouter } from 'next/navigation';
+import Button from "../buttons/button";
 
 interface WorkoutOverviewDataProps {
     id: string

@@ -3,7 +3,7 @@
 import axios from "axios";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { Button } from "../buttons/button";
+import Button from "../buttons/button";
 
 interface AthleteRowProps {
     id: string,
