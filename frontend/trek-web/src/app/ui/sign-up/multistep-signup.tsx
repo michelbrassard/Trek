@@ -20,6 +20,7 @@ export default function MultiStepSignUp() {
     const [isCoachCodeEmpty, setCoachCodeState] = useState(false)
     const [alertCoachId, setAlertCoachId] = useState("")
 
+    //use formData...
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
