@@ -1,4 +1,5 @@
 import MobileDashboardNavigation from "../ui/dashboard/mobile-nav";
+import ProfileRow from "../ui/dashboard/profile-row";
 import SideNav from "../ui/dashboard/side-nav";
 
 
@@ -8,12 +9,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="w-full flex-none md:w-64 hidden md:block">
           <SideNav />
         </div>
-        <div className="md:hidden">
+        <div className="md:hidden flex flex-row justify-between">
           <MobileDashboardNavigation />
+          <ProfileRow />
         </div>
-        <main className="flex-grow p-6 md:overflow-y-auto md:p-12">
-          {children}
-        </main>
+        <div className="w-full">
+          <div className="hidden md:block">
+            <ProfileRow />
+          </div>
+          <main className="flex-grow px-6 md:overflow-y-auto md:px-12">
+            {children}
+          </main>
+        </div>
       </div>
     );
   }

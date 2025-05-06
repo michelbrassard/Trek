@@ -7,6 +7,7 @@ import InputField from "../form/input-field";
 import InputSubmit from "../form/input-submit";
 import DOMPurify from "dompurify";
 import { useRouter } from 'next/navigation';
+import TextArea from "../form/textarea";
 
 interface WorkoutFormProps {
     formTitle: string,
@@ -96,61 +97,80 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
 
     return(
         <div className="my-5">
-            
             <form onSubmit={handleSubmit}>
                 <Title text={formTitle} />
                 {error && <p className="text-red-500">{error}</p>}
-                <InputField 
-                    type="text"
-                    name="title"
-                    id="title"
-                    label="title"
-                    onChange={(e) => setTitle(e.target.value)}
-                    value={title}
-                />
-                <InputField 
-                    type="text"
-                    name="description"
-                    id="description"
-                    label="description"
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
-                />
-                <InputField 
-                    type="date"
-                    name="date"
-                    id="date"
-                    label="date"
-                    onChange={(e) => setDate(e.target.value)}
-                    value={date}
-                />
-                <InputField 
-                    type="text"
-                    name="workout"
-                    id="workout"
-                    label="workout"
-                    onChange={(e) => setWorkout(e.target.value)}
-                    value={workout}
-                />
-                <InputField 
-                    type="number"
-                    name="length"
-                    id="length"
-                    label="length"
-                    onChange={(e) => setLength(+e.target.value)}
-                    value={length + ""}
-                />
-                <InputField 
-                    type="text"
-                    name="unit"
-                    id="unit"
-                    label="unit"
-                    onChange={(e) => setUnit(e.target.value)}
-                    value={unit}
-                />
-                <InputSubmit name={"submit-workout"} id={"submit-workout"} value={"Save"} />
+                <div className="flex row gap-[30px]">
+                    <div className="w-full">
+                        <div>
+                            <div className="flex flex-row gap-3">
+                                <div className="flex-1">
+                                    <InputField 
+                                        type="text"
+                                        name="title"
+                                        id="title"
+                                        label="title"
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        value={title}
+                                    />
+                                </div>
+                                <InputField 
+                                    type="date"
+                                    name="date"
+                                    id="date"
+                                    label="date"
+                                    onChange={(e) => setDate(e.target.value)}
+                                    value={date}
+                                />
+                            </div>
+                            <div>
+                                <TextArea 
+                                    label={"description"} 
+                                    id={"description"} 
+                                    name={"description"} 
+                                    onChange={(e) => setDescription(e.target.value)} 
+                                    rows={5} 
+                                    value={description}
+                                />
+                            </div>
+                            <div className="flex flex-row gap-3">
+                                <div className="flex-1">
+                                    <InputField 
+                                        type="number"
+                                        name="length"
+                                        id="length"
+                                        label="length"
+                                        onChange={(e) => setLength(+e.target.value)}
+                                        value={length + ""}
+                                    />
+                                </div>
+                                <InputField 
+                                    type="text"
+                                    name="unit"
+                                    id="unit"
+                                    label="unit"
+                                    onChange={(e) => setUnit(e.target.value)}
+                                    value={unit}
+                                />
+                            </div>
+                            <div className="w-full md:w-[80px]">
+                                <InputSubmit name={"submit-workout"} id={"submit-workout"} value={"Save"} />
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div className="w-full">
+                        <TextArea 
+                            label={"workout"} 
+                            id={"workout"} 
+                            name={"workout"} 
+                            onChange={(e) => setWorkout(e.target.value)} 
+                            rows={5} 
+                            value={workout}
+                        />
+                    </div>
+                </div>
             </form>
         </div>
-        
     );
 }

@@ -4,3 +4,4 @@ from .user import user_list, user_detail, user_role
 from .team import get_coach_codes
 from .athlete import athlete_list, athlete_detail
 from .workout import workout_list, workout_detail
+from .attendance import *

@@ -3,14 +3,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Title from "../dashboard/title";
-import { Button } from "../buttons/button";
+
 import { useRouter } from 'next/navigation';
+import Button from "../buttons/button";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface WorkoutOverviewDataProps {
     id: string
 }
 
-interface DataProps {
+interface WorkoutData {
     id: string,
     title: string,
     description: string,
@@ -21,7 +23,7 @@ interface DataProps {
 }
 
 export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
-    const [overview, setOverview] = useState<DataProps>();
+    const [overview, setOverview] = useState<WorkoutData>();
     const router = useRouter();
 
     useEffect(() => {
@@ -62,16 +64,20 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                 <div className="flex row justify-between">
                     <Title text={overview.title} />
                     <div className="flex row gap-2">
-                        <Button isSecondary = {true} onClick={handleEdit}>Edit</Button>
-                        <Button isDanger = {true} onClick={handleDelete}>Delete</Button>
+                        <Button isSecondary={true} onClick={handleEdit}>
+                            Edit<Pencil size={16}/>
+                        </Button>
+                        <Button isDanger={true} onClick={handleDelete}>
+                            Delete<Trash2 size={16} />
+                        </Button>
                     </div>
                     
                 </div>
                 
-                <p>{overview.description}</p>
-                <p>{`${overview.length} ${overview.unit}`}</p>
+                <p className="whitespace-pre">{overview.description}</p>
                 <p>{overview.date}</p>
-                <p>{overview.workout}</p>
+                <p className="whitespace-pre">{overview.workout}</p>
+                <p>{overview.length} {overview.unit}</p>
             </div> 
             : "Loading data..."}
         </div>

@@ -9,6 +9,7 @@ export default function QRCode(
 ) {
     const { SVG } = useQRCode();
     return (
+      <div style={{ border: '1px solid #000', display: 'inline-block' }}>
         <SVG
           text={url}
           options={{
@@ -20,5 +21,6 @@ export default function QRCode(
             },
           }}
         />
+      </div>
       );
 }

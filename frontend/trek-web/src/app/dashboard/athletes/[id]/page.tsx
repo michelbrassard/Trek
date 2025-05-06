@@ -5,7 +5,7 @@ export default async function AthleteDetails({ params }: { params: { id: string 
     const {id} = await params;
     return(
         <div>
-            <BackButton url="/dashboard/athletes" />
+            <BackButton />
             <AthleteOverviewData id={id} />
         </div>
     );

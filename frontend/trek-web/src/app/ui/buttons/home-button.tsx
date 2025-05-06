@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { Home } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function BackButton() {
@@ -8,11 +8,10 @@ export default function BackButton() {
 
     return (
         <button
-            onClick={() => router.back()}
+            onClick={() => router.push('/dashboard/')}
             className="flex items-center gap-2"
         >
-            <ArrowLeft size={16} />
-            Back
+            <Home size={16} />Home
         </button>
     );
 }

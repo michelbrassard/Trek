@@ -18,8 +18,9 @@ export default function MultiStepSignUp() {
     const [step, setStep] = useState("choose-role");
     const [coachCode, setCoachCode] = useState("")
     const [isCoachCodeEmpty, setCoachCodeState] = useState(false)
-    const [alertCoachID, setAlertCoachID] = useState("")
+    const [alertCoachId, setAlertCoachId] = useState("")
 
+    //use formData...
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -155,7 +156,7 @@ export default function MultiStepSignUp() {
                             value={coachCode}
                             hasProblems={isCoachCodeEmpty}
                             onChange={(e) => setCoachCode(e.target.value)}
-                            alertMessage={alertCoachID}
+                            alertMessage={alertCoachId}
                         />
                         <p className="text-xs text-neutral-400 dark:text-neutral-600 px-2">The special coach id should be given to you here...</p>
                     </div>
@@ -164,11 +165,11 @@ export default function MultiStepSignUp() {
                         <button onClick={() => {
                                 if (coachCode.length === 0) {
                                     setCoachCodeState(true)
-                                    setAlertCoachID("Provide a coach ID before sign up or change the role.")
+                                    setAlertCoachId("Provide a coach Id before sign up or change the role.")
                                 }
                                 else {
                                     setCoachCodeState(false)
-                                    setAlertCoachID("")
+                                    setAlertCoachId("")
                                     setStep("sign-up");
                                 }
                             }

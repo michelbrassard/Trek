@@ -2,14 +2,14 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button } from "../buttons/button";
+import Button from "../buttons/button";
 import QRCode from "./qrcode";
 import { Check, Copy, QrCode, X } from "lucide-react";
 
 interface TemporaryCoachCodeProps {
     id: string,
     createdAt: string,
-    coachID: string
+    coachId: string
 }
 
 export default function Enroll() {
@@ -90,11 +90,11 @@ export default function Enroll() {
                           View QR Code <QrCode size={16}/>
                         </Button>
                         {isQRCodeOpen && 
-                        <div className="backdrop-blur-md p-5 fixed inset-0 z-50 transition-all flex justify-center">
-                          <div className="mt-10">
-                            <Button onClick={handleShowQRCode} className="flex items-center gap-2 float-end text-neutral-800 dark:text-neutral-100">
+                        <div onClick={handleShowQRCode} className="backdrop-blur-md p-5 fixed inset-0 z-50 transition-all flex justify-center">
+                          <div className="mt-10 flex flex-col">
+                            <div className="text-neutral-800 dark:text-neutral-200 flex gap-2 cursor-pointer m-2 justify-end">
                               Close <X size={22}/>
-                            </Button>
+                            </div>
                             <QRCode url={`http://localhost:3000/signup?enroll=${item.id}`} />
                           </div>
                         </div>}

@@ -39,13 +39,13 @@ export default function LoginForm() {
             );
             router.push('/dashboard');
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } catch (error: any) {
+        } catch (error: any) {
             if (error.response) {
               setError(error.response.data.error || 'Login failed');
             } else {
               setError('An error occurred.');
             }
-          }
+        }
     };
 
     return(

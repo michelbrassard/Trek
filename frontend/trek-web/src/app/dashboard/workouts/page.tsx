@@ -1,5 +1,5 @@
+import WorkoutOverviewList from "@/app/ui/workouts/workout-overview-list";
 import Title from "@/app/ui/dashboard/title";
-import WorkoutsTable from "@/app/ui/workouts/table";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ export default function Workouts() {
                     <Plus size={16}/> New
                 </div>
             </Link>
-            <WorkoutsTable />
+            <WorkoutOverviewList />
         </div>
     )
 }

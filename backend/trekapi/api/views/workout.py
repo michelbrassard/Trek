@@ -11,15 +11,15 @@ User = get_user_model()
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def workout_list(request):
+    creator = request.user
     if request.method == 'GET':
-        workouts = Workout.objects.filter()
+        workouts = Workout.objects.filter(creatorId=creator)
         serializer = WorkoutSerializer(workouts, many=True)
         return Response(serializer.data)
     
     elif request.method == 'POST':
-        creator = request.user
         data = JSONParser().parse(request)
-        data["creatorID"] = creator.id
+        data["creatorId"] = creator.id
         
         serializer = WorkoutSerializer(data=data)
         if serializer.is_valid():
