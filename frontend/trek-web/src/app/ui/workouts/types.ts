@@ -4,7 +4,7 @@ export interface Attendee {
     last_name: string
 }
 
-export interface AttendanceOverviewType {
+export interface WorkoutOverviewType {
     id: string,
     title: string,
     description: string,
