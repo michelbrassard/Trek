@@ -51,7 +51,12 @@ class WorkoutWithAttendeesSerializer(serializers.ModelSerializer):
 
     def get_attendees(self, obj):
         if hasattr(obj, "attendances"):
-            attendees = [attendance.attendentId for attendance in obj.attendances]
+            attendees = [attendance.attendantId for attendance in obj.attendances]
         else:
-            attendees = User.objects.filter(user_attendence__workoutId=obj)
+            attendees = User.objects.filter(user_attendance__workoutId=obj)
         return AttendeeSerializer(attendees, many=True).data
+
+class CurrentAttendeesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkoutAttendance
+        fields = ["attendantId"]
