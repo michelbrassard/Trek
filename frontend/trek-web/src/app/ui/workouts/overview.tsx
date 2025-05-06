@@ -6,6 +6,7 @@ import Title from "../dashboard/title";
 
 import { useRouter } from 'next/navigation';
 import Button from "../buttons/button";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface WorkoutOverviewDataProps {
     id: string
@@ -63,8 +64,12 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                 <div className="flex row justify-between">
                     <Title text={overview.title} />
                     <div className="flex row gap-2">
-                        <Button isSecondary = {true} onClick={handleEdit}>Edit</Button>
-                        <Button isDanger = {true} onClick={handleDelete}>Delete</Button>
+                        <Button isSecondary={true} onClick={handleEdit}>
+                            Edit<Pencil size={16}/>
+                        </Button>
+                        <Button isDanger={true} onClick={handleDelete}>
+                            Delete<Trash2 size={16} />
+                        </Button>
                     </div>
                     
                 </div>
