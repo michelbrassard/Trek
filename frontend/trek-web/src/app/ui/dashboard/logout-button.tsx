@@ -3,13 +3,9 @@
 import { LogOut} from "lucide-react";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
-import { clsx } from "clsx";
+import Button from "../buttons/button";
 
-interface LogOutButtonProps {
-    isDesktop: boolean
-}
-
-export default function LogOutButton({isDesktop}: LogOutButtonProps) {
+export default function LogOutButton() {
     const router = useRouter();
 
     const handleLogout = async () => {
@@ -24,15 +20,8 @@ export default function LogOutButton({isDesktop}: LogOutButtonProps) {
     }
 
     return(
-        <button 
-            className={clsx(isDesktop ? 
-                "border border-opacity-0 dark:border-opacity-0 rounded-xl transition-all flex items-center gap-2 py-2 px-4 hover:text-red-500 border-red-400 dark:border-red-600 hover:border-opacity-100" 
-                : 
-                "text-3xl font-medium hover:underline pb-5 pt-4 w-full text-left")}
-            onClick={handleLogout}
-        >
-            {isDesktop && <LogOut size={16} />}
-            <span className="">Log out</span>
-        </button>
+        <Button isDanger={true} onClick={handleLogout}>
+            <LogOut size={16} />Log out
+        </Button>
     );
 }
