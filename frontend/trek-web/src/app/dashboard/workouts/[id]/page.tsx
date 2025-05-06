@@ -6,9 +6,9 @@ export default async function WorkoutDetails({ params }: { params: { id: string 
     const {id} = await params;
     return(
         <div>
-            <BackButton url="/dashboard/workouts" />
+            <BackButton />
             <WorkoutOverviewData id={id} />
-            <WorkoutAttendance />
+            <WorkoutAttendance id={id} />
         </div>
     );
 }
