@@ -9,7 +9,7 @@ export default function ProfileRow() {
             <div>Search</div>
             <Link href="/dashboard/profile" className="flex flex-row items-center gap-2 hover:bg-neutral-100 hover:dark:bg-neutral-900 transition-all p-2 rounded-xl">
                 <CircleUserRound size={20}/>
-                Profile
+                Account
             </Link>
         </div>
     )

@@ -1,5 +1,5 @@
 import MobileDashboardNavigation from "../ui/dashboard/mobile-nav";
-import ProfileRow from "../ui/dashboard/profile";
+import ProfileRow from "../ui/dashboard/profile-row";
 import SideNav from "../ui/dashboard/side-nav";
 
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import TrekLogo from "../logo/trek-logo";
-import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, Settings, StickyNote, Users, Video } from "lucide-react";
+import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, StickyNote, Users, Video } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -48,12 +48,11 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
         { href: "/dashboard/workouts", label: "Workouts", icon: Dumbbell, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/attendance", label: "Attendance", icon: CalendarCheck, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/athletes", label: "Athletes", icon: Users, roles: ["COACH"] },
-        { href: "/dashboard/progress", label: "Progress", icon: ChartLine, roles: ["COACH", "ATHLETE"] },
+        { href: "/dashboard/progress", label: "Progress", icon: ChartLine, roles: ["ATHLETE"] },
         { href: "/dashboard/competitions", label: "Competitions", icon: Medal, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/equipment", label: "Equipment", icon: Briefcase, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/notes", label: "Notes", icon: StickyNote, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/videos", label: "Videos", icon: Video, roles: ["COACH"] },
-        { href: "/dashboard/settings", label: "Settings", icon: Settings, roles: ["COACH", "ATHLETE"] },
     ];
 
     const filteredLinks = navigationLinks.filter(link => userRole && link.roles.includes(userRole.toUpperCase()));
