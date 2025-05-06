@@ -14,7 +14,7 @@ interface UserProps {
     date_of_birth: string
 }
 
-export default function Welcome() {
+export default function ProfileData() {
   const [data, setData] = useState<UserProps>();
 
   useEffect(() => {
