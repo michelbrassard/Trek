@@ -29,43 +29,41 @@ export default function TextArea({hasProblems, name, label, id, alertMessage, va
     useLayoutEffect(() => {
         resizeTextArea()
     }, [value]);
-
-    
     
     const textareaStyle = "w-full block py-1 w-full focus:outline-none focus:ring-0 placeholder-neutral-500" 
     const labelStyle = "uppercase text-[10px] font-medium text-neutral-500"
     const alertStyle = "border-red-500 dark:border-red-500"
 
     return(
-        value &&
-            (<motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0}}
+        (<motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0}}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+        >
+            <label htmlFor={id} className={labelStyle}>{label}</label>
+            <motion.textarea
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1}}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 1 }}
+                ref={textareaRef}
+                id={id} 
+                name={name} 
+                value={value ? value : ''} 
+                className={clsx(
+                    textareaStyle,
+                    hasProblems && alertStyle
+                )}
+                onInput={resizeTextArea}
+                onChange={onChange}
+                required
+                placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
             >
-                <label htmlFor={id} className={labelStyle}>{label}</label>
-                <motion.textarea
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1}}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1 }}
-                    ref={textareaRef}
-                    id={id} 
-                    name={name} 
-                    value={value} 
-                    className={clsx(
-                        textareaStyle,
-                        hasProblems && alertStyle
-                    )}
-                    onInput={resizeTextArea}
-                    onChange={onChange}
-                    required
-                    placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
-                >
-                </motion.textarea>
-                {hasProblems && <p className="text-red-500 text-xs mt-1 ml-1">{alertMessage}</p>}
-            </motion.div>
-        )
+            </motion.textarea>
+            {hasProblems && <p className="text-red-500 text-xs mt-1 ml-1">{alertMessage}</p>}
+        </motion.div>
+    )
+            
     );
 }
