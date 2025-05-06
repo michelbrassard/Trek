@@ -3,7 +3,6 @@
 import { X, AlignLeft } from "lucide-react";
 import { useState } from "react";
 import DashboardNavigationLinks from "./navigation-links";
-import LogOutButton from "./logout-button";
 
 export default function MobileDashboardNavigation() {
     const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +27,6 @@ export default function MobileDashboardNavigation() {
                     </div>
                     <div className="flex flex-col gap-10 py-5 px-10">
                         <DashboardNavigationLinks styles={mobileLinkStyle} isDesktop={false} toggleNavigation={toggleMenu} />
-                        <LogOutButton isDesktop={false} />
                     </div>
                 </div>
             </div>
