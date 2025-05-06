@@ -3,7 +3,7 @@
 import axios from "axios";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import Button from "../buttons/button";
+import InputSubmit from "../form/input-submit";
 
 interface AthleteRowProps {
     id: string,
@@ -16,26 +16,51 @@ interface AthleteRowProps {
 
 }
 
-export default function WorkoutAttendance() {
+interface WorkoutAttendanceDataProps {
+    id: string
+}
 
-    const [attendanceList, setAttendanceList] = useState<AthleteRowProps[]>([]);
+type CurrentAttendant = {
+    attendantId: string;
+  };
+
+export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
+    const [athleteList, setAthleteList] = useState<AthleteRowProps[]>([]);
     const [selectedAthletes, setSelectedAthletes] = useState<Set<string>>(new Set());
+    const [loadedAthletes, setLoadedAthletes] = useState<CurrentAttendant[]>();
     const [isSaveButtonVisible, setSaveButtonVisibility] = useState(false);
+    const [error, setError] = useState('');
     
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchAthletes = async () => {
           try {
             const response = await axios.get("/api/proxy/athletes", {
                 withCredentials: true,
             });
-            setAttendanceList(response.data);
+            setAthleteList(response.data);
           } catch (error) {
             console.error("Failed to fetch data:", error);
           }
         };
+
+        const fetchCurrentAttendance = async () => {
+            try {
+                const response = await axios.get(`/api/proxy/attendance/${id}`, {
+                    withCredentials: true,
+                });
+
+                const fetchedAttendanceIds: CurrentAttendant[] = response.data
+                setLoadedAthletes(fetchedAttendanceIds)
+                const set = new Set(fetchedAttendanceIds.map((id) => id.attendantId));
+                setSelectedAthletes(set)
+              } catch (error) {
+                console.error("Failed to fetch data:", error);
+              }
+        }
     
-        fetchData();
-    }, []);
+        fetchAthletes();
+        fetchCurrentAttendance();
+    }, [id]);
 
     const toggleSelection = (id: string) => {
         setSelectedAthletes((prev) => {
@@ -48,13 +73,53 @@ export default function WorkoutAttendance() {
           }
           return newSet;
         });
-      };
+        
+    };
+
+    const handleSaveAttendence = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setSaveButtonVisibility(false)
+        
+        const selectedAthletesList = Array.from(selectedAthletes)
+        const loadedAthletesStringList = loadedAthletes?.map((id) => id.attendantId)
+        const removeFalseAttendants = loadedAthletesStringList?.filter(id =>  !selectedAthletesList.includes(id))
+
+        try {
+            await axios.post("/api/proxy/attendance", 
+                { attendance: {
+                    workoutId: id,
+                    list: selectedAthletesList
+                } },
+                { withCredentials: true }
+            );
+            
+        } catch (error) {
+            setError("Failed to save attendance")
+            console.error(error)
+        }
+
+        try {
+            await axios.delete(`/api/proxy/attendance/${id}`, {
+                data: {
+                    attendance: {
+                        workoutId: id,
+                        list: removeFalseAttendants
+                    }
+                },
+                withCredentials: true
+            });
+            
+        } catch (error) {
+            setError("Failed to remove attendees")
+            console.error(error)
+        }
+    }
 
     return(
-        <div>
+        <form onSubmit={handleSaveAttendence}>
             <p>Initial idea, proper fetching is needed, so that it is saved to the database</p>
             <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 mb-5">
-                {attendanceList.map((athlete) => (
+                {athleteList.map((athlete) => (
                     <div 
                         key={athlete.id} 
                         className={clsx(
@@ -71,14 +136,15 @@ export default function WorkoutAttendance() {
                 ))}
             </div>
             {isSaveButtonVisible && 
-                <Button 
-                    isPrimary={true}
-                    onClick={()=> setSaveButtonVisibility(false)}
-                >
-                    Save
-                </Button>
+                <div className="w-fit">
+                    <InputSubmit 
+                        name={"submit"}
+                        id={"submit"}
+                        value={"Save"} 
+                    />
+                </div>
             }
-            
-        </div>
+            {error && <p className="text-red-500">{error}</p>}
+        </form>
     )
 }
