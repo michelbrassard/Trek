@@ -15,7 +15,7 @@ urlpatterns = [
     path('user/role', views.user_role),
     
     #athletes 
-    path('enroll/temporaryCodes', views.get_coach_codes),
+    path('enroll/temporary_codes', views.get_coach_codes),
     path('athletes/', views.athlete_list),
     path('athletes/<uuid:athlete_id>/', views.athlete_detail),
     
@@ -24,5 +24,6 @@ urlpatterns = [
     path('workouts/<uuid:workout_id>/', views.workout_detail),
     
     #attendance
-    path('attendance/', views.attendance_list)
+    path('attendance/', views.workout_attendance_list),
+    path('attendance/<uuid:workout_id>/', views.current_attendance)
 ]
