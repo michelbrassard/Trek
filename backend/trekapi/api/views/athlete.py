@@ -14,6 +14,8 @@ def athlete_list(request):
     
     if request.method == 'GET':
         athletes = User.objects.filter(athlete_teams__coachId=coach.id).distinct()
+        if not athletes.exists():
+            return Response({"message": "No athletes found."}, status=404)
         serializer = AthleteSerializer(athletes, many=True)
         return Response(serializer.data, status=200)
     

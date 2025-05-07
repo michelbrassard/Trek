@@ -45,7 +45,7 @@ def workout_attendance_list(request):
 
 @api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
-def current_attendance(request, workout_id):
+def current_workout_attendance(request, workout_id):
     if request.method == 'GET':
         try:
             currentAttendance = WorkoutAttendance.objects.filter(workoutId=workout_id)

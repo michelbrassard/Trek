@@ -1,4 +1,6 @@
 from .user import User
 from .team import Team, TemporaryCoachCode
 from .workout import Workout
-from .attendance import WorkoutAttendance
+from .workout_attendance import WorkoutAttendance
+from .competition import Competiton
+from .competition_attendance import CompetitionAttendance
