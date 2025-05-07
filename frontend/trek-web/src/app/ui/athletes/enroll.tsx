@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Button from "../buttons/button";
 import QRCode from "./qrcode";
-import { Check, Copy, QrCode, X } from "lucide-react";
+import { Check, Copy, Plus, QrCode, X } from "lucide-react";
 
 interface TemporaryCoachCodeProps {
     id: string,
@@ -23,9 +23,11 @@ export default function Enroll() {
             const response = await axios.get("http://localhost:3000/api/proxy/temporary_coach_codes", {
                 withCredentials: true,
             });
+
             setData(response.data);
           } catch (error) {
             console.error("Failed to fetch data:", error);
+            
           }
         };
     
@@ -65,7 +67,7 @@ export default function Enroll() {
 
       return (
         <div className="mb-4">
-            {data ? 
+          {data && 
             <div>
                 {data.map((item) => (
                     <div key={item.id} className="flex flex-row gap-2">
@@ -101,11 +103,18 @@ export default function Enroll() {
                       </div>
                     </div>
                 ))}
-            </div> : 
-            <Button isPrimary = {true} onClick={handleGenerateCode}>
-              Generate code
-            </Button> 
+            </div>
           }
+          {
+            data.length === 0 && 
+            <div className="my-2">
+              <Button isPrimary = {true} onClick={handleGenerateCode}>
+                Generate code <Plus size={22}/>
+              </Button> 
+            </div>
+            
+          }
+          
         </div>
       );
 }

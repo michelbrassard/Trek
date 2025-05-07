@@ -35,7 +35,7 @@ export default function WorkoutOverviewList() {
                     </div> 
                     : 
                     <div>
-                        <p className="text-center">No attendance data found</p>
+                        <p className="text-center">No workouts found</p>
                     </div>
                 }
             </div>

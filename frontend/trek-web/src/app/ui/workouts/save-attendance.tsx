@@ -117,7 +117,6 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
 
     return(
         <form onSubmit={handleSaveAttendence}>
-            <p>Initial idea, proper fetching is needed, so that it is saved to the database</p>
             <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 mb-5">
                 {athleteList.map((athlete) => (
                     <div 
@@ -130,7 +129,7 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
                             )}
                             onClick={() => toggleSelection(athlete.id)}
                     >
-                        <p className="">{`${athlete.first_name} ${athlete.last_name}`}</p>
+                        <p>{`${athlete.first_name} ${athlete.last_name}`}</p>
                         <p className="text-xs text-neutral-500">{athlete.email}</p>
                     </div>
                 ))}
