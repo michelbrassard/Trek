@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { WorkoutOverviewType } from "./types";
 import WorkoutListItem from "./workout-list-item";
+import { motion } from "framer-motion";
 
 export default function WorkoutOverviewList() {
     const [attendanceList, setAttendanceList] = useState<WorkoutOverviewType[]>([])
@@ -28,11 +29,15 @@ export default function WorkoutOverviewList() {
         <div className="my-5">
             <div>
                 {attendanceList.length != 0 ? 
-                    <div>
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
                         {attendanceList.map((workout) => (
                             <WorkoutListItem key={workout.id} data={workout} />
                         ))}
-                    </div> 
+                    </motion.div> 
                     : 
                     <div>
                         <p className="text-center">No workouts found</p>

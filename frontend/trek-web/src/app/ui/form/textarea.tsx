@@ -1,7 +1,6 @@
 "use client"
 
 import clsx from "clsx";
-import { motion } from 'framer-motion';
 import { useRef, useLayoutEffect } from 'react';
 
 interface TextAreaProps {
@@ -35,18 +34,9 @@ export default function TextArea({hasProblems, name, label, id, alertMessage, va
     const alertStyle = "border-red-500 dark:border-red-500"
 
     return(
-        (<motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0}}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-        >
+        (<div>
             <label htmlFor={id} className={labelStyle}>{label}</label>
-            <motion.textarea
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1}}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
+            <textarea
                 ref={textareaRef}
                 id={id} 
                 name={name} 
@@ -60,10 +50,9 @@ export default function TextArea({hasProblems, name, label, id, alertMessage, va
                 required
                 placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
             >
-            </motion.textarea>
+            </textarea>
             {hasProblems && <p className="text-red-500 text-xs mt-1 ml-1">{alertMessage}</p>}
-        </motion.div>
-    )
-            
+        </div>
+        )   
     );
 }
