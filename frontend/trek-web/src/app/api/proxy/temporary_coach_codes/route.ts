@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     if (!token) {
         return NextResponse.json({ error: "Unauthorized - No token" }, { status: 401 });
     }
-    const res = await fetch("http://localhost:8000/enroll/temporaryCodes", {
+    const res = await fetch("http://localhost:8000/enroll/temporary_codes", {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,
