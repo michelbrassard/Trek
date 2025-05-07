@@ -44,6 +44,7 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
       }, [userRole]);
 
     const navigationLinks: NavigationLink[] = [
+        //TODO, skroz razdvojit stranice, tako da bude /doashboard/coach ili /.../athlete
         { href: "/dashboard", label: "Overview", icon: LayoutDashboard, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/workouts", label: "Workouts", icon: Dumbbell, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/attendance", label: "Attendance", icon: CalendarCheck, roles: ["COACH", "ATHLETE"] },
