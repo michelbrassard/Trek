@@ -22,14 +22,12 @@ urlpatterns = [
     #workouts
     path('workouts/', views.workout_list),
     path('workouts/<uuid:workout_id>/', views.workout_detail),
-    
     path('workouts/attendance/', views.workout_attendance_list),
     path('workouts/attendance/<uuid:workout_id>/', views.current_workout_attendance),
     
     #competition
     path('competitions/', views.competition_list),
     path('competitions/<uuid:competition_id>', views.competition_detail),
-    
     path('competitions/attendance/', views.competition_attendance_list),
     path('competitions/attendance/<uuid:competition_id>', views.current_competition_attendance)
 ]
