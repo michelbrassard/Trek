@@ -43,7 +43,7 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
     }, [id]);
 
     const handleEdit = () => {
-        router.push(`edit/${id}`);
+        router.push(`${id}/edit`);
     }
 
     const handleDelete = async () => {

@@ -1,6 +1,6 @@
 import Title from "@/app/ui/dashboard/title";
 
-export default function Competitions() {
+export default function CompetitionsPage() {
     return (
         <div>
             <Title text="Competitions"/>
