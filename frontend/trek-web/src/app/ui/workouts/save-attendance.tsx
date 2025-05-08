@@ -45,7 +45,7 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
 
         const fetchCurrentAttendance = async () => {
             try {
-                const response = await axios.get(`/api/proxy/attendance/${id}`, {
+                const response = await axios.get(`/api/proxy/workouts/attendance/${id}`, {
                     withCredentials: true,
                 });
 
@@ -85,7 +85,7 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
         const removeFalseAttendants = loadedAthletesStringList?.filter(id =>  !selectedAthletesList.includes(id))
 
         try {
-            await axios.post("/api/proxy/attendance", 
+            await axios.post("/api/proxy/workouts/attendance", 
                 { attendance: {
                     workoutId: id,
                     list: selectedAthletesList
@@ -99,7 +99,7 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
         }
 
         try {
-            await axios.delete(`/api/proxy/attendance/${id}`, {
+            await axios.delete(`/api/proxy/workouts/attendance/${id}`, {
                 data: {
                     attendance: {
                         workoutId: id,

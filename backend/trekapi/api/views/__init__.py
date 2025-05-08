@@ -5,3 +5,4 @@ from .team import coach_codes
 from .athlete import athlete_list, athlete_detail
 from .workout import workout_list, workout_detail
 from .attendance import *
+from .competition import *

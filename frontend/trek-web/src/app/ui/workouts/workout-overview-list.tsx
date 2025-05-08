@@ -12,7 +12,7 @@ export default function WorkoutOverviewList() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/api/proxy/attendance`, {
+                const response = await axios.get(`/api/proxy/workouts/attendance`, {
                     withCredentials: true,
                 });
                 setAttendanceList(response.data)
