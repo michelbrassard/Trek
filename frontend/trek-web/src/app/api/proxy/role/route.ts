@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     if (!token) {
         return NextResponse.json({ error: "Unauthorized - No token" }, { status: 401 });
     }
-    const res = await fetch("http://localhost:8000/user/role", {
+    const res = await fetch("http://localhost:8000/users/role", {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,

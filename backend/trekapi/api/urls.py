@@ -9,11 +9,12 @@ urlpatterns = [
     path('auth/register/', views.register_view, name='register'),
     path('auth/login/', views.login_view, name='login'),
     path('auth/logout', views.logout_view, name='logout'),
+    path('auth/refresh', views.refresh_token),
     
     #users
     path('users/', views.user_list),
-    path('user/details/', views.user_detail),
-    path('user/role', views.user_role),
+    path('users/details/', views.user_detail),
+    path('users/role', views.user_role),
     
     #athletes 
     path('enroll/temporary_codes', views.coach_codes),
