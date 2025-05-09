@@ -1,5 +1,5 @@
 import BackButton from "@/app/ui/buttons/back-button";
-import WorkoutOverviewData from "@/app/ui/workouts/overview";
+import WorkoutOverviewData from "@/app/ui/workouts/overview-list";
 import WorkoutAttendance from "@/app/ui/workouts/save-attendance";
 
 export default async function WorkoutDetails({ params }: { params: { id: string } }) {
