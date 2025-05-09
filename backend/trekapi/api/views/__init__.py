@@ -1,4 +1,4 @@
-from .registration import *
+from .authentication import *
 from .welcome import *
 from .user import *
 from .team import *

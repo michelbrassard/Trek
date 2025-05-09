@@ -1,17 +1,14 @@
-from django.http import HttpResponse, JsonResponse # type: ignore
-from django.views.decorators.csrf import csrf_exempt # type: ignore
-from rest_framework.parsers import JSONParser # type: ignore
 from api.models import User, TemporaryCoachCode, Team
-from api.serializers import UserSerializer
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.utils.dateparse import parse_datetime
 from django.conf import settings
 from datetime import timedelta
+from rest_framework_simplejwt.exceptions import TokenError
 
 User = get_user_model()
 
@@ -77,12 +74,6 @@ def register_view(request):
         }
     }, status=201)
     
-    access_token = refresh.access_token
-    access_token["role"] = user.role
-    access_token["email"] = user.email
-    access_token["username"] = user.username
-    access_token["id"] = user.id
-    
     response.set_cookie(
         'access_token',
         str(refresh.access_token),
@@ -101,11 +92,9 @@ def register_view(request):
     )
     
     if coachCode:
-        temp_code = TemporaryCoachCode.objects.filter(id=coachCode)
-        
-        #get first from the list
-        coach = temp_code[0].coachId
-        team = Team.objects.create(coachId=coach, athleteId=user)
+        temp_code = TemporaryCoachCode.objects.get(id=coachCode)
+        coach = temp_code.coachId
+        Team.objects.create(coachId=coach, athleteId=user)
     
     return response
 
@@ -134,12 +123,6 @@ def login_view(request):
             "role": user.role,
         }
     })
-    
-    access_token = refresh.access_token
-    access_token["role"] = user.role
-    access_token["email"] = user.email
-    access_token["username"] = user.username
-    access_token["id"] = user.id
     
     response.set_cookie(
         'access_token',
@@ -176,7 +159,28 @@ def logout_view(request):
     
     request.session.flush()
     return response
+   
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def refresh_token(request):
+    refresh_token = request.COOKIES.get('refresh_token')
+    if refresh_token is None:
+        return Response({'message': 'Refresh token not provided'}, status=400)
     
+    try:
+        refresh = RefreshToken(refresh_token)
+        response = Response({'message': 'Token refreshed'})
+        response.set_cookie(
+            'access_token',
+            str(refresh.access_token),
+            httponly=True,
+            secure=settings.SECURE_SSL_REDIRECT,
+            samesite='Lax',
+            max_age=timedelta(minutes=30),
+        )
+        return response
+    except TokenError as e:
+        return Response({'error': 'Invalid refresh token'}, status=401)
 
 # add mobile view or some check in the request so that it knows if its mobile or desktop
 # so that a user recevies in the response or use a check of sort

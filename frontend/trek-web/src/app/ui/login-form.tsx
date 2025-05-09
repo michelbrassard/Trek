@@ -35,7 +35,7 @@ export default function LoginForm() {
         try {
             await axios.post('http://localhost:8000/auth/login/',
               { email: sanitizedEmail, password: sanitizedPassword },
-              { withCredentials: true } // Include credentials (cookies)
+              { withCredentials: true }
             );
             router.push('/dashboard');
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
