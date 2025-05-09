@@ -1,18 +1,20 @@
-import WorkoutOverviewList from "@/app/ui/workouts/workout-overview-list";
 import Title from "@/app/ui/dashboard/title";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import WorkoutOverviewPicker from "@/app/ui/workouts/overview-picker";
 
 export default function Workouts() {
     return (
         <div>
-            <Title text="Workouts"/>
-            <Link href={'workouts/create'} >
-                <div className="flex items-center gap-2 text-blue-500">
-                    <Plus size={16}/> New
-                </div>
-            </Link>
-            <WorkoutOverviewList />
+            <div className="flex flex-row items-center justify-between">
+                <Title text="Workouts"/>
+                <Link href={'workouts/create'} >
+                    <div className="flex items-center gap-2 text-blue-500">
+                        <Plus size={16}/> New
+                    </div>
+                </Link>
+            </div>
+            <WorkoutOverviewPicker />
         </div>
     )
 }
