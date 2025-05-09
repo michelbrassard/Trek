@@ -40,7 +40,7 @@ export default function AthletesTable() {
     return(
         <>
             {tableData.length != 0 ? 
-            <div className="my-5 rounded-md overflow-scroll border border-neutral-300 dark:border-neutral-700">
+            <div className="rounded-md overflow-scroll border border-neutral-300 dark:border-neutral-700">
                 <table className="w-full border-collapse border-neutral-300 dark:border-neutral-700">
                     <thead className="dark:bg-neutral-900 bg-neutral-100">
                         <tr>
