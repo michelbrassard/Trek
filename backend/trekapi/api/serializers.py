@@ -13,6 +13,14 @@ class AthleteSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'first_name', 'last_name', 'username', 'email', 'phone', 'date_of_birth']
 
+class SearchedAthleteSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField()
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'phone', 'date_of_birth', 'type']
+    def get_type(self, obj):
+        return "athlete"
+
 #for navigation 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,6 +33,14 @@ class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workout
         fields = '__all__'
+
+class SearchedWorkoutSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField()
+    class Meta:
+        model = Workout
+        fields = ['id', 'title', 'description', 'date', 'length', 'unit', 'type']
+    def get_type(self, obj):
+        return "workout"
 
 class EditWorkoutSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,6 +83,14 @@ class CompetitionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Competition
         fields = '__all__'
+
+class SearchedCompetitionSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField()
+    class Meta:
+        model = Competition
+        fields = ['id', 'title', 'description', 'startDate', 'endDate', 'location', 'type']
+    def get_type(self, obj):
+        return "competition"
 
 class EditCompetitionSerializer(serializers.ModelSerializer):
     class Meta:
