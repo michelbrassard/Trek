@@ -5,6 +5,7 @@ export default function Resources() {
         <div>
             <Title text="Resources"/>
             <div>Set resources</div>
+            <p>List of resources, creatorID, url, note</p>
         </div>
     )
 }
