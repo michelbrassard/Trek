@@ -9,7 +9,7 @@ export default function Breadcrumbs() {
     const pathNames = paths.split('/').filter( path => path )
 
     return(
-        <div className='mb-3 text-sm flex flex-row items-center gap-2 text-neutral-700 dark:text-neutral-300'>
+        <div className='text-sm flex flex-row items-center gap-2 text-neutral-700 dark:text-neutral-300'>
             {pathNames.map( (link, index) => {
                 const href = `/${pathNames.slice(0, index + 1).join('/')}`
                 return(
@@ -18,7 +18,7 @@ export default function Breadcrumbs() {
                             {index === 0 ?
                                 <Home size={12} className='my-1'/>
                                 : 
-                                link
+                                <p className='truncate max-w-[150px] md:max-w-[20px] lg:max-w-[120px] xl:max-w-[400px] overflow-hidden whitespace-nowrap'>{link}</p>
                             }
                         </Link>
                         {pathNames.length !== index + 1 && 
