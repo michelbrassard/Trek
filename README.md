@@ -40,3 +40,7 @@ Models, views and other files can be separated into multiple files saved into th
 
 Backend: models -> serializers -> views -> urls
 Frontend: page -> components -> proxy -> direct api call
+
+### Attention
+
+Be careful with trailing / in the links, the urls in the backend expect /, but not on the frontend...

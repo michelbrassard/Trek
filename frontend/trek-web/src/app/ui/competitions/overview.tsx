@@ -8,28 +8,28 @@ import { useRouter } from 'next/navigation';
 import Button from "../buttons/button";
 import { Pencil, Trash2 } from "lucide-react";
 
-interface WorkoutOverviewDataProps {
+interface CompetitionOverviewDataProps {
     id: string
 }
 
-interface WorkoutData {
+interface CompetitionData {
     id: string,
     title: string,
     description: string,
-    workout: string,
-    length: number,
-    unit: string,
-    date: string
+    startDate: string,
+    endDate: string,
+    location: string,
+    url: string
 }
 
-export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
-    const [overview, setOverview] = useState<WorkoutData>();
+export default function CompetitionOverviewData({id}: CompetitionOverviewDataProps) {
+    const [overview, setOverview] = useState<CompetitionData>();
     const router = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/proxy/workouts/${id}`, {
+                const response = await axios.get(`http://localhost:3000/api/proxy/competitions/${id}`, {
                     withCredentials: true,
                 });
                 setOverview(response.data)
@@ -48,13 +48,13 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:3000/api/proxy/workouts/${id}`, {
+            await axios.delete(`http://localhost:3000/api/proxy/competitions/${id}`, {
                 withCredentials: true,
             });
         } catch (error) {
-            console.error("Failed to delete workout:", error);
+            console.error("Failed to delete competition:", error);
         }
-        router.push("/dashboard/workouts");
+        router.push("/dashboard/competitions");
     }
     
     return(
@@ -75,9 +75,9 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                 </div>
                 
                 <p className="whitespace-pre">{overview.description}</p>
-                <p>{overview.date}</p>
-                <p className="whitespace-pre">{overview.workout}</p>
-                <p>{overview.length} {overview.unit}</p>
+                <p>{overview.startDate} - {overview.endDate}</p>
+                <p className="whitespace-pre">{overview.location}</p>
+                <p>{overview.url}</p>
             </div> 
             : "Loading data..."}
         </div>

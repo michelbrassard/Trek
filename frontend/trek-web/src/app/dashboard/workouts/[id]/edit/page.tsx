@@ -6,7 +6,7 @@ export default async function EditWorkout({ params }: { params: { id: string } }
     
     return(
         <div>
-            <BackButton url={`/dashboard/workouts/${id}`} />
+            <BackButton />
             <WorkoutForm formTitle={"Edit Workout"} id={id} isEdit={true} />
         </div>
     );

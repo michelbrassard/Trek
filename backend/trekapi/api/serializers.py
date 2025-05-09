@@ -1,5 +1,5 @@
 from rest_framework import serializers # type: ignore - it works
-from api.models import User, TemporaryCoachCode, Workout, WorkoutAttendance
+from api.models import User, TemporaryCoachCode, Workout, WorkoutAttendance, Competition, CompetitionAttendance
 
 #used for account data
 class UserSerializer(serializers.ModelSerializer):
@@ -56,7 +56,37 @@ class WorkoutWithAttendeesSerializer(serializers.ModelSerializer):
             attendees = User.objects.filter(user_attendance__workoutId=obj)
         return AttendeeSerializer(attendees, many=True).data
 
-class CurrentAttendeesSerializer(serializers.ModelSerializer):
+class CurrentWorkoutAttendeesSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutAttendance
+        fields = ["attendantId"]
+     
+#competition   
+class CompetitionSerializer(serializers.ModelSerializer):
+    creatorId = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    class Meta:
+        model = Competition
+        fields = '__all__'
+
+class EditCompetitionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Competition
+        exclude = ["id", "creatorId"]
+
+class CompetitionWithAttendeesSerializer(serializers.ModelSerializer):
+    attendees = serializers.SerializerMethodField()
+    class Meta:
+        model = Competition
+        fields = ["id", "title", "description", "startDate", "endDate", "location", "url", "attendees"]
+        
+    def get_attendees(self, obj):
+        if hasattr(obj, "attendances"):
+            attendees = [attendance.attendantId for attendance in obj.attendances]
+        else:
+            attendees = User.objects.filter(user_competition_attendance__competitionId=obj)
+        return AttendeeSerializer(attendees, many=True).data
+
+class CurrentCompetitionAttendeesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompetitionAttendance
         fields = ["attendantId"]

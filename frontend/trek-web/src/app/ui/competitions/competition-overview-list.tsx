@@ -2,17 +2,17 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { WorkoutOverviewType } from "./types";
-import WorkoutListItem from "./workout-list-item";
+import CompetitionListItem from "./competition-list-item";
 import { motion } from "framer-motion";
+import { CompetitionOverviewType } from "./types";
 
 export default function WorkoutOverviewList() {
-    const [attendanceList, setAttendanceList] = useState<WorkoutOverviewType[]>([])
+    const [attendanceList, setAttendanceList] = useState<CompetitionOverviewType[]>([])
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchCompetitionsWithAttendees = async () => {
             try {
-                const response = await axios.get(`/api/proxy/workouts/attendance`, {
+                const response = await axios.get(`/api/proxy/competitions/attendance`, {
                     withCredentials: true,
                 });
                 setAttendanceList(response.data)
@@ -21,8 +21,8 @@ export default function WorkoutOverviewList() {
                 console.error("Failed to fetch data:", error);
             }
         };
-
-        fetchData();
+        
+        fetchCompetitionsWithAttendees();
     }, []);
     
     return(
@@ -34,13 +34,13 @@ export default function WorkoutOverviewList() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     >
-                        {attendanceList.map((workout) => (
-                            <WorkoutListItem key={workout.id} data={workout} />
+                        {attendanceList.map((competition) => (
+                            <CompetitionListItem key={competition.id} competition={competition} />
                         ))}
                     </motion.div> 
                     : 
                     <div>
-                        <p className="text-center">No workouts found</p>
+                        <p className="text-center">No competitions found</p>
                     </div>
                 }
             </div>

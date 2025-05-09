@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     if (!token) {
         return NextResponse.json({ error: "Unauthorized - No token" }, { status: 401 });
     }
-    const res = await fetch("http://localhost:8000/enroll/temporary_codes", {
+    const res = await fetch("http://localhost:8000/competitions/attendance", {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,
@@ -25,18 +25,18 @@ export async function POST(request: NextRequest) {
     if (!token) {
         return NextResponse.json({ error: "Unauthorized - No token" }, { status: 401 });
     }
-    const res = await fetch("http://localhost:8000/enroll/temporary_codes", {
+
+    const body = await request.text();
+    const res = await fetch("http://localhost:8000/competitions/attendance/", {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
         },
+        body,
         credentials: "include",
     });
 
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
 }
-
-
-

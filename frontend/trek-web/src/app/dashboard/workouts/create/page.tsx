@@ -4,7 +4,7 @@ import BackButton from "@/app/ui/buttons/back-button";
 export default function CreateWorkout() {
     return(
         <div>
-            <BackButton url="/dashboard/workouts" />
+            <BackButton />
             <WorkoutForm formTitle={"Create a Workout"} isEdit={false} />
         </div>
     );

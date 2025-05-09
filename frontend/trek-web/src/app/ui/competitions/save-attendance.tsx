@@ -16,7 +16,7 @@ interface AthleteRowProps {
 
 }
 
-interface WorkoutAttendanceDataProps {
+interface CompetitionAttendanceDataProps {
     id: string
 }
 
@@ -24,7 +24,7 @@ type CurrentAttendant = {
     attendantId: string;
   };
 
-export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
+export default function CompetitionAttendance({id} : CompetitionAttendanceDataProps) {
     const [athleteList, setAthleteList] = useState<AthleteRowProps[]>([]);
     const [selectedAthletes, setSelectedAthletes] = useState<Set<string>>(new Set());
     const [loadedAthletes, setLoadedAthletes] = useState<CurrentAttendant[]>();
@@ -45,7 +45,7 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
 
         const fetchCurrentAttendance = async () => {
             try {
-                const response = await axios.get(`/api/proxy/workouts/attendance/${id}`, {
+                const response = await axios.get(`/api/proxy/competitions/attendance/${id}`, {
                     withCredentials: true,
                 });
 
@@ -85,9 +85,9 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
         const removeFalseAttendants = loadedAthletesStringList?.filter(id =>  !selectedAthletesList.includes(id))
 
         try {
-            await axios.post("/api/proxy/workouts/attendance", 
+            await axios.post("/api/proxy/competitions/attendance", 
                 { attendance: {
-                    workoutId: id,
+                    competitionId: id,
                     list: selectedAthletesList
                 } },
                 { withCredentials: true }
@@ -99,10 +99,10 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
         }
 
         try {
-            await axios.delete(`/api/proxy/workouts/attendance/${id}`, {
+            await axios.delete(`/api/proxy/competitions/attendance/${id}`, {
                 data: {
                     attendance: {
-                        workoutId: id,
+                        competitionId: id,
                         list: removeFalseAttendants
                     }
                 },

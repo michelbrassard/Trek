@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     if (!token) {
         return NextResponse.json({ error: "Unauthorized - No token" }, { status: 401 });
     }
-    const res = await fetch("http://localhost:8000/attendance", {
+    const res = await fetch("http://localhost:8000/workouts/attendance", {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.text();
-    const res = await fetch("http://localhost:8000/attendance/", {
+    const res = await fetch("http://localhost:8000/workouts/attendance/", {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,

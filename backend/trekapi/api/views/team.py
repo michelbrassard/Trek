@@ -9,14 +9,13 @@ User = get_user_model()
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
-def get_coach_codes(request):
+def coach_codes(request):
     user = request.user
     
     if request.method == 'GET':
         temp_codes = TemporaryCoachCode.objects.filter(coachId=user)
         if not temp_codes.exists():
             return Response({"message": "No coach codes"}, status=404)
-        
         serializer = TemporaryCoachCodeSerializer(temp_codes, many=True)
         return Response(serializer.data, status=200)
     
