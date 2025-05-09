@@ -1,4 +1,4 @@
-from api.models import User, Competiton
+from api.models import User, Competition
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -13,7 +13,7 @@ User = get_user_model()
 def competition_list(request):
     creator = request.user
     if request.method == 'GET':
-        competitions = Competiton.objects.filter(creatorId=creator)
+        competitions = Competition.objects.filter(creatorId=creator)
         serializer = CompetitionSerializer(competitions, many=True)
         return Response(serializer.data)
     
@@ -31,8 +31,8 @@ def competition_list(request):
 @permission_classes([IsAuthenticated])
 def competition_detail(request, competition_id):
     try:
-        competition = Competiton.objects.get(id=competition_id)
-    except Competiton.DoesNotExist:
+        competition = Competition.objects.get(id=competition_id)
+    except Competition.DoesNotExist:
         return Response(status=404)
     
     if request.method == 'GET':

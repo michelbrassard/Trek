@@ -1,5 +1,5 @@
 from rest_framework import serializers # type: ignore - it works
-from api.models import User, TemporaryCoachCode, Workout, WorkoutAttendance, Competiton, CompetitionAttendance
+from api.models import User, TemporaryCoachCode, Workout, WorkoutAttendance, Competition, CompetitionAttendance
 
 #used for account data
 class UserSerializer(serializers.ModelSerializer):
@@ -65,18 +65,18 @@ class CurrentWorkoutAttendeesSerializer(serializers.ModelSerializer):
 class CompetitionSerializer(serializers.ModelSerializer):
     creatorId = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     class Meta:
-        model = Competiton
+        model = Competition
         fields = '__all__'
 
 class EditCompetitionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Competiton
+        model = Competition
         exclude = ["id", "creatorId"]
 
 class CompetitionWithAttendeesSerializer(serializers.ModelSerializer):
     attendees = serializers.SerializerMethodField()
     class Meta:
-        model = Competiton
+        model = Competition
         fields = ["id", "title", "description", "startDate", "endDate", "location", "url", "attendees"]
         
     def get_attendees(self, obj):

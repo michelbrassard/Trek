@@ -1,4 +1,4 @@
-from api.models import User, Workout, WorkoutAttendance, Competiton, CompetitionAttendance
+from api.models import User, Workout, WorkoutAttendance, Competition, CompetitionAttendance
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
@@ -71,13 +71,14 @@ def competition_attendance_list(request):
     if request.method == 'GET':
         try:
             competition_attendances  = CompetitionAttendance.objects.select_related("attendantId")
-            competitions = Competiton.objects.filter(creatorId=creator).prefetch_related(
+            competitions = Competition.objects.filter(creatorId=creator).prefetch_related(
                 Prefetch("competition_attendance", queryset=competition_attendances, to_attr="attendances")
             )
             serializer = CompetitionWithAttendeesSerializer(competitions, many=True)
             return Response(serializer.data, status=200)
         except Exception as e:
             return Response({"error": f"An error occurred: {str(e)}"}, status=500)
+        
     elif request.method == 'POST':
         try:
             competitionId = request.data['attendance']['competitionId']

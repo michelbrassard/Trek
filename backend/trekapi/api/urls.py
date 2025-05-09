@@ -1,6 +1,7 @@
 from django.urls import path
 from api import views
 
+# add / at the end of a request if it doesn't work
 urlpatterns = [
     path('', views.home),
     
@@ -27,7 +28,7 @@ urlpatterns = [
     
     #competition
     path('competitions/', views.competition_list),
-    path('competitions/<uuid:competition_id>', views.competition_detail),
+    path('competitions/<uuid:competition_id>/', views.competition_detail),
     path('competitions/attendance/', views.competition_attendance_list),
-    path('competitions/attendance/<uuid:competition_id>', views.current_competition_attendance)
+    path('competitions/attendance/<uuid:competition_id>/', views.current_competition_attendance)
 ]
