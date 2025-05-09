@@ -23,7 +23,6 @@ export default function SearchComponent() {
                 withCredentials: true,
             });
             setSearchedData(response.data.results)
-            console.log(response.data.results)
             setLoading(false)
         
         } catch (error) {
