@@ -11,7 +11,6 @@ User = get_user_model()
 @permission_classes([IsAuthenticated])
 def athlete_list(request):
     coach = request.user
-    
     if request.method == 'GET':
         athletes = User.objects.filter(athlete_teams__coachId=coach.id).distinct()
         if not athletes.exists():

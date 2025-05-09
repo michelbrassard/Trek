@@ -55,6 +55,7 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
         { href: "/dashboard/equipment", label: "Equipment", icon: Briefcase, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/notes", label: "Notes", icon: StickyNote, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/media", label: "Media", icon: Video, roles: ["COACH"] },
+        // progress page...?
     ];
 
     const filteredLinks = navigationLinks.filter(link => userRole && link.roles.includes(userRole.toUpperCase()));
@@ -76,7 +77,6 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
                 if(href.startsWith("/dashboard/")) {
                     isActive = pathname.startsWith(href);
                 }
-                
                 
                 return(
                     <Link
