@@ -65,7 +65,7 @@ export default function SearchComponent() {
             <AnimatePresence>
                 {searchedTerm && (
                     <motion.div
-                        className="backdrop-blur-md bg-neutral-100/60 dark:bg-neutral-900/60 w-[70%] absolute z-10 right-0 md:w-[600px] h-[400px] border border-neutral-200 dark:border-neutral-800 rounded-2xl mx-2 py-3 px-3"
+                        className="backdrop-blur-md bg-neutral-100/60 dark:bg-neutral-900/60 w-[70%] absolute z-10 right-0 md:w-[600px] h-[400px] border border-neutral-200 dark:border-neutral-800 rounded-2xl mx-2 py-3 px-3 overflow-scroll"
                         initial={{ opacity: 0, scale: 1.1 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 1.1 }}
