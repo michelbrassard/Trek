@@ -27,7 +27,7 @@ export default function WorkoutOverviewList() {
     
     return(
         <div className="my-5">
-            <div>
+            <div className="overflow-scroll h-[650px]">
                 {attendanceList.length != 0 ? 
                     <motion.div
                         initial={{ opacity: 0}}
