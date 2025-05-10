@@ -25,7 +25,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Breadcrumbs />
               <ProfileRow />
             </div>
-            <main className="flex-grow px-6 md:overflow-y-auto md:px-12 ">
+            <main className="flex-grow px-6 md:overflow-y-auto md:px-12">
               {children}
             </main>
           </div>

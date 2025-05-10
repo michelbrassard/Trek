@@ -6,7 +6,7 @@ import CompetitionListItem from "./competition-list-item";
 import { motion } from "framer-motion";
 import { CompetitionOverviewType } from "./types";
 
-export default function WorkoutOverviewList() {
+export default function CompetitionOverviewList() {
     const [attendanceList, setAttendanceList] = useState<CompetitionOverviewType[]>([])
 
     useEffect(() => {

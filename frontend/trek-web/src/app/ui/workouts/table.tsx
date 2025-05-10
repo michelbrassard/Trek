@@ -31,7 +31,7 @@ export default function WorkoutsTable() {
         };
     
         fetchData();
-      }, []);
+    }, []);
     
     //TODO: make it a better table and view the overview of each athlete
     const cellStyling = "border-t border-collapse px-4 py-2 border-neutral-300 dark:border-neutral-700 text-left";
