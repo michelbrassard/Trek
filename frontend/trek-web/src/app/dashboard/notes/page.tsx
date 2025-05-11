@@ -8,7 +8,7 @@ export default function Notes() {
         <div>
             <div className="flex flex-row items-center justify-between">
                 <Title text="Notes" />
-                <Link href={'workouts/create'} >
+                <Link href={'notes/create'} >
                     <div className="flex items-center gap-2 text-blue-500">
                         <Plus size={16}/> New
                     </div>

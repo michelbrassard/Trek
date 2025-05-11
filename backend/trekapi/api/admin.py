@@ -1,6 +1,5 @@
-from django.contrib import admin # type: ignore (it works)
-from .models import User, Team, TemporaryCoachCode, Workout, WorkoutAttendance, Competition, CompetitionAttendance
-from django.urls import path
+from django.contrib import admin
+from .models import User, Team, TemporaryCoachCode, Workout, WorkoutAttendance, Competition, CompetitionAttendance, Note, Resource
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('email', 'first_name', 'last_name', 'role')  
@@ -19,3 +18,5 @@ admin.site.register(Workout)
 admin.site.register(WorkoutAttendance)
 admin.site.register(Competition)
 admin.site.register(CompetitionAttendance)
+admin.site.register(Note)
+admin.site.register(Resource)

@@ -9,3 +9,4 @@ class Note(models.Model):
     title = models.CharField(max_length=50)
     note = models.TextField()
     createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateField(null=True, blank=True)

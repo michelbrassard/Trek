@@ -5,3 +5,4 @@ from .workout_attendance import *
 from .competition import *
 from .competition_attendance import *
 from .note import *
+from .resource import *

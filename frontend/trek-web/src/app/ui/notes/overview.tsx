@@ -32,12 +32,14 @@ export default function NotesOverview() {
         notesOverview.length === 0 ?
         <div>No notes found</div>
         :
-        <div>
+        <div className="flex flex-col gap-2">
             {
                 notesOverview.map((note) => 
                     <Link href={`/dashboard/notes/${note.id}`} key={note.id}>
-                        <p className="font-bold">{note.title}</p>
-                        <p className="font-bold">{note.createdAt}</p>
+                        <div className="hover:bg-neutral-200 hover:dark:bg-neutral-800 py-2 px-4  rounded-xl transition-all">
+                            <p className="font-bold">{note.title}</p>
+                            <p className="text-sm text-neutral-500">{note.createdAt}</p>
+                        </div>
                     </Link>
                 )
             }

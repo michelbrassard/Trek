@@ -6,7 +6,7 @@ export default async function CompetitionEditPage({ params }: { params: { id: st
     return (
         <div>
             <BackButton />
-            <CompetitionForm formTitle={"Create a Competition"} id={id} isEdit={true} />
+            <CompetitionForm formTitle={"Edit Competition"} id={id} isEdit={true} />
         </div>
     )
 }
