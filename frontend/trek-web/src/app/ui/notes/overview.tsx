@@ -1,0 +1,46 @@
+'use client'
+
+import axios from "axios"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { Note } from "./types"
+
+export default function NotesOverview() {
+    const [error, setError] = useState('')
+    const [notesOverview, setNotesOverview] = useState<Note[]>([])
+
+    useEffect(() => {
+        const fetchNotes = async () => {
+            try {
+                const response = await axios.get(`/api/proxy/notes`, {
+                    withCredentials: true,
+                });
+                setNotesOverview(response.data)
+            
+            } catch (error) {
+                setError('Failed to fetch notes')
+                console.error("Failed to fetch data:", error);
+            }
+        }
+
+        fetchNotes()
+    }, [])
+
+    if (error) return <div>Unable to fetch notes</div>
+
+    return(
+        notesOverview.length === 0 ?
+        <div>No notes found</div>
+        :
+        <div>
+            {
+                notesOverview.map((note) => 
+                    <Link href={`/dashboard/notes/${note.id}`} key={note.id}>
+                        <p className="font-bold">{note.title}</p>
+                        <p className="font-bold">{note.createdAt}</p>
+                    </Link>
+                )
+            }
+        </div>
+    )
+}

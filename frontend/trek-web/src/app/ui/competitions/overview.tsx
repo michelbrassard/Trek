@@ -39,7 +39,7 @@ export default function CompetitionOverviewData({id}: CompetitionOverviewDataPro
             }
         };
 
-    fetchData();
+        fetchData();
     }, [id]);
 
     const handleEdit = () => {
