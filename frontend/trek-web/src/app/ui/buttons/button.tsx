@@ -26,7 +26,7 @@ export default function Button({
     const dangerFilledStyles = 'text-white  bg-red-500 hover:bg-red-400 focus-visible:outline-red-500 active:bg-red-600'
     
     const primaryStyles = 'text-blue-500 focus-visible:outline-blue-500 active:bg-blue-600 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900'
-    const secondaryStyles = 'text-neutral-500 focus-visible:outline-neutral-500 active:bg-neutral-600 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800'
+    const secondaryStyles = 'text-neutral-500 focus-visible:outline-neutral-500 active:bg-neutral-300 active:dark:bg-neutral-600 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800'
     const dangerStyles = 'text-red-500 focus-visible:outline-red-500 active:bg-red-600 bg-red-50 dark:bg-red-950 hover:bg-red-100 dark:hover:bg-red-900'
     
     const disabledStyles = 'opacity-50 cursor-not-allowed'
