@@ -1,6 +1,10 @@
 from django.urls import path
 from api import views
 
+# from django.conf import settings
+# from django.conf.urls.static import static
+# from django.urls import path
+
 # add / at the end of a request if it doesn't work
 urlpatterns = [
     path('', views.home),
@@ -39,10 +43,18 @@ urlpatterns = [
     path('notes/', views.note_list),
     path('notes/<uuid:note_id>/', views.note_detail),
     
-    #
+    #resource
     path('resources/', views.resource_list),
     path('resources/<uuid:resource_id>/', views.resource_detail),
 
     #search
-    path('search/', views.search_data)
+    path('search/', views.search_data),
+    
+    #media
+    path('media/', views.media_list),
+    path('media/<uuid:media_id>', views.media_detail)
+    
 ]
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
