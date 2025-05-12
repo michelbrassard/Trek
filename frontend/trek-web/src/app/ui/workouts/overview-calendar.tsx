@@ -69,6 +69,21 @@ export default function WorkoutCalendar() {
         setCalendarDays(eachDayOfInterval({ start, end }))
     }
 
+    const monthMap: { [key: number]: string } = {
+        0: "January",
+        1: "February",
+        2: "March",
+        3: "April",
+        4: "May",
+        5: "June",
+        6: "July",
+        7: "August",
+        8: "September",
+        9: "October",
+        10: "November",
+        11: "December"
+    };
+
     return(
         <motion.div
             initial={{ opacity: 0}}
@@ -88,8 +103,13 @@ export default function WorkoutCalendar() {
                         isSecondary={true} 
                         onClick={() => {}}
                     >
-                        <ChevronRight size={16} />
+                        <ChevronRight size={16} className="my-1"/>
                     </Button>
+                </div>
+                <div className='flex items-center'>
+                    <h2 className='text-lg'>
+                        {monthMap[currentDate.getMonth()]}
+                    </h2>
                 </div>
                 <div className='flex flex-row gap-1'>
                     <Button 
