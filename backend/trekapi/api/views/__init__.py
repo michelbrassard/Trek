@@ -9,3 +9,4 @@ from .competition import *
 from .competition_attendance import *
 from .search import *
 from .note import *
+from .resource import *

@@ -36,6 +36,10 @@ urlpatterns = [
     #note
     path('notes/', views.note_list),
     path('notes/<uuid:note_id>/', views.note_detail),
+    
+    #
+    path('resources/', views.resource_list),
+    path('resources/<uuid:resource_id>/', views.resource_detail),
 
     #search
     path('search/', views.search_data)

@@ -1,5 +1,5 @@
 from rest_framework import serializers # type: ignore - it works
-from api.models import User, TemporaryCoachCode, Workout, WorkoutAttendance, Competition, CompetitionAttendance, Note
+from api.models import User, TemporaryCoachCode, Workout, WorkoutAttendance, Competition, CompetitionAttendance, Note, Resource
 
 #used for account data
 class UserSerializer(serializers.ModelSerializer):
@@ -124,3 +124,14 @@ class EditNoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
         exclude = ["id", "creatorId"]
+        
+class ResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resource
+        fields = '__all__'
+
+class EditResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resource
+        exclude = ["id", "creatorId"]
+
