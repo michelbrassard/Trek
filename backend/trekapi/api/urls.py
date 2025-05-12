@@ -15,6 +15,8 @@ urlpatterns = [
     path('users/', views.user_list),
     path('users/details/', views.user_detail),
     path('users/role', views.user_role),
+    path('users/email/', views.user_check_email_existence),
+    path('users/username', views.user_check_username_existence),
     
     #athletes 
     path('enroll/temporary_codes', views.coach_codes),

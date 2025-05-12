@@ -3,7 +3,7 @@ from api.models import User
 from api.serializers import RoleSerializer, UserSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -55,4 +55,22 @@ def user_role(request):
     user = request.user
     serializer = RoleSerializer(user)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def user_check_email_existence(request):
+    email = request.data.get("email")
+    if User.objects.filter(email=email).exists():
+        return Response({"error": "Email already in use"}, status=400)
+    else:
+        return Response({"message": "Email ok"}, status=200)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def user_check_username_existence(request):
+    username = request.data.get("username")
+    if User.objects.filter(username=username).exists():
+        return Response({"error": "Username already taken"}, status=400)
+    else:
+        return Response({"message": "Username ok"}, status=200)
         
