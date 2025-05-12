@@ -1,6 +1,6 @@
 from django.db import models
-from .user import User
-from .workout import Workout
+from ..user import User
+from . import Workout
 
 class WorkoutAttendance(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)

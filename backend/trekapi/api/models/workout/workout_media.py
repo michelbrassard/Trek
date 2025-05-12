@@ -1,7 +1,7 @@
 from django.db import models
-from backend.trekapi.api.models.media import Media
-from .user import User
-from .workout import Workout
+from ..media import Media
+from ..user import User
+from . import Workout
 
 class WorkoutMedia(models.Model):
     athleteId = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', related_name="athlete_workout_media")

@@ -4,9 +4,7 @@ from .user import *
 from .team import *
 from .athlete import *
 from .workout import *
-from .workout_attendance import *
 from .competition import *
-from .competition_attendance import *
 from .search import *
 from .note import *
 from .resource import *
