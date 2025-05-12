@@ -19,7 +19,7 @@ def progress_with_all_content_versions_list(request):
             Prefetch(
                 "progress_content",
                 queryset=ProgressContent.objects.order_by("-createdAt"),
-                to_attr="versions"
+                to_attr="contents"
             )
         )
         serializer = ProgressWithFullContentVersionsSerializer(progress, many=True)
@@ -31,15 +31,14 @@ def progress_with_all_content_versions_list(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def progress_with_all_content_versions(request, progress_id):
-    creator = request.user
     try:
-        progress = Progress.objects.get(id=progress_id).prefetch_related(
+        progress = Progress.objects.prefetch_related(
             Prefetch(
                 "progress_content",
                 queryset=ProgressContent.objects.order_by("-createdAt"),
                 to_attr="contents"
             )
-        )
+        ).get(id=progress_id)
         serializer = ProgressWithFullContentVersionsSerializer(progress)
         return Response(serializer.data, status=200)
     except Progress.DoesNotExist:
@@ -50,7 +49,7 @@ def progress_with_all_content_versions(request, progress_id):
 # whenever user saves content it creates a new row
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def save_new_version(request):
+def save_new_version(request, progress_id):
     try:
         data = JSONParser().parse(request)
         serializer = SaveProgressSerializer(data=data)
