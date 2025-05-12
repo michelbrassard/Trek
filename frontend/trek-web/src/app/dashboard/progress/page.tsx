@@ -1,10 +1,20 @@
 import Title from "@/app/ui/dashboard/title";
+import ProgressOverview from "@/app/ui/progress/overview";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default function Progress() {
     return (
         <div>
-            <Title text="Progress"/>
-            <div>Individual progress... This is not a page for coaches, that one will be Team progress or something like that.</div>
+            <div className="flex flex-row items-center justify-between">
+                <Title text="Progress" />
+                <Link href={'progress/create'} >
+                    <div className="flex items-center gap-2 text-blue-500">
+                        <Plus size={16}/> New
+                    </div>
+                </Link>
+            </div>
+            <ProgressOverview />
         </div>
     )
 }

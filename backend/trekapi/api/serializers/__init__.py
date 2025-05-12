@@ -7,3 +7,4 @@ from .competition import *
 from .note import *
 from .resource import *
 from .media import *
+from .progress import *

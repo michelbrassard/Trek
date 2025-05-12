@@ -52,7 +52,14 @@ urlpatterns = [
     
     #media
     path('media/', views.media_list),
-    path('media/<uuid:media_id>', views.media_detail)
+    path('media/<uuid:media_id>', views.media_detail),
+    
+    #progress
+    path('progress/', views.progress_list),
+    path('progress/versions/', views.progress_with_all_content_versions_list),
+    path('progress/<uuid:progress_id>', views.progress_detail),
+    path('progress/<uuid:progress_id>/save/', views.save_new_version),
+    path('progress/<uuid:progress_id>/versions/', views.progress_with_all_content_versions),
     
 ]
 

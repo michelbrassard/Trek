@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Team, TemporaryCoachCode, Workout, WorkoutAttendance, Competition, CompetitionAttendance, Note, Resource
+from .models import *
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('email', 'first_name', 'last_name', 'role')  
@@ -20,3 +20,5 @@ admin.site.register(Competition)
 admin.site.register(CompetitionAttendance)
 admin.site.register(Note)
 admin.site.register(Resource)
+admin.site.register(Progress)
+admin.site.register(ProgressContent)
