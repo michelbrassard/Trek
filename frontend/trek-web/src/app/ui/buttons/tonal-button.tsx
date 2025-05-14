@@ -9,7 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
 }
 
-export default function OutlinedButton({
+export default function TonalButton({
     children, 
     className, 
     isPrimary = false, 
