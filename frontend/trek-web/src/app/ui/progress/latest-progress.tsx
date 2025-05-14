@@ -5,9 +5,9 @@ import { useEffect, useState } from "react"
 import Title from "../dashboard/title"
 import { useRouter } from "next/navigation"
 import { Pencil, Trash2, History } from "lucide-react"
-import Button from "../buttons/button"
 import TextArea from "../form/textarea"
 import InputSubmit from "../form/input-submit"
+import TonalButton from "../buttons/tonal-button"
 
 interface ProgressDetailsDataProps {
     id: string
@@ -110,15 +110,15 @@ export default function ProgressDetails({id}: ProgressDetailsDataProps) {
                 <div className="flex row justify-between">
                     <Title text={progressDetails.title} />
                     <div className="flex row gap-2">
-                        <Button isSecondary={true} onClick={handleVersions}>
+                        <TonalButton isSecondary={true} onClick={handleVersions}>
                             Versions<History size={16}/>
-                        </Button>
-                        <Button isSecondary={true} onClick={handleEdit}>
+                        </TonalButton>
+                        <TonalButton isSecondary={true} onClick={handleEdit}>
                             Edit<Pencil size={16}/>
-                        </Button>
-                        <Button isDanger={true} onClick={handleDelete}>
+                        </TonalButton>
+                        <TonalButton isDanger={true} onClick={handleDelete}>
                             Delete<Trash2 size={16} />
-                        </Button>
+                        </TonalButton>
                     </div>
                 </div>
 

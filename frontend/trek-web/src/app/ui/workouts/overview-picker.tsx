@@ -1,6 +1,6 @@
 'use client'
 
-import Button from "../buttons/button"
+import VariableButton from "../buttons/variable-button"
 
 import { useState } from "react"
 import WorkoutOverviewList from "./workout-overview-list"
@@ -17,22 +17,22 @@ export default function WorkoutOverviewPicker() {
     return(
         <div className="flex flex-row gap-3">
             <div className="flex flex-col gap-1 relative">
-                <Button
+                <VariableButton
                     isSecondary={overviewType !== 'list'} 
                     isFilled={overviewType === 'list'}
                     isPrimary={overviewType === 'list'}
                     onClick={() => handleTypeSwitch("list")}
                 >
                     <List size={16} className="my-1" />
-                </Button>
-                <Button
+                </VariableButton>
+                <VariableButton
                     isSecondary={overviewType !== 'calendar'} 
                     isFilled={overviewType === 'calendar'}
                     isPrimary={overviewType === 'calendar'}
                     onClick={() => handleTypeSwitch("calendar")}
                 >
                     <Calendar size={16} className="my-1" />
-                </Button>
+                </VariableButton>
             </div>
             {
                 overviewType === 'list' ? 

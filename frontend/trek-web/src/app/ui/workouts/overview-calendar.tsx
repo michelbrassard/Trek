@@ -5,9 +5,11 @@ import { startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, fo
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Dumbbell, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import Button from '../buttons/button';
+import VariableButton from '../buttons/variable-button';
 import axios from 'axios';
 import Link from 'next/link';
+import TonalButton from '../buttons/tonal-button';
+import FilledButton from '../buttons/filled-button';
 
 interface WorkoutRow {
     id: string,
@@ -93,18 +95,18 @@ export default function WorkoutCalendar() {
         >
             <div className='flex flex-row justify-between'>
                 <div className='flex flex-row gap-1'>
-                    <Button 
+                    <TonalButton 
                         isSecondary={true} 
                         onClick={() => {}}
                     >
                         <ChevronLeft size={16} />
-                    </Button>
-                    <Button 
+                    </TonalButton>
+                    <TonalButton 
                         isSecondary={true} 
                         onClick={() => {}}
                     >
                         <ChevronRight size={16} className="my-1"/>
-                    </Button>
+                    </TonalButton>
                 </div>
                 <div className='flex items-center'>
                     <h2 className='text-lg'>
@@ -112,30 +114,30 @@ export default function WorkoutCalendar() {
                     </h2>
                 </div>
                 <div className='flex flex-row gap-1'>
-                    <Button 
+                    <VariableButton 
                         isSecondary={view !== 'year'} 
                         isFilled={view === 'year'}
                         isPrimary={view === 'year'}
                         onClick={() => handleViewChange('year')}
                     >
                         <p className='text-sm'>Year</p>
-                    </Button>
-                    <Button 
+                    </VariableButton>
+                    <VariableButton 
                         isSecondary={view !== 'month'} 
                         isFilled={view === 'month'}
                         isPrimary={view === 'month'}
                         onClick={() => handleViewChange('month')}
                     >
                         <p className='text-sm'>Month</p>
-                    </Button>
-                    <Button 
+                    </VariableButton>
+                    <VariableButton 
                         isSecondary={view !== 'week'} 
                         isFilled={view === 'week'}
                         isPrimary={view === 'week'}
                         onClick={() => handleViewChange('week')}
                     >
                         <p className='text-sm'>Week</p>
-                    </Button>
+                    </VariableButton>
                 </div>
             </div>
             <div className='relative flex flex-row gap-4'>
@@ -192,18 +194,18 @@ export default function WorkoutCalendar() {
                         >
                             <div className='flex flex-row justify-between items-center mb-3'>
                                 <h1 className='font-bold text-xl'>{format(selectedDate, 'PPP')}</h1>
-                                <Button 
-                                    isDanger={true} isFilled={true}
+                                <FilledButton 
+                                    isDanger={true}
                                     onClick={() => setSelectedDate(null)}
                                 >
                                     <X size={16} />
-                                </Button>
+                                </FilledButton>
                             </div>
                             <div className='flex flex-col gap-2 mt-2'>
-                                <Button isPrimary={true} isFilled={true}>
+                                <FilledButton isPrimary={true}>
                                     <Dumbbell size={16} />
                                     Add Workout
-                                </Button>
+                                </FilledButton>
                             </div>
                             <div className='flex flex-col gap-2 mt-4 overflow-scroll h-[510px] rounded-md'>
                                 {workouts

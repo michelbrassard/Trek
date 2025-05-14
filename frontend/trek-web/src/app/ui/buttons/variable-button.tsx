@@ -10,7 +10,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
 }
 
-export default function Button({
+//a button when it needs emphasis between states, for example for calendar and list overview switch
+//if a calendar is opne the button is filled and the other one is tonal
+export default function VariableButton({
     children, 
     className, 
     isPrimary = false, 

@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import Title from "../dashboard/title";
 
 import { useRouter } from 'next/navigation';
-import Button from "../buttons/button";
 import { Pencil, Trash2 } from "lucide-react";
+import TonalButton from "../buttons/tonal-button";
 
 interface WorkoutOverviewDataProps {
     id: string
@@ -64,12 +64,12 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                 <div className="flex row justify-between">
                     <Title text={overview.title} />
                     <div className="flex row gap-2">
-                        <Button isSecondary={true} onClick={handleEdit}>
+                        <TonalButton isSecondary={true} onClick={handleEdit}>
                             Edit<Pencil size={16}/>
-                        </Button>
-                        <Button isDanger={true} onClick={handleDelete}>
+                        </TonalButton>
+                        <TonalButton isDanger={true} onClick={handleDelete}>
                             Delete<Trash2 size={16} />
-                        </Button>
+                        </TonalButton>
                     </div>
                     
                 </div>

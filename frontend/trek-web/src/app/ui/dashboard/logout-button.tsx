@@ -3,7 +3,7 @@
 import { LogOut} from "lucide-react";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
-import Button from "../buttons/button";
+import TonalButton from "../buttons/tonal-button";
 
 export default function LogOutButton() {
     const router = useRouter();
@@ -20,8 +20,8 @@ export default function LogOutButton() {
     }
 
     return(
-        <Button isDanger={true} onClick={handleLogout}>
+        <TonalButton isDanger={true} onClick={handleLogout}>
             <LogOut size={16} />Log out
-        </Button>
+        </TonalButton>
     );
 }

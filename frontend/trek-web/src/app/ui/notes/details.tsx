@@ -6,7 +6,7 @@ import Title from "../dashboard/title"
 import { Note } from "./types"
 import { useRouter } from "next/navigation"
 import { Pencil, Trash2 } from "lucide-react"
-import Button from "../buttons/button"
+import TonalButton from "../buttons/tonal-button"
 
 interface NotesDetailsDataProps {
     id: string
@@ -57,12 +57,12 @@ export default function NotesDetails({id}: NotesDetailsDataProps) {
                 <div className="flex row justify-between">
                     <Title text={noteDetails.title} />
                     <div className="flex row gap-2">
-                        <Button isSecondary={true} onClick={handleEdit}>
+                        <TonalButton isSecondary={true} onClick={handleEdit}>
                             Edit<Pencil size={16}/>
-                        </Button>
-                        <Button isDanger={true} onClick={handleDelete}>
+                        </TonalButton>
+                        <TonalButton isDanger={true} onClick={handleDelete}>
                             Delete<Trash2 size={16} />
-                        </Button>
+                        </TonalButton>
                     </div>
                 </div>
 
