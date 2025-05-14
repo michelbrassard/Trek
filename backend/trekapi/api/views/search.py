@@ -25,7 +25,7 @@ def search_data(request):
                 Q(date__icontains=query) | 
                 Q(length__icontains=query) |
                 Q(unit__icontains=query)
-            ).distinct()[:10]
+            ).distinct()[:5]
             
             searched_competitions = Competition.objects.filter(
                 Q(creatorId=user) | Q(competition_attendance__attendantId=user)
@@ -36,7 +36,7 @@ def search_data(request):
                 Q(endDate__icontains=query) |
                 Q(location__icontains=query) |
                 Q(url__icontains=query)
-            ).distinct()[:10]
+            ).distinct()[:5]
             
             terms = query.strip().split(" ", 1)
             first_part = terms[0]
@@ -52,7 +52,7 @@ def search_data(request):
                 Q(email__icontains=query) |
                 Q(phone__icontains=query) |
                 Q(date_of_birth__icontains=query)
-            ).distinct()[:10]
+            ).distinct()[:5]
             
             print(searched_workouts)
             print(searched_competitions)

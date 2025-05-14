@@ -8,7 +8,7 @@ interface AttendanceListItemProp {
 export default function WorkoutListItem({ data }: AttendanceListItemProp) {
     return(
         <Link href={`/dashboard/workouts/${data.id}`}>
-            <div className="my-4 px-4 py-3 border rounded-xl border-neutral-300 dark:border-neutral-700 hover:border-blue-500 hover:bg-blue-50 hover:dark:bg-blue-950 transition-colors">
+            <div className="w-full mb-4 px-4 py-3 border rounded-xl border-neutral-300 dark:border-neutral-700 hover:border-blue-500 hover:bg-blue-50 hover:dark:bg-blue-950 transition-colors">
                 <p className="text-xs">{data.date} (...day name?)</p>
                 <h2 className="text-xl font-bold my-1">{data.title}</h2>
                 <p className="text-sm">{data.description}</p>

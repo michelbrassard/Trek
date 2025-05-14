@@ -39,7 +39,7 @@ export default function CompetitionOverviewData({id}: CompetitionOverviewDataPro
             }
         };
 
-    fetchData();
+        fetchData();
     }, [id]);
 
     const handleEdit = () => {
@@ -71,9 +71,7 @@ export default function CompetitionOverviewData({id}: CompetitionOverviewDataPro
                             Delete<Trash2 size={16} />
                         </Button>
                     </div>
-                    
                 </div>
-                
                 <p className="whitespace-pre">{overview.description}</p>
                 <p>{overview.startDate} - {overview.endDate}</p>
                 <p className="whitespace-pre">{overview.location}</p>

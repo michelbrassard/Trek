@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import TrekLogo from "../logo/trek-logo";
-import { Briefcase, CalendarCheck, ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, StickyNote, Users, Video, LibraryBig } from "lucide-react";
+import { ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, StickyNote, Users, Video, LibraryBig } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -47,12 +47,10 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
         //TODO, skroz razdvojit stranice, tako da bude /doashboard/coach ili /.../athlete
         { href: "/dashboard", label: "Overview", icon: LayoutDashboard, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/workouts", label: "Workouts", icon: Dumbbell, roles: ["COACH", "ATHLETE"] },
-        { href: "/dashboard/attendance", label: "Attendance", icon: CalendarCheck, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/athletes", label: "Athletes", icon: Users, roles: ["COACH"] },
-        { href: "/dashboard/progress", label: "Progress", icon: ChartLine, roles: ["ATHLETE"] },
+        { href: "/dashboard/progress", label: "Progress", icon: ChartLine, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/competitions", label: "Competitions", icon: Medal, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/resources", label: "Resources", icon: LibraryBig, roles: ["COACH", "ATHLETE"] },
-        { href: "/dashboard/equipment", label: "Equipment", icon: Briefcase, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/notes", label: "Notes", icon: StickyNote, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/media", label: "Media", icon: Video, roles: ["COACH"] },
         // progress page...?

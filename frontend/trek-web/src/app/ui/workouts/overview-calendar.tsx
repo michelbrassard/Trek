@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, format, isSameMonth, isSameDay } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Dumbbell, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Dumbbell, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Button from '../buttons/button';
 import axios from 'axios';
@@ -69,30 +69,79 @@ export default function WorkoutCalendar() {
         setCalendarDays(eachDayOfInterval({ start, end }))
     }
 
+    const monthMap: { [key: number]: string } = {
+        0: "January",
+        1: "February",
+        2: "March",
+        3: "April",
+        4: "May",
+        5: "June",
+        6: "July",
+        7: "August",
+        8: "September",
+        9: "October",
+        10: "November",
+        11: "December"
+    };
+
     return(
-        <div className=''>
-            <div className='flex flex-row justify-end gap-1 m-1'>
-                <Button 
-                    isSecondary={view !== 'month'} 
-                    isFilled={view === 'month'}
-                    isPrimary={view === 'month'}
-                    onClick={() => handleViewChange('month')}
-                >
-                    Month View
-                </Button>
-                <Button 
-                    isSecondary={view !== 'week'} 
-                    isFilled={view === 'week'}
-                    isPrimary={view === 'week'}
-                    onClick={() => handleViewChange('week')}
-                >
-                    Week View
-                </Button>
+        <motion.div
+            initial={{ opacity: 0}}
+            animate={{ opacity: 1}}
+            transition={{ duration: 0.3 }}
+            className='flex flex-col gap-1'
+        >
+            <div className='flex flex-row justify-between'>
+                <div className='flex flex-row gap-1'>
+                    <Button 
+                        isSecondary={true} 
+                        onClick={() => {}}
+                    >
+                        <ChevronLeft size={16} />
+                    </Button>
+                    <Button 
+                        isSecondary={true} 
+                        onClick={() => {}}
+                    >
+                        <ChevronRight size={16} className="my-1"/>
+                    </Button>
+                </div>
+                <div className='flex items-center'>
+                    <h2 className='text-lg'>
+                        {monthMap[currentDate.getMonth()]}
+                    </h2>
+                </div>
+                <div className='flex flex-row gap-1'>
+                    <Button 
+                        isSecondary={view !== 'year'} 
+                        isFilled={view === 'year'}
+                        isPrimary={view === 'year'}
+                        onClick={() => handleViewChange('year')}
+                    >
+                        <p className='text-sm'>Year</p>
+                    </Button>
+                    <Button 
+                        isSecondary={view !== 'month'} 
+                        isFilled={view === 'month'}
+                        isPrimary={view === 'month'}
+                        onClick={() => handleViewChange('month')}
+                    >
+                        <p className='text-sm'>Month</p>
+                    </Button>
+                    <Button 
+                        isSecondary={view !== 'week'} 
+                        isFilled={view === 'week'}
+                        isPrimary={view === 'week'}
+                        onClick={() => handleViewChange('week')}
+                    >
+                        <p className='text-sm'>Week</p>
+                    </Button>
+                </div>
             </div>
             <div className='relative flex flex-row gap-4'>
                 <div className="w-full grid grid-cols-7 bg-neutral-100 dark:bg-neutral-900 rounded-xl">
                     {week.map((day) => (
-                        <div key={day} className="text-center px-4 py-3">
+                        <div key={day} className="text-center px-4 py-3 text-sm truncate">
                             {day}
                         </div>
                     ))}
@@ -111,7 +160,7 @@ export default function WorkoutCalendar() {
                                     'text-neutral-500 hover:outline outline-neutral-300 dark:outline-neutral-700'
                                 ),
                                 (isSameDay(day, selectedDate ?? '') && 'outline outline-blue-500'),
-                                (view === 'week' ? 'h-[500px]' : 'h-28')
+                                (view === 'week' ? 'min-h-[500px]' : 'h-28')
                                 
                             )}
                             onClick={() => setSelectedDate(day)}
@@ -142,12 +191,12 @@ export default function WorkoutCalendar() {
                             transition={{ duration: 0.2 }}
                         >
                             <div className='flex flex-row justify-between items-center mb-3'>
-                                <h1 className='font-bold text-2xl'>{format(selectedDate, 'PPP')}</h1>
+                                <h1 className='font-bold text-xl'>{format(selectedDate, 'PPP')}</h1>
                                 <Button 
                                     isDanger={true} isFilled={true}
                                     onClick={() => setSelectedDate(null)}
                                 >
-                                    Close <X size={22} />
+                                    <X size={16} />
                                 </Button>
                             </div>
                             <div className='flex flex-col gap-2 mt-2'>
@@ -178,8 +227,6 @@ export default function WorkoutCalendar() {
                     )}
                 </AnimatePresence>
             </div>
-        </div>
-        
-        
+        </motion.div>
     )
 }
