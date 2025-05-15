@@ -6,7 +6,7 @@ import SideNav from "../ui/dashboard/side-nav";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-      <div className="flex h-full flex-col md:flex-row md:overflow-scroll">
+      <div className="flex h-full flex-col md:flex-row md:overflow-y-scroll">
           <div className="w-full flex-none md:w-64 hidden md:block">
             <SideNav />
           </div>

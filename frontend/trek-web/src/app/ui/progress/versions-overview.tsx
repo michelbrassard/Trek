@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Title from "../dashboard/title";
+import VisualizeProgress from "./visualize-progress";
 
 interface ProgressVersionDataProps {
     id: string
@@ -46,6 +47,8 @@ export default function ProgressVersions({id}: ProgressVersionDataProps) {
             <div>
                 <Title text={progressVersions.title} />
                 <p className="text-sm text-neutral-500">{progressVersions.description}</p>
+                <VisualizeProgress contents={progressVersions.contents} />
+                {/* <p>===</p>
                 <p>Versions:</p>
                 {progressVersions.contents.length === 0 ? 
                     <div>No previous versions</div> 
@@ -60,7 +63,7 @@ export default function ProgressVersions({id}: ProgressVersionDataProps) {
                         }
                     </div>
                     
-                }
+                } */}
             </div>
             :
             <div>Loading data...</div>
