@@ -4,4 +4,4 @@ Models that run in the background which will be used to transform data using OCR
 
 <https://fastapi.tiangolo.com/#create-it>
 
-<https://github.com/JaidedAI/EasyOCR>
+<https://github.com/JaidedAI/EasyOCR> -> "hr" for Croatian
