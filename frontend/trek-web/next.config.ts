@@ -11,7 +11,7 @@ const cspHeader = `
     form-action 'self';
     frame-ancestors 'none';
     upgrade-insecure-requests;
-    connect-src 'self' http://localhost:8000;`
+    connect-src 'self' http://localhost:8000 http://localhost:8001;`
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,

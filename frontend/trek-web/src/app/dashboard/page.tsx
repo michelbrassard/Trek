@@ -1,4 +1,5 @@
 import Title from "../ui/dashboard/title";
+import TestModelFastApi from "../ui/DELETEME/test";
 
 export default function Overview() {
 
@@ -6,6 +7,7 @@ export default function Overview() {
     <div>
       <Title text="Overview"/>
       <p>Današnji trening i ostalo...</p>
+      <TestModelFastApi />
     </div>
   );
 }
