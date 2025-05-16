@@ -74,6 +74,11 @@ export default function ProgressDetails({id}: ProgressDetailsDataProps) {
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target;
+        if(value.trim() === content.trim()) {
+            setContent(value);
+            setHasContentChanged(false)
+            return
+        }
         setContent(value);
         setHasContentChanged(true)
     };
