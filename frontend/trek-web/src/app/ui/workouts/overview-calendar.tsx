@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx';
-import { startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, format, isSameMonth, isSameDay, startOfYear, endOfYear, isSameYear } from 'date-fns';
+import { startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, format, isSameMonth, isSameDay, startOfYear, endOfYear } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Dumbbell, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -37,13 +37,13 @@ export default function WorkoutCalendar() {
         10: "November",
         11: "December"
     };
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+    
     const [workouts, setWorkouts] = useState<WorkoutRow[]>([])
     const [view, setView] = useState('month');
     const [calendarDays, setCalendarDays] = useState<Date[]>([])
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null)
     const [currentDate, setCurrentDate] = useState<Date>(new Date())
-
-    // const [yearDays, setYearDays] = useState
+    const [viewDate, setViewDate] = useState<Date>(new Date())
 
     useEffect(() => {
         const fetchData = async () => {
@@ -67,13 +67,13 @@ export default function WorkoutCalendar() {
     const handleViewChange = (type: string) => {
         setView(type)
         if(type === 'month') {
-            generateCalendarMonthDays(currentDate)
+            generateCalendarMonthDays(viewDate)
         }
         else if(type === 'week') {
-            generateCalendarWeekDays(currentDate)
+            generateCalendarWeekDays(viewDate)
         }
         else if(type === 'year') {
-            generateCalendarYearDays(currentDate)
+            generateCalendarYearDays(viewDate)
         }
     }
 
@@ -83,17 +83,49 @@ export default function WorkoutCalendar() {
         const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
         setCalendarDays(eachDayOfInterval({ start, end }))
     }
-
     const generateCalendarWeekDays = (date: Date) => {
         const start = startOfWeek(date, { weekStartsOn: 1 });
         const end = endOfWeek(date, { weekStartsOn: 1 });
         setCalendarDays(eachDayOfInterval({ start, end }))
     }
-
     const generateCalendarYearDays = (date: Date) => {
         const start = startOfWeek(startOfYear(date), { weekStartsOn: 1 })
         const end = endOfWeek(endOfYear(date), { weekStartsOn: 1 })
         setCalendarDays(eachDayOfInterval({ start, end }))
+    }
+
+    /**
+     * View other dates, weeks, years...
+     * @param direction determines whether it should go to the next or previous week/month/year
+     */
+    const viewAnother = (direction: number) => {
+        if(view === 'year') {
+            const prevYear = new Date(
+                viewDate.getFullYear() + direction, 
+                viewDate.getMonth(), 
+                viewDate.getDate()
+            );
+            setViewDate(prevYear)
+            generateCalendarYearDays(prevYear)
+        }
+        else if(view === 'month') {
+            const prevMonth = new Date(
+                viewDate.getFullYear(), 
+                viewDate.getMonth() + direction, 
+                viewDate.getDate()
+            )
+            setViewDate(prevMonth)
+            generateCalendarMonthDays(prevMonth)
+        }
+        else if(view === 'week') {
+            const prevWeek = new Date(
+                viewDate.getFullYear(), 
+                viewDate.getMonth(), 
+                viewDate.getDate() + direction * 7
+            )
+            setViewDate(prevWeek)
+            generateCalendarWeekDays(prevWeek)
+        }
     }
 
     //used by the year view to generate the days of each month
@@ -140,41 +172,31 @@ export default function WorkoutCalendar() {
                 <div className='flex flex-row gap-1'>
                     <TonalButton 
                         isSecondary={true} 
-                        onClick={() => {
-                            if(view === 'year') {
-                                const prevYear = new Date(currentDate.getFullYear() - 1, currentDate.getMonth());
-                                console.log(prevYear)
-                                generateCalendarYearDays(prevYear)
-                            }
-                            else if(view === 'month') {
-                                //generateCalendarMonthDays(currentDate)
-                            }
-                            else if(view === 'week') {
-                                //generateCalendarWeekDays(currentDate)
-                            }
-                        }}
+                        onClick={() => viewAnother(-1)}
                     >
                         <ChevronLeft size={16} />
                     </TonalButton>
                     <TonalButton 
                         isSecondary={true} 
-                        onClick={() => {
-                            if(view === 'year') {
-                                generateCalendarYearDays(new Date(currentDate.getFullYear() + 1))
-                            }
-                        }}
+                        onClick={() => viewAnother(1)}
                     >
                         <ChevronRight size={16} className="my-1"/>
                     </TonalButton>
                 </div>
                 <div className='flex items-center'>
                     <h2 className='text-lg'>
-                        {/* Current day year? */}
-                        {view !== 'year' ? 
-                            monthMap[currentDate.getMonth()] 
-                            :
-                            currentDate.getFullYear()
+                        {view === 'year' &&
+                            viewDate.getFullYear()
                         }
+                        {view === 'month' &&
+                            `${monthMap[viewDate.getMonth()]} ${viewDate.getFullYear()}`
+                        }
+                        {view === 'week' &&
+                            `[${calendarDays[0].getDate()} - ${calendarDays[calendarDays.length - 1].getDate()}]
+                            ${monthMap[viewDate.getMonth()]} 
+                            ${viewDate.getFullYear()}`
+                        }
+                        
                     </h2>
                 </div>
                 <div className='flex flex-row gap-1'>
@@ -217,7 +239,7 @@ export default function WorkoutCalendar() {
                                 <div
                                     key={idx}
                                     className={clsx('m-1 p-2 text-sm transition-all rounded-xl hover:cursor-pointer dark:text-white overflow-scroll', 
-                                        (isSameMonth(day, currentDate) ? 
+                                        (isSameMonth(day, viewDate) ? 
                                             (isSameDay(day, currentDate) ? 
                                                 'bg-blue-200 dark:bg-blue-800 hover:dark:bg-blue-700 hover:bg-blue-300'
                                                 : 
@@ -253,10 +275,20 @@ export default function WorkoutCalendar() {
                             <div className={clsx('grid gap-6', selectedDate ? 'grid-cols-2' : 'grid-cols-4')}>
                                 {Array.from({ length: 12 }, (_, month) => {
                                     const monthName = monthMap[month]
-                                    const monthDays = generateMonthGrid(currentDate.getFullYear(), month)
+                                    const monthDays = generateMonthGrid(viewDate.getFullYear(), month)
                                     return(
                                         <div key={month}>
-                                            <h2 className='mb-2 p-2 text-lg text-blue-500'>{monthName}</h2>
+                                            <h2 
+                                                className='mb-2 p-2 text-lg text-blue-500 transition-all rounded-md hover:bg-neutral-200 hover:dark:bg-neutral-800 hover:cursor-pointer'
+                                                onClick={() => {
+                                                    const date = new Date(viewDate.getFullYear(), month)
+                                                    setViewDate(date)
+                                                    setView('month')
+                                                    generateCalendarMonthDays(date)
+                                                }}
+                                            >
+                                                {monthName}
+                                            </h2>
                                             <div className='grid grid-cols-7 gap-2'>
                                                 {["M", "T", "W", "T", "F", "S", "S"].map((dayName, index) => (
                                                     <p key={index} className='text-center rounded-full w-[32px] p-1 text-neutral-500'>
@@ -268,7 +300,7 @@ export default function WorkoutCalendar() {
                                                         key={index}
                                                         className={clsx(
                                                             'rounded-lg w-[32px] p-1 transition-all cursor-pointer',
-                                                            (isSameMonth(day, new Date(currentDate.getFullYear(), month)) ? 
+                                                            (isSameMonth(day, new Date(viewDate.getFullYear(), month)) ? 
                                                                 (isSameDay(day, currentDate) ? 
                                                                     'bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 hover:dark:bg-blue-700'
                                                                     :

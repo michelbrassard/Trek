@@ -8,7 +8,7 @@ import WorkoutCalendar from "./overview-calendar"
 import { Calendar, List } from "lucide-react"
 
 export default function WorkoutOverviewPicker() {
-    const [overviewType, setOverviewType] = useState('list')
+    const [overviewType, setOverviewType] = useState('calendar')
 
     const handleTypeSwitch = (type: string) => {
         setOverviewType(type)
