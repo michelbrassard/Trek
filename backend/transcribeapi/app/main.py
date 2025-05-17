@@ -1,9 +1,15 @@
 from typing import Union
+
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
-from pydantic import BaseModel
+from PIL import Image
+import io
+
+import cv2
+import pytesseract
+from pytesseract import Output
 
 
 app = FastAPI()
@@ -32,9 +38,10 @@ async def extract_text(
     type: str = Form(...), 
     file: UploadFile = File(...)
 ):
+    text = await parse_text(file)
     return {
-        "type": type,
-        "filename": file.filename
+        "filename": file.filename,
+        "content": text
     }
 
 @app.post("/extract/handwriting")
@@ -60,3 +67,30 @@ async def extract_audio(
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8001, reload=True)
+    
+
+async def parse_text(file):
+    image_bytes = await file.read()
+    image = Image.open(io.BytesIO(image_bytes))
+    
+    # Extract layout-aware OCR data
+    data = pytesseract.image_to_data(image, lang='eng', output_type=pytesseract.Output.DICT)
+
+    # Structure output: lines of words with positions
+    structured_output = []
+    n_boxes = len(data['text'])
+    for i in range(n_boxes):
+        if data['text'][i].strip():
+            structured_output.append({
+                "text": data['text'][i],
+                "left": data['left'][i],
+                "top": data['top'][i],
+                "width": data['width'][i],
+                "height": data['height'][i],
+                "conf": data['conf'][i],
+                "line_num": data['line_num'][i],
+                "block_num": data['block_num'][i],
+                "page_num": data['page_num'][i],
+            })
+    
+    return structured_output

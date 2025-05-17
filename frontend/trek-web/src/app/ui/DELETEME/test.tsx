@@ -2,16 +2,35 @@
 
 import { useState } from "react";
 
+interface OCRWordBox {
+    text: string;
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    conf: number;
+    line_num: number;
+    block_num: number;
+    page_num: number;
+}
+
+
+interface OCRResponse {
+    filename: string;
+    content: OCRWordBox[];
+}
+
 export default function TestModelFastApi() {
     const [file, setFile] = useState<File | null>(null);
     const [type, setType] = useState("text");
+    const [data, setData] = useState<OCRResponse>();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!file) {
-        alert("Please select a file.");
-        return;
+            alert("Please select a file.");
+            return;
         }
 
         const formData = new FormData();
@@ -24,18 +43,29 @@ export default function TestModelFastApi() {
         });
 
         const data = await response.json();
-        console.log("Response:", data);
+
+        // Filter all words in that block
+        const firstBlockWords = data.content.filter(word => word.block_num === 10);
+
+        console.log(firstBlockWords);
+        setData(data)
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-            <select value={type} onChange={(e) => setType(e.target.value)}>
-                <option value="handwriting">Handwriting</option>
-                <option value="text">Text</option>
-                <option value="audio">Audio</option>
-            </select>
-            <input type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} required />
-            <button type="submit">Upload</button>
-        </form>
+        <div>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                <select value={type} onChange={(e) => setType(e.target.value)}>
+                    <option value="handwriting">Handwriting</option>
+                    <option value="text">Text</option>
+                    <option value="audio">Audio</option>
+                </select>
+                <input type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} required />
+                <button type="submit">Upload</button>
+            </form>
+            <div>
+                <p>{data?.filename}</p>
+            </div>
+        </div>
+        
     );
 }
