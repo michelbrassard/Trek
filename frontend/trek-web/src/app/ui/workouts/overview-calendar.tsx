@@ -291,7 +291,7 @@ export default function WorkoutCalendar() {
                                             </h2>
                                             <div className='grid grid-cols-7 gap-2'>
                                                 {["M", "T", "W", "T", "F", "S", "S"].map((dayName, index) => (
-                                                    <p key={index} className='text-center rounded-full w-[32px] p-1 text-neutral-500'>
+                                                    <p key={index} className='text-sm text-center rounded-full w-[32px] p-1 text-neutral-500'>
                                                         {dayName}
                                                     </p>
                                                 ))}
@@ -299,7 +299,7 @@ export default function WorkoutCalendar() {
                                                     <div
                                                         key={index}
                                                         className={clsx(
-                                                            'rounded-lg w-[32px] p-1 transition-all cursor-pointer',
+                                                            'rounded-lg w-[28px] p-1 transition-all cursor-pointer text-sm',
                                                             (isSameMonth(day, new Date(viewDate.getFullYear(), month)) ? 
                                                                 (isSameDay(day, currentDate) ? 
                                                                     'bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 hover:dark:bg-blue-700'
