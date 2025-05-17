@@ -24,7 +24,7 @@ export default function VisualizeTextProgress({contents}: ProgressProps) {
     
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isScrollStart, setIsScrollStart] = useState(true)
-    const [isScrollEnd, setIsScrollEnd] = useState(true)
+    const [isScrollEnd, setIsScrollEnd] = useState(false)
     
     const handleScroll = () => {
         const scrollX = scrollRef.current?.scrollLeft ?? 0;
