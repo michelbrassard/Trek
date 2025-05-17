@@ -91,7 +91,7 @@ export default function WorkoutCalendar() {
             initial={{ opacity: 0}}
             animate={{ opacity: 1}}
             transition={{ duration: 0.3 }}
-            className='flex flex-col gap-1'
+            className='flex flex-col gap-1 w-full'
         >
             <div className='flex flex-row justify-between'>
                 <div className='flex flex-row gap-1'>
@@ -140,7 +140,7 @@ export default function WorkoutCalendar() {
                     </VariableButton>
                 </div>
             </div>
-            <div className='relative flex flex-row gap-4'>
+            <div className='relative flex flex-row gap-4 w-full'>
                 <div className="w-full grid grid-cols-7 bg-neutral-100 dark:bg-neutral-900 rounded-xl">
                     {week.map((day) => (
                         <div key={day} className="text-center px-4 py-3 text-sm truncate">
