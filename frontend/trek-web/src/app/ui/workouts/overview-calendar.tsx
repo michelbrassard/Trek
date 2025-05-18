@@ -10,6 +10,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import TonalButton from '../buttons/tonal-button';
 import FilledButton from '../buttons/filled-button';
+import { useRouter } from 'next/navigation';
 
 interface WorkoutRow {
     id: string,
@@ -44,6 +45,7 @@ export default function WorkoutCalendar() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null)
     const [currentDate, setCurrentDate] = useState<Date>(new Date())
     const [viewDate, setViewDate] = useState<Date>(new Date())
+    const router = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -226,7 +228,7 @@ export default function WorkoutCalendar() {
                     </VariableButton>
                 </div>
             </div>
-                <div className='relative flex flex-row gap-4 w-full'>
+                <div className='relative flex flex-row gap-2 w-full'>
                     {view !== 'year' ?
                         /* Week and month view */
                         <div className="w-full grid grid-cols-7 bg-neutral-100 dark:bg-neutral-900 rounded-xl">
@@ -304,7 +306,7 @@ export default function WorkoutCalendar() {
                                                                 (isSameDay(day, currentDate) ? 
                                                                     'bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 hover:dark:bg-blue-700'
                                                                     :
-                                                                    'hover:bg-neutral-800'
+                                                                    'hover:bg-neutral-200 hover:dark:bg-neutral-800'
                                                                 )
                                                                 :
                                                                 'text-neutral-300 dark:text-neutral-700 hover:outline outline-neutral-300 dark:outline-neutral-700'
@@ -345,7 +347,15 @@ export default function WorkoutCalendar() {
                                     </FilledButton>
                                 </div>
                                 <div className='flex flex-col gap-2 mt-2'>
-                                    <FilledButton isPrimary={true}>
+                                    <FilledButton 
+                                        isPrimary={true}
+                                        onClick={() => {
+                                            const year = selectedDate.getFullYear();
+                                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                                            const day = String(selectedDate.getDate()).padStart(2, '0');
+                                            router.push(`workouts/create?date=${year}-${month}-${day}`)
+                                        }}
+                                    >
                                         <Dumbbell size={16} />
                                         Add Workout
                                     </FilledButton>

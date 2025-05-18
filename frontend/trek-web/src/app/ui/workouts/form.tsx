@@ -6,7 +6,7 @@ import Title from "../dashboard/title";
 import InputField from "../form/input-field";
 import InputSubmit from "../form/input-submit";
 import DOMPurify from "dompurify";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import TextArea from "../form/textarea";
 
 interface WorkoutFormProps {
@@ -24,8 +24,13 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
     const [length, setLength] = useState(0);
     const [unit, setUnit] = useState("");
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     useEffect(() => {
+        if(searchParams.has("date")) {
+                const date = searchParams.get('date');
+                setDate(date!)
+        }
         if (isEdit && id) {
             const fetchData = async () => {
                 try {
@@ -45,7 +50,7 @@ export default function WorkoutForm({formTitle, isEdit, id}: WorkoutFormProps) {
             };
             fetchData()
         }
-      }, [id, isEdit]);
+      }, [id, isEdit, searchParams]);
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

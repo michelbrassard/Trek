@@ -45,7 +45,7 @@ export default function TestModelFastApi() {
         const data = await response.json();
 
         // Filter all words in that block
-        const firstBlockWords = data.content.filter(word => word.block_num === 10);
+        const firstBlockWords = data.content.filter((word: OCRWordBox) => word.block_num === 10);
 
         console.log(firstBlockWords);
         setData(data)
