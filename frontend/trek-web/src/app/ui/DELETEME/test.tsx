@@ -17,7 +17,7 @@ interface OCRWordBox {
 
 interface OCRResponse {
     filename: string;
-    content: OCRWordBox[];
+    content: OCRWordBox[] | string;
 }
 
 export default function TestModelFastApi() {
@@ -45,10 +45,10 @@ export default function TestModelFastApi() {
         const data = await response.json();
 
         // Filter all words in that block
-        const firstBlockWords = data.content.filter((word: OCRWordBox) => word.block_num === 10);
+        //const firstBlockWords = data.content.filter((word: OCRWordBox) => word.block_num === 10);
 
-        console.log(firstBlockWords);
-        setData(data)
+        console.log(data);
+        setData(data.content)
     };
 
     return (
