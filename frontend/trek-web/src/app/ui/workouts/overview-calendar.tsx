@@ -228,160 +228,160 @@ export default function WorkoutCalendar() {
                     </VariableButton>
                 </div>
             </div>
-                <div className='relative flex flex-row gap-2 w-full'>
-                    {view !== 'year' ?
-                        /* Week and month view */
-                        <div className="w-full grid grid-cols-7 bg-neutral-100 dark:bg-neutral-900 rounded-xl">
-                            {week.map((day) => (
-                                <div key={day} className="text-center px-4 py-3 text-sm truncate">
-                                    {day}
-                                </div>
-                            ))}
-                            {calendarDays.map((day, idx) => (
-                                <div
-                                    key={idx}
-                                    className={clsx('m-1 p-2 text-sm transition-all rounded-xl hover:cursor-pointer dark:text-white overflow-scroll', 
-                                        (isSameMonth(day, viewDate) ? 
-                                            (isSameDay(day, currentDate) ? 
-                                                'bg-blue-200 dark:bg-blue-800 hover:dark:bg-blue-700 hover:bg-blue-300'
-                                                : 
-                                                'bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 hover:dark:bg-neutral-700')
-                                            : 
-                                            'text-neutral-500 hover:outline outline-neutral-300 dark:outline-neutral-700'
-                                        ),
-                                        (isSameDay(day, selectedDate ?? '') && 'outline outline-blue-500'),
-                                        (view === 'week' ? 'min-h-[500px]' : 'h-28')
-                                        
-                                    )}
-                                    onClick={() => setSelectedDate(day)}
-                                >
-                                    <div className='flex flex-row justify-between'>
-                                        <p>{format(day, 'd')}</p>
-                                    </div>
-                                    
-                                    {workouts
-                                        .filter((workout => isSameDay(new Date(workout.date), day)))
-                                        .map(filteredWorkout => 
-                                            <div key={filteredWorkout.id} 
-                                                className='max-w-[130px] border-l-2 border-blue-500 my-1 pl-2'
-                                            >
-                                                <p className='truncate'>{filteredWorkout.title}</p>
-                                            </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                        :
-                        /* year view */
-                        <div className='w-full p-2 bg-neutral-100 dark:bg-neutral-900 rounded-xl'>
-                            <div className={clsx('grid gap-6', selectedDate ? 'grid-cols-2' : 'grid-cols-4')}>
-                                {Array.from({ length: 12 }, (_, month) => {
-                                    const monthName = monthMap[month]
-                                    const monthDays = generateMonthGrid(viewDate.getFullYear(), month)
-                                    return(
-                                        <div key={month}>
-                                            <h2 
-                                                className='mb-2 p-2 text-lg text-blue-500 transition-all rounded-md hover:bg-neutral-200 hover:dark:bg-neutral-800 hover:cursor-pointer'
-                                                onClick={() => {
-                                                    const date = new Date(viewDate.getFullYear(), month)
-                                                    setViewDate(date)
-                                                    setView('month')
-                                                    generateCalendarMonthDays(date)
-                                                }}
-                                            >
-                                                {monthName}
-                                            </h2>
-                                            <div className='grid grid-cols-7 gap-2'>
-                                                {["M", "T", "W", "T", "F", "S", "S"].map((dayName, index) => (
-                                                    <p key={index} className='text-sm text-center rounded-full w-[32px] p-1 text-neutral-500'>
-                                                        {dayName}
-                                                    </p>
-                                                ))}
-                                                {monthDays.map((day, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className={clsx(
-                                                            'rounded-lg w-[28px] p-1 transition-all cursor-pointer text-sm',
-                                                            (isSameMonth(day, new Date(viewDate.getFullYear(), month)) ? 
-                                                                (isSameDay(day, currentDate) ? 
-                                                                    'bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 hover:dark:bg-blue-700'
-                                                                    :
-                                                                    'hover:bg-neutral-200 hover:dark:bg-neutral-800'
-                                                                )
-                                                                :
-                                                                'text-neutral-300 dark:text-neutral-700 hover:outline outline-neutral-300 dark:outline-neutral-700'
-                                                            ),
-                                                            (isSameDay(day, selectedDate ?? '') && 'outline outline-blue-500')
-                                                        )}
-                                                        onClick={() => setSelectedDate(day)}
-                                                    >
-                                                        <p className='text-center'>{format(day, 'd')}</p>
-                                                    </div>
-                                                ))
-                                                }
-                                            </div>
-                                        </div>
-                                    )
-                                })
-
-                                }
+            <div className='relative flex flex-row gap-2 w-full'>
+                {view !== 'year' ?
+                    /* Week and month view */
+                    <div className="w-full grid grid-cols-7 bg-neutral-100 dark:bg-neutral-900 rounded-xl">
+                        {week.map((day) => (
+                            <div key={day} className="text-center px-4 py-3 text-sm truncate">
+                                {day}
                             </div>
-                        </div>
-                    }
-                    <AnimatePresence>
-                        {selectedDate && (
-                            <motion.div
-                                className="backdrop-blur-md bg-neutral-100 dark:bg-neutral-900/60 w-[40%] rounded-2xl py-3 px-3"
-                                initial={{ x: 50, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: 50, opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                <div className='flex flex-row justify-between items-center mb-3'>
-                                    <h1 className='font-bold text-xl'>{format(selectedDate, 'PPP')}</h1>
-                                    <FilledButton 
-                                        isDanger={true}
-                                        onClick={() => setSelectedDate(null)}
-                                    >
-                                        <X size={16} />
-                                    </FilledButton>
-                                </div>
-                                <div className='flex flex-col gap-2 mt-2'>
-                                    <FilledButton 
-                                        isPrimary={true}
-                                        onClick={() => {
-                                            const year = selectedDate.getFullYear();
-                                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-                                            const day = String(selectedDate.getDate()).padStart(2, '0');
-                                            router.push(`workouts/create?date=${year}-${month}-${day}`)
-                                        }}
-                                    >
-                                        <Dumbbell size={16} />
-                                        Add Workout
-                                    </FilledButton>
-                                </div>
-                                <div className='flex flex-col gap-2 mt-4 overflow-scroll h-[510px] rounded-md'>
-                                    {workouts
-                                    .filter((workout => isSameDay(new Date(workout.date), selectedDate)))
-                                    .map(filteredWorkout => 
-                                        <motion.div key={filteredWorkout.id}
-                                            initial={{ opacity: 0}}
-                                            animate={{ opacity: 1}}
-                                            transition={{ duration: 0.2 }}
-                                            className='bg-white hover:bg-blue-300 dark:bg-black hover:dark:bg-blue-700 p-2 rounded-lg transition-all'
-                                        >
-                                            <Link href={`/dashboard/workouts/${filteredWorkout.id}`}>
-                                                <p className='font-semibold'>{filteredWorkout.title}</p>
-                                                <p className='text-sm text-neutral-500'>{filteredWorkout.description}</p>
-                                                <p className='text-sm text-neutral-500'>{filteredWorkout.length} {filteredWorkout.unit}</p>
-                                            </Link>
-                                        </motion.div>
+                        ))}
+                        {calendarDays.map((day, idx) => (
+                            <div
+                                key={idx}
+                                className={clsx('m-1 p-2 text-sm transition-all rounded-xl hover:cursor-pointer dark:text-white overflow-scroll', 
+                                    (isSameMonth(day, viewDate) ? 
+                                        (isSameDay(day, currentDate) ? 
+                                            'bg-blue-200 dark:bg-blue-800 hover:dark:bg-blue-700 hover:bg-blue-300'
+                                            : 
+                                            'bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 hover:dark:bg-neutral-700')
+                                        : 
+                                        'text-neutral-500 hover:outline outline-neutral-300 dark:outline-neutral-700'
+                                    ),
+                                    (isSameDay(day, selectedDate ?? '') && 'outline outline-blue-500'),
+                                    (view === 'week' ? 'min-h-[500px]' : 'h-28')
+                                    
                                 )}
+                                onClick={() => setSelectedDate(day)}
+                            >
+                                <div className='flex flex-row justify-between'>
+                                    <p>{format(day, 'd')}</p>
                                 </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
+                                
+                                {workouts
+                                    .filter((workout => isSameDay(new Date(workout.date), day)))
+                                    .map(filteredWorkout => 
+                                        <div key={filteredWorkout.id} 
+                                            className='max-w-[130px] border-l-2 border-blue-500 my-1 pl-2'
+                                        >
+                                            <p className='truncate'>{filteredWorkout.title}</p>
+                                        </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                    :
+                    /* year view */
+                    <div className='w-full p-2 bg-neutral-100 dark:bg-neutral-900 rounded-xl'>
+                        <div className={clsx('grid gap-6', selectedDate ? 'grid-cols-2' : 'grid-cols-4')}>
+                            {Array.from({ length: 12 }, (_, month) => {
+                                const monthName = monthMap[month]
+                                const monthDays = generateMonthGrid(viewDate.getFullYear(), month)
+                                return(
+                                    <div key={month}>
+                                        <h2 
+                                            className='mb-2 p-2 text-lg text-blue-500 transition-all rounded-md hover:bg-neutral-200 hover:dark:bg-neutral-800 hover:cursor-pointer'
+                                            onClick={() => {
+                                                const date = new Date(viewDate.getFullYear(), month)
+                                                setViewDate(date)
+                                                setView('month')
+                                                generateCalendarMonthDays(date)
+                                            }}
+                                        >
+                                            {monthName}
+                                        </h2>
+                                        <div className='grid grid-cols-7 gap-2'>
+                                            {["M", "T", "W", "T", "F", "S", "S"].map((dayName, index) => (
+                                                <p key={index} className='text-sm text-center rounded-full w-[32px] p-1 text-neutral-500'>
+                                                    {dayName}
+                                                </p>
+                                            ))}
+                                            {monthDays.map((day, index) => (
+                                                <div
+                                                    key={index}
+                                                    className={clsx(
+                                                        'rounded-lg w-[28px] p-1 transition-all cursor-pointer text-sm',
+                                                        (isSameMonth(day, new Date(viewDate.getFullYear(), month)) ? 
+                                                            (isSameDay(day, currentDate) ? 
+                                                                'bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 hover:dark:bg-blue-700'
+                                                                :
+                                                                'hover:bg-neutral-200 hover:dark:bg-neutral-800'
+                                                            )
+                                                            :
+                                                            'text-neutral-300 dark:text-neutral-700 hover:outline outline-neutral-300 dark:outline-neutral-700'
+                                                        ),
+                                                        (isSameDay(day, selectedDate ?? '') && 'outline outline-blue-500')
+                                                    )}
+                                                    onClick={() => setSelectedDate(day)}
+                                                >
+                                                    <p className='text-center'>{format(day, 'd')}</p>
+                                                </div>
+                                            ))
+                                            }
+                                        </div>
+                                    </div>
+                                )
+                            })
+
+                            }
+                        </div>
+                    </div>
+                }
+                <AnimatePresence>
+                    {selectedDate && (
+                        <motion.div
+                            className="backdrop-blur-md bg-neutral-100 dark:bg-neutral-900/60 w-[40%] rounded-2xl py-3 px-3"
+                            initial={{ x: 50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: 50, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <div className='flex flex-row justify-between items-center mb-3'>
+                                <h1 className='font-bold text-xl'>{format(selectedDate, 'PPP')}</h1>
+                                <FilledButton 
+                                    isDanger={true}
+                                    onClick={() => setSelectedDate(null)}
+                                >
+                                    <X size={16} />
+                                </FilledButton>
+                            </div>
+                            <div className='flex flex-col gap-2 mt-2'>
+                                <FilledButton 
+                                    isPrimary={true}
+                                    onClick={() => {
+                                        const year = selectedDate.getFullYear();
+                                        const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                                        const day = String(selectedDate.getDate()).padStart(2, '0');
+                                        router.push(`workouts/create?date=${year}-${month}-${day}`)
+                                    }}
+                                >
+                                    <Dumbbell size={16} />
+                                    Add Workout
+                                </FilledButton>
+                            </div>
+                            <div className='flex flex-col gap-2 mt-4 overflow-scroll h-[510px] rounded-md'>
+                                {workouts
+                                .filter((workout => isSameDay(new Date(workout.date), selectedDate)))
+                                .map(filteredWorkout => 
+                                    <motion.div key={filteredWorkout.id}
+                                        initial={{ opacity: 0}}
+                                        animate={{ opacity: 1}}
+                                        transition={{ duration: 0.2 }}
+                                        className='bg-white hover:bg-blue-300 dark:bg-black hover:dark:bg-blue-700 p-2 rounded-lg transition-all'
+                                    >
+                                        <Link href={`/dashboard/workouts/${filteredWorkout.id}`}>
+                                            <p className='font-semibold'>{filteredWorkout.title}</p>
+                                            <p className='text-sm text-neutral-500'>{filteredWorkout.description}</p>
+                                            <p className='text-sm text-neutral-500'>{filteredWorkout.length} {filteredWorkout.unit}</p>
+                                        </Link>
+                                    </motion.div>
+                            )}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
         </motion.div>
     )
 }
