@@ -1,6 +1,5 @@
-
 from .attendee import AttendeeSerializer
-from rest_framework import serializers # type: ignore - it works
+from rest_framework import serializers
 from api.models import User, Workout, WorkoutAttendance
 
 class WorkoutSerializer(serializers.ModelSerializer):

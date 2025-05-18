@@ -7,3 +7,4 @@ class Goal(models.Model):
     skillId = models.ForeignKey(Skill, on_delete=models.CASCADE, to_field='id', related_name="skill_goals")
     title = models.CharField(max_length=50)
     description = models.TextField()
+    isCompleted = models.BooleanField(default=False)
