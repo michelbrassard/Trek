@@ -6,6 +6,12 @@ import uvicorn
 import os
 from PIL import Image
 import io
+from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+import torch
+
+# Load model and processor
+processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
 
 import cv2
 import pytesseract
@@ -49,10 +55,11 @@ async def extract_handwriting(
     type: str = Form(...), 
     file: UploadFile = File(...)
 ):
+    text = await parse_handwriting(file)
     return {
-        "type": type,
-        "filename": file.filename
-        }
+        "filename": file.filename,
+        "content": text
+    }
 
 @app.post("/extract/audio")
 async def extract_audio(
@@ -92,5 +99,17 @@ async def parse_text(file):
                 "block_num": data['block_num'][i],
                 "page_num": data['page_num'][i],
             })
-    
     return structured_output
+
+async def parse_handwriting(file):
+    image_bytes = await file.read()
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+
+    # Preprocess and predict
+    pixel_values = processor(images=image, return_tensors="pt").pixel_values
+    generated_ids = model.generate(pixel_values)
+    text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+    # Optionally remove non-ASCII
+    clean_text = ''.join(c for c in text if ord(c) < 128)
+    return clean_text.strip()
