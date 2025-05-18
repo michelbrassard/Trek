@@ -81,21 +81,28 @@ export default function VisualizeGraphProgress({contents}: ProgressProps) {
     }
 
     return(
-        <div className="">
-            
-            {
-                progressItems.map((item, index) => (
-                    <div key={index} className="relative">
-                        <div className="flex flex-row">
-                            {refactorDateTime(item.prevDate)} - {refactorDateTime(item.currentDate)}
+        <>
+            <p>Experimental?</p>
+            <div className="flex flex-row gap-2 w-[700px] overflow-x-scroll">
+                {progressItems.map((item, index) => (
+                    <div key={index}>
+                        <div className="text-sm">
+                            {refactorDateTime(item.currentDate)}
                         </div>
-                        <div 
-                            className="bg-green-500 -z-10 w-full absolute left-0 top-0 h-full" 
-                            style={{ opacity: Math.min(item.items.length / 100, 1) * 10 }}
-                        />
+                        {
+                            item.items.map((block, index) => (
+                                block.type !== 'same' &&
+                                <div
+                                    key={index} 
+                                    className="bg-green-500/30 my-1 p-1 text-xs capitalize text-green-700" 
+                                >
+                                    {block.type}
+                                </div>
+                            ))
+                        }
                     </div>
-                ))
-            }
-        </div>
+                ))}
+            </div>
+        </>
     )
 }
