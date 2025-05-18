@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Title from "../dashboard/title";
+import VisualizeTextProgress from "./visualize-text-progress";
+import VariableButton from "../buttons/variable-button";
+import { ChartColumn, Text } from "lucide-react";
+import VisualizeGraphProgress from "./visualize-graph-progress";
 
 interface ProgressVersionDataProps {
     id: string
@@ -23,6 +27,11 @@ interface ProgressVersionsType {
 export default function ProgressVersions({id}: ProgressVersionDataProps) {
     const [error, setError] = useState("");
     const [progressVersions, setProgressVersions] = useState<ProgressVersionsType>()
+    const [overviewType, setOverviewType] = useState('text')
+
+    const handleTypeSwitch = (type: string) => {
+        setOverviewType(type)
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,20 +55,29 @@ export default function ProgressVersions({id}: ProgressVersionDataProps) {
             <div>
                 <Title text={progressVersions.title} />
                 <p className="text-sm text-neutral-500">{progressVersions.description}</p>
-                <p>Versions:</p>
-                {progressVersions.contents.length === 0 ? 
-                    <div>No previous versions</div> 
+                <div className="flex flex-row gap-2 relative my-2">
+                    <VariableButton
+                        isSecondary={overviewType !== 'text'} 
+                        isFilled={overviewType === 'text'}
+                        isPrimary={overviewType === 'text'}
+                        onClick={() => handleTypeSwitch("text")}
+                    >
+                        <Text size={16} className="my-1" />
+                    </VariableButton>
+                    <VariableButton
+                        isSecondary={overviewType !== 'chart'} 
+                        isFilled={overviewType === 'chart'}
+                        isPrimary={overviewType === 'chart'}
+                        onClick={() => handleTypeSwitch("chart")}
+                    >
+                        <ChartColumn size={16} className="my-1" />
+                    </VariableButton>
+                </div>
+                {
+                    overviewType === 'text' ? 
+                    <VisualizeTextProgress contents={progressVersions.contents} />
                     :
-                    <div className="flex flex-col gap-2">
-                        {progressVersions.contents.map((content) => (
-                            <div key={content.createdAt}>
-                                <p className="text-sm text-neutral-500">{content.createdAt}</p>
-                                <p>{content.content}</p>
-                            </div>
-                        ))
-                        }
-                    </div>
-                    
+                    <VisualizeGraphProgress contents={progressVersions.contents} />
                 }
             </div>
             :

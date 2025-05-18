@@ -86,6 +86,7 @@ export default function MultiStepSignUp() {
                 },
                 { withCredentials: true }
             );
+            console.log(response)
             router.push('/dashboard');
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

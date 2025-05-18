@@ -6,7 +6,7 @@ import SideNav from "../ui/dashboard/side-nav";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-      <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+      <div className="flex h-full flex-col md:flex-row md:overflow-y-scroll">
           <div className="w-full flex-none md:w-64 hidden md:block">
             <SideNav />
           </div>
@@ -25,7 +25,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Breadcrumbs />
               <ProfileRow />
             </div>
-            <main className="flex-grow px-6 md:overflow-y-auto md:px-12">
+            <main className="flex-grow px-6 md:overflow-y-auto md:px-12 pb-24">
               {children}
             </main>
           </div>

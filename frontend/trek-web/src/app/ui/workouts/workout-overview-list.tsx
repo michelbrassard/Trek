@@ -26,12 +26,13 @@ export default function WorkoutOverviewList() {
     }, []);
     
     return(
-        <div className="overflow-scroll h-[650px] w-full">
+        <div className="w-full">
             {attendanceList.length != 0 ? 
                 <motion.div
                     initial={{ opacity: 0}}
                     animate={{ opacity: 1}}
                     transition={{ duration: 0.3 }}
+                    className="flex flex-col-reverse"
                 >
                     {attendanceList.map((workout) => (
                         <WorkoutListItem key={workout.id} data={workout} />

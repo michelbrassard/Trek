@@ -2,9 +2,9 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Button from "../buttons/button";
 import QRCode from "./qrcode";
 import { Check, Copy, Plus, QrCode, X } from "lucide-react";
+import TonalButton from "../buttons/tonal-button";
 
 interface TemporaryCoachCodeProps {
     id: string,
@@ -72,7 +72,7 @@ export default function Enroll() {
                 {data.map((item) => (
                     <div key={item.id} className="flex flex-row gap-2">
                       <div>
-                        <Button isPrimary = {true} onClick={handleCopyLink}>
+                        <TonalButton isPrimary = {true} onClick={handleCopyLink}>
                             {isLinkCopied ? 
                               <div className="flex items-center gap-2">
                                 Registration Link Copied
@@ -85,12 +85,12 @@ export default function Enroll() {
                               </div>
                             }
                              
-                        </Button>
+                        </TonalButton>
                       </div>
                       <div>
-                        <Button isSecondary = {true} className="flex items-center gap-2" onClick={handleShowQRCode}>
+                        <TonalButton isSecondary = {true} className="flex items-center gap-2" onClick={handleShowQRCode}>
                           View QR Code <QrCode size={16}/>
-                        </Button>
+                        </TonalButton>
                         {isQRCodeOpen && 
                         <div onClick={handleShowQRCode} className="backdrop-blur-md p-5 fixed inset-0 z-50 transition-all flex justify-center">
                           <div className="mt-10 flex flex-col">
@@ -108,9 +108,9 @@ export default function Enroll() {
           {
             data.length === 0 && 
             <div className="my-2">
-              <Button isPrimary = {true} onClick={handleGenerateCode}>
+              <TonalButton isPrimary = {true} onClick={handleGenerateCode}>
                 Generate code <Plus size={22}/>
-              </Button> 
+              </TonalButton> 
             </div>
             
           }
