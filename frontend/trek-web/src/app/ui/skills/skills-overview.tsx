@@ -38,7 +38,7 @@ export default function SkillsOverview() {
 
         return (
             <div 
-                className="flex items-center justify-center bg-[radial-gradient(circle,_#ccc_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#333_1px,_transparent_1px)] [background-size:20px_20px] rounded-xl p-12"
+                className="flex items-center justify-center bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] rounded-xl p-12"
             >
                 <div
                     className="relative m-12 rounded-full border-2 border-neutral-500/30"
