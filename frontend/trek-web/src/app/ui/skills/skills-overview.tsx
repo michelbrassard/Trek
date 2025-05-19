@@ -37,9 +37,11 @@ export default function SkillsOverview() {
         const radius = 230
 
         return (
-            <div className="flex items-center justify-center">
+            <div 
+                className="flex items-center justify-center bg-[radial-gradient(circle,_#ccc_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#333_1px,_transparent_1px)] [background-size:20px_20px] rounded-xl p-12"
+            >
                 <div
-                    className="relative m-5 rounded-full border-2 border-neutral-500/30"
+                    className="relative m-12 rounded-full border-2 border-neutral-500/30"
                     style={{ width: radius * 2, height: radius * 2 }}
                 >
                     {skills.map((skill, index) => {
@@ -76,7 +78,9 @@ export default function SkillsOverview() {
                         );
                     })}
                     <div className="w-full h-full absolute flex items-center justify-center text-center text-neutral-500">
-                        Skills
+                        <p className="bg-white dark:bg-black text-xl rounded-full">
+                            Skills
+                        </p>
                     </div>
                 </div>
             </div>
