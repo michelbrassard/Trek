@@ -8,3 +8,4 @@ class Goal(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     isCompleted = models.BooleanField(default=False)
+    completedAt = models.DateField(null=True, blank=True)

@@ -2,7 +2,7 @@ from api.models import Skill
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from api.serializers import SkillSerializer
+from api.serializers import SkillWithGoalsSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -12,7 +12,7 @@ def skill_goals(request, skill_id):
     except Skill.DoesNotExist:
         return Response(status=404)
     if request.method == 'GET':
-        serializer = SkillSerializer(skill, many=True)
+        serializer = SkillWithGoalsSerializer(skill)
         return Response(serializer.data)
 
 

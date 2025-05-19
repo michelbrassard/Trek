@@ -63,8 +63,8 @@ urlpatterns = [
     
     #skill
     path('skills/', views.skill_list),
-    path('skills/<uuid_skill_id>/', views.skill_goals),
-    path('skills/<uuid_skill_id>/detail/', views.skill_detail),
+    path('skills/<uuid:skill_id>/', views.skill_goals),
+    path('skills/<uuid:skill_id>/detail/', views.skill_detail),
     path('skills/goals/<uuid:goal_id>/', views.goal_detail),
     
 ]
