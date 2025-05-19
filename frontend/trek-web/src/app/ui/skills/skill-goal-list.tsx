@@ -45,7 +45,7 @@ export default function SkillGoalList({id}: SkillGoalsDataProps) {
             }
         };
 
-    fetchData();
+        fetchData();
     }, [id]);
 
     if (error) return <div>{error}</div>
