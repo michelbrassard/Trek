@@ -1,58 +1,85 @@
-export default function SkillsOverview() {
-  return(
-    <div className="flex items-center justify-center">
-        <CircularMenu />
-    </div>
-  );
+'use client'
+
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+interface Skill {
+    id: string,
+    title: string,
+    description: string
 }
 
+export default function SkillsOverview() {
+    const [skills, setSkills] = useState<Skill[]>([])
+    const [error, setError] = useState('')
 
-const CircularMenu = ({ items = ["A", "B", "C"], radius = 230 }) => {
-  const angleStep = 360 / items.length;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`/api/proxy/skills`, {
+                    withCredentials: true,
+                });
+                setSkills(response.data)
+            
+            } catch (error) {
+                setError("Unable to load skills.")
+                console.error("Failed to fetch data:", error);
+            }
+        };
+        fetchData();
+    }, [])
 
-  return (
-    <div
-      className="relative m-5 rounded-full border-2 border-neutral-500/30"
-      style={{ width: radius * 2, height: radius * 2 }}
-    >
-        {items.map((item, index) => {
-            const angle = angleStep * index;
-            const x = radius + radius * Math.sin((angle * Math.PI) / 180) - 75;
-            const y = radius + radius * -Math.cos((angle * Math.PI) / 180) - 70;
+    if (error) return <div>{error}</div>
 
-            return (
+    if (skills) {
+        const angleStep = 360 / skills.length;
+        const radius = 230
+
+        return (
+            <div className="flex items-center justify-center">
                 <div
-                    key={index}
-                    className="absolute z-10"
-                    style={{
-                        left: x,
-                        top: y,
-                    }}
+                    className="relative m-5 rounded-full border-2 border-neutral-500/30"
+                    style={{ width: radius * 2, height: radius * 2 }}
                 >
-                    <div
-                        className="w-[150px] h-[150px] bg-blue-500 text-white rounded-xl flex items-center justify-center transition-colors duration-200 hover:bg-blue-400 cursor-pointer"
-                        style={{
-                            transform: `rotate(${angle}deg)`,
-                            transformOrigin: "center center",
-                        }}
-                    >
-                        <p
-                            style={{
-                                transform: `rotate(${-angle}deg)`,
-                                transformOrigin: "center center",
-                            }}
-                        >
-                            {item}
-                        </p>
+                    {skills.map((skill, index) => {
+                        const angle = angleStep * index;
+                        const x = Math.round((radius + radius * Math.sin((angle * Math.PI) / 180) - 75) * 1000) / 1000;
+                        const y = Math.round((radius + radius * -Math.cos((angle * Math.PI) / 180) - 70) * 1000) / 1000;
+                        return (
+                            <div
+                                key={index}
+                                className="absolute z-10"
+                                style={{
+                                    left: `${x}px`,
+                                    top: `${y}px`,
+                                }}
+                            >
+                                <Link
+                                    href={`skills/${skill.id}`}
+                                    className="rounded-xl w-[150px] h-[150px] bg-blue-500 hover:bg-blue-400 text-white flex items-center justify-center transition-colors duration-200  cursor-pointer"
+                                    style={{
+                                        transform: `rotate(${angle}deg)`,
+                                        transformOrigin: "center center",
+                                    }}
+                                >
+                                    <p
+                                        style={{
+                                            transform: `rotate(${-angle}deg)`,
+                                            transformOrigin: "center center",
+                                        }}
+                                    >
+                                        {skill.title}
+                                    </p>
+                                </Link>
+                            </div>
+                        );
+                    })}
+                    <div className="w-full h-full absolute flex items-center justify-center text-center text-neutral-500">
+                        Skills
                     </div>
                 </div>
-            );
-            })}
-        <div
-            className="w-full h-full absolute flex items-center justify-center text-center text-neutral-500"
-        >
-            Skills
-        </div>
-    </div>
-  );
-};
+            </div>
+        )
+    }
+}
