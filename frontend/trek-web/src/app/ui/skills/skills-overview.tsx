@@ -1,6 +1,7 @@
 'use client'
 
 import axios from "axios";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -37,29 +38,34 @@ export default function SkillsOverview() {
         const radius = 230
 
         return (
-            <div 
-                className="flex items-center justify-center bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] rounded-xl p-12"
-            >
-                <div
+            <div className="flex items-center justify-center bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] rounded-xl p-12">
+                <motion.div
                     className="relative m-12 rounded-full border-2 border-neutral-500/30"
-                    style={{ width: radius * 2, height: radius * 2 }}
+                    initial={{ width: (radius - 50) * 2, height: (radius - 50) * 2, opacity: 0 }}
+                    animate={{ width: radius * 2, height: radius * 2, opacity: 1 }}
+                    exit={{ width: (radius - 50) * 2, height: (radius - 50) * 2, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
                 >
                     {skills.map((skill, index) => {
                         const angle = angleStep * index;
                         const x = Math.round((radius + radius * Math.sin((angle * Math.PI) / 180) - 75) * 1000) / 1000;
                         const y = Math.round((radius + radius * -Math.cos((angle * Math.PI) / 180) - 70) * 1000) / 1000;
                         return (
-                            <div
+                            <motion.div
                                 key={index}
                                 className="absolute z-10"
                                 style={{
                                     left: `${x}px`,
                                     top: `${y}px`,
                                 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.4 }}
                             >
                                 <Link
                                     href={`skills/${skill.id}`}
-                                    className="rounded-xl w-[150px] h-[150px] bg-blue-500 hover:bg-blue-400 text-white flex items-center justify-center transition-colors duration-200  cursor-pointer"
+                                    className="rounded-2xl w-[150px] h-[150px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:bg-blue-500 hover:text-white flex items-center justify-center transition-colors duration-200 cursor-pointer"
                                     style={{
                                         transform: `rotate(${angle}deg)`,
                                         transformOrigin: "center center",
@@ -74,15 +80,15 @@ export default function SkillsOverview() {
                                         {skill.title}
                                     </p>
                                 </Link>
-                            </div>
+                            </motion.div>
                         );
                     })}
                     <div className="w-full h-full absolute flex items-center justify-center text-center text-neutral-500">
-                        <p className="bg-white dark:bg-black text-xl rounded-full">
+                        <h1 className="bg-white dark:bg-black text-xl rounded-full">
                             Skills
-                        </p>
+                        </h1>
                     </div>
-                </div>
+                </motion.div>
             </div>
         )
     }
