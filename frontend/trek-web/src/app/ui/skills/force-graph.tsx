@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface Node {
     id: string;
@@ -14,6 +15,7 @@ interface Node {
     fy?: number | null;
     vx?: number;
     vy?: number;
+    isCompleted?: boolean //TODO
 }
 
 interface Link {
@@ -48,12 +50,15 @@ interface ForceGraphProps {
 
 export default function ForceGraph({ skillGoals, width = 800, height = 600 }: ForceGraphProps) {
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const [hoveredElement, setHoveredElement] = useState<Node | null>()
+    const [hoveredX, setHoveredX] = useState<number>()
+    const [hoveredY, setHoveredY] = useState<number>()
 
     useEffect(() => {
         if (!svgRef.current) return;
 
         const nodes: Node[] = skillGoals.goals.map(goal => (
-            {id: goal.id, title: goal.title, description: goal.description}
+            {id: goal.id, title: goal.title, description: goal.description }
         ))
         const links: Link[] = skillGoals.goals.flatMap(goal =>
             goal.prerequisites.map(prereq => (
@@ -65,81 +70,69 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
         container.selectAll("*").remove();
 
         const simulation = d3
-        .forceSimulation<Node>([...nodes]) // clone to prevent mutation
-        .force(
-            "link",
-            d3
-            .forceLink<Node, Link>([...links])
-            .id(d => d.id)
-            .distance(100)
-        )
-        .force("charge", d3.forceManyBody().strength(-100))
-        .force("center", d3.forceCenter(width / 2, height / 2));
+            .forceSimulation<Node>([...nodes]) // clone to prevent mutation
+            .force(
+                "link",
+                d3
+                    .forceLink<Node, Link>([...links])
+                    .id(d => d.id)
+                    .distance(100)
+            )
+            .force("charge", d3.forceManyBody().strength(-100))
+            .force("center", d3.forceCenter(width / 2, height / 2));
 
         const link = container
             .append("g")
             .attr("stroke", "#999")
-            .attr("stroke-opacity", 0.6)
+            .attr("stroke-opacity", 0.2)
             .selectAll("line")
             .data(links)
             .join("line")
-            .attr("stroke-width", 1);
-
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "5,5")
 
         const node = container
             .append("g")
             .selectAll("g")
             .data(nodes)
             .join("g")
-            .attr("cursor", "pointer");
+            .attr("cursor", "pointer")
+            .on("click", function(_, d) {
+                console.log("Clicked node:", d.id);
+            });
 
-        // Append rectangles
         node
-            .append("rect")
-            .attr("x", -40) // center horizontally
-            .attr("y", -15) // center vertically
-            .attr("width", 80)
-            .attr("height", 60)
-            .attr("rx", 6)
-            .attr("class", "fill-neutral-500 transition-all");
+            .append("circle")
+            .attr("cx", 0)
+            .attr("cy", 0)
+            .attr("r", 20)
+            .attr("class", "fill-neutral-500 transition-all")
+            .on("mouseover", function (event, d) {
+                setHoveredElement(d)
+                setHoveredX(d.x! + 15)
+                setHoveredY(d.y! + 15)
+                d3.select(this)
+                    .transition()
+                    .duration(150)
+                    .attr("class", "fill-blue-500");
+                })
+            .on("mouseout", function () {
+                setHoveredElement(null)
+                setHoveredX(0)
+                setHoveredY(0)
+                d3.select(this)
+                    .transition()
+                    .duration(150)
+                    .attr("class", "fill-neutral-500");
+            });
 
-        // Append text inside rectangles
-        // Title line
         node
             .append("text")
+            .attr("x", 30)
+            .attr("y", 5)
             .text(d => d.title)
-            .attr("text-anchor", "middle")
-            .attr("y", 5) // shift up
-            .style("font", "bold 16px sans-serif")
-            .style("class", "fill-black");
-
-        // Description line
-        node
-            .append("text")
-            .text(d => d.description)
-            .attr("text-anchor", "middle")
-            .attr("y", 20) // shift down
-            .style("font", "16px sans-serif")
-            .style("class", "fill-neutral-900");
+            .attr("class", "dark:fill-white fill-black capitalize");
         
-        node.on("click", function(_, d) {
-            console.log("Clicked node:", d.id);
-        });
-        node.select('rect').on("mouseover", function (_event, _d) {
-            console.log(_d, _event)
-            d3.select(this)
-                .transition()
-                .duration(150)
-                .attr("class", "fill-blue-500");
-        })
-        node.select('rect').on("mouseout", function (_event, _d) {
-            console.log(_d, _event)
-            d3.select(this)
-                .transition()
-                .duration(150)
-                .attr("class", "fill-neutral-500");
-        });
-
         simulation.on("tick", () => {
             link
                 .attr("x1", d => (typeof d.source === "object" ? d.source.x ?? 0 : 0))
@@ -150,16 +143,48 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             node.attr("transform", d => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
         });
 
+        // while (simulation.alpha() > 0.01) simulation.tick();
+        // link
+        //     .attr("x1", d => (typeof d.source === "object" ? d.source.x ?? 0 : 0))
+        //     .attr("y1", d => (typeof d.source === "object" ? d.source.y ?? 0 : 0))
+        //     .attr("x2", d => (typeof d.target === "object" ? d.target.x ?? 0 : 0))
+        //     .attr("y2", d => (typeof d.target === "object" ? d.target.y ?? 0 : 0));
+
+        // node.attr("transform", d => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
+
         return () => {
             simulation.stop();
         };
     }, [width, height, skillGoals.goals]);
 
-    return <svg 
-            ref={svgRef} 
-            width={width} 
-            height={height} 
-            style={{ maxWidth: "100%", height: "auto" }} 
-            className="bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px]"
-        />;
+    return (
+        <div className="relative">
+            <svg 
+                ref={svgRef} 
+                width={width} 
+                height={height} 
+                style={{ maxWidth: "100%", height: "auto" }} 
+                className="bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px]"
+            />
+            <AnimatePresence>
+                {hoveredElement &&
+                    <motion.div 
+                        style={{ left: (hoveredX), top: hoveredY, position: 'absolute' }}
+                        initial={{ opacity: 0, scale: 1.1 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <div className="backdrop-blur-md bg-neutral-100/60 dark:bg-neutral-900/60 py-2 px-3 rounded-xl min-w-[200px]">
+                            <h2 className="text-xl font-bold capitalize">{hoveredElement.title}</h2>
+                            <p>{hoveredElement.description}</p>
+                        </div>
+                    </motion.div>
+                }
+            </AnimatePresence>
+            
+        </div>
+        
+    )
+    
 }
