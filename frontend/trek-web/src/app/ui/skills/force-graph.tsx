@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { AnimatePresence, motion } from "framer-motion";
+import clsx from "clsx";
 
 interface Node {
     id: string;
@@ -15,7 +16,7 @@ interface Node {
     fy?: number | null;
     vx?: number;
     vy?: number;
-    isCompleted?: boolean //TODO
+    isCompleted?: boolean
 }
 
 interface Link {
@@ -32,6 +33,7 @@ interface Goal {
     id: string,
     title: string,
     description: string,
+    isCompleted: boolean
     prerequisites: Prerequisite[]
 }
 
@@ -50,7 +52,7 @@ interface ForceGraphProps {
 
 export default function ForceGraph({ skillGoals, width = 800, height = 600 }: ForceGraphProps) {
     const svgRef = useRef<SVGSVGElement | null>(null);
-    const [hoveredElement, setHoveredElement] = useState<Node | null>()
+    const [hoveredElement, setHoveredElement] = useState<Node | null>(null)
     const [hoveredX, setHoveredX] = useState<number>()
     const [hoveredY, setHoveredY] = useState<number>()
 
@@ -58,7 +60,7 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
         if (!svgRef.current) return;
 
         const nodes: Node[] = skillGoals.goals.map(goal => (
-            {id: goal.id, title: goal.title, description: goal.description }
+            {id: goal.id, title: goal.title, description: goal.description, isCompleted: goal.isCompleted }
         ))
         const links: Link[] = skillGoals.goals.flatMap(goal =>
             goal.prerequisites.map(prereq => (
@@ -89,7 +91,10 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             .data(links)
             .join("line")
             .attr("stroke-width", 2)
-            .attr("stroke-dasharray", "5,5")
+            .attr("stroke-dasharray", d => {
+                const node = nodes.find(node => node.id === d.source);
+                return node && node.isCompleted ? "0" : "5,5";
+            })
 
         const node = container
             .append("g")
@@ -106,24 +111,24 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             .attr("cx", 0)
             .attr("cy", 0)
             .attr("r", 20)
-            .attr("class", "fill-neutral-500 transition-all")
+            .attr("class", d => clsx("transition-all", (d.isCompleted ? "fill-green-500" : "fill-neutral-500")))
             .on("mouseover", function (event, d) {
                 setHoveredElement(d)
-                setHoveredX(d.x! + 15)
-                setHoveredY(d.y! + 15)
+                setHoveredX(d.x! + 20)
+                setHoveredY(d.y! + 20)
                 d3.select(this)
                     .transition()
                     .duration(150)
                     .attr("class", "fill-blue-500");
                 })
-            .on("mouseout", function () {
+            .on("mouseout", function (event, d: Node) {
                 setHoveredElement(null)
                 setHoveredX(0)
                 setHoveredY(0)
                 d3.select(this)
                     .transition()
                     .duration(150)
-                    .attr("class", "fill-neutral-500");
+                    .attr("class", clsx("transition-all", (d.isCompleted ? "fill-green-500" : "fill-neutral-500")));
             });
 
         node

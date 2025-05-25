@@ -17,6 +17,7 @@ interface Goal {
     id: string,
     title: string,
     description: string,
+    isCompleted: boolean,
     prerequisites: Prerequisite[]
 }
 
@@ -38,6 +39,7 @@ export default function SkillGoalList({id}: SkillGoalsDataProps) {
                     withCredentials: true,
                 });
                 setSkillGoals(response.data)
+                console.log(response.data)
             
             } catch (error) {
                 setError('Unable to fetch skill and its goals')
