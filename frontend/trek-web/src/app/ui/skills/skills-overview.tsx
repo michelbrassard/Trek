@@ -55,7 +55,7 @@ export default function SkillsOverview() {
         return (
             <div className="flex items-center justify-center bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] rounded-xl p-12">
                 <motion.div
-                    className="relative m-12 rounded-full border-2"
+                    className="relative m-12 rounded-full border border-neutral-200 dark:border-neutral-800"
                     initial={{ width: (radius - 50) * 2, height: (radius - 50) * 2, opacity: 0 }}
                     animate={{ width: radius * 2, height: radius * 2, opacity: 1 }}
                     exit={{ width: (radius - 50) * 2, height: (radius - 50) * 2, opacity: 0 }}
