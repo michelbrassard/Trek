@@ -19,10 +19,9 @@ def skill_list(request):
     
     if request.method == 'POST':
         data = JSONParser().parse(request)
-        data["creatorId"] = creator.id
         serializer = SkillSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(creatorId=creator)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 

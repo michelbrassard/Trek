@@ -71,7 +71,6 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
                             Delete<Trash2 size={16} />
                         </TonalButton>
                     </div>
-                    
                 </div>
                 
                 <p className="whitespace-pre">{overview.description}</p>
