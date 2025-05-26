@@ -40,3 +40,21 @@ class SkillWithGoalsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = ["id", "title", "description", "goals"]
+
+
+class FullPrerequisiteGoal(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = ['id', 'title', 'description', 'isCompleted']
+
+class GoalDependencySerializer(serializers.ModelSerializer):
+    prerequisiteGoalId = FullPrerequisiteGoal()
+    class Meta:
+        model = GoalDependency
+        fields = ['prerequisiteGoalId']
+
+class GoalWithFullPrerequisites(serializers.ModelSerializer):
+    prerequisites = GoalDependencySerializer(source='goal_with_dependency', many=True)
+    class Meta:
+        model = Goal
+        fields = ["id", "title", "description", "isCompleted", "prerequisites"]

@@ -4,11 +4,25 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import MiniForceGraph from "./mini-force-graph";
+
+interface Prerequisite {
+    id: string
+}
+
+interface Goal {
+    id: string,
+    title: string,
+    description: string,
+    isCompleted: boolean
+    prerequisites: Prerequisite[]
+}
 
 interface Skill {
     id: string,
     title: string,
     description: string
+    goals: Goal[]
 }
 
 export default function SkillsOverview() {
@@ -35,7 +49,7 @@ export default function SkillsOverview() {
 
     if (skills) {
         const angleStep = 360 / skills.length;
-        const radius = 230
+        const radius = 200
 
         return (
             <div className="flex items-center justify-center bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] rounded-xl p-12">
@@ -48,8 +62,8 @@ export default function SkillsOverview() {
                 >
                     {skills.map((skill, index) => {
                         const angle = angleStep * index;
-                        const x = Math.round((radius + radius * Math.sin((angle * Math.PI) / 180) - 75) * 1000) / 1000;
-                        const y = Math.round((radius + radius * -Math.cos((angle * Math.PI) / 180) - 70) * 1000) / 1000;
+                        const x = Math.round((radius + radius * Math.sin((angle * Math.PI) / 180) - 60) * 1000) / 1000;
+                        const y = Math.round((radius + radius * -Math.cos((angle * Math.PI) / 180) - 60) * 1000) / 1000;
                         return (
                             <motion.div
                                 key={index}
@@ -65,27 +79,31 @@ export default function SkillsOverview() {
                             >
                                 <Link
                                     href={`skills/${skill.id}`}
-                                    className="rounded-2xl w-[150px] h-[150px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:bg-blue-500 hover:text-white flex items-center justify-center transition-colors duration-200 cursor-pointer"
+                                    className="rounded-2xl w-[120px] h-[120px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:bg-blue-500 hover:text-white flex items-center justify-center transition-colors duration-200 cursor-pointer"
                                     style={{
                                         transform: `rotate(${angle}deg)`,
                                         transformOrigin: "center center",
                                     }}
                                 >
-                                    <p
-                                        style={{
-                                            transform: `rotate(${-angle}deg)`,
-                                            transformOrigin: "center center",
-                                        }}
-                                    >
-                                        {skill.title}
-                                    </p>
+                                    <div className="relative">
+                                        <MiniForceGraph skillGoals={skill} />
+                                        <p
+                                            style={{
+                                                transform: `rotate(${-angle}deg)`,
+                                                transformOrigin: "center center",
+                                            }}
+                                            className="z-10 absolute inset-0 flex items-center justify-center"
+                                        >
+                                            {skill.title}
+                                        </p>
+                                    </div>
                                 </Link>
                             </motion.div>
                         );
                     })}
                     <div className="w-full h-full absolute flex items-center justify-center text-center text-neutral-500">
                         <h1 className="bg-white dark:bg-black text-xl rounded-full">
-                            Skills
+                            Skills (FIX UP)
                         </h1>
                     </div>
                 </motion.div>

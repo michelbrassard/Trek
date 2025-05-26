@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from api.serializers import SkillSerializer, EditSkillSerializer
+from api.serializers import SkillSerializer, EditSkillSerializer, SkillWithGoalsSerializer
 from rest_framework.parsers import JSONParser
 
 User = get_user_model()
@@ -14,7 +14,7 @@ def skill_list(request):
     creator = request.user
     if request.method == 'GET':
         skills = Skill.objects.filter(creatorId=creator)
-        serializer = SkillSerializer(skills, many=True)
+        serializer = SkillWithGoalsSerializer(skills, many=True)
         return Response(serializer.data)
     
     if request.method == 'POST':

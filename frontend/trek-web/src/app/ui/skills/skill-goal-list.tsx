@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Title from "../dashboard/title";
 import ForceGraph from "./force-graph";
+import MiniForceGraph from "./mini-force-graph";
 
 interface SkillGoalsDataProps {
     id: string
@@ -39,7 +40,6 @@ export default function SkillGoalList({id}: SkillGoalsDataProps) {
                     withCredentials: true,
                 });
                 setSkillGoals(response.data)
-                console.log(response.data)
             
             } catch (error) {
                 setError('Unable to fetch skill and its goals')
@@ -56,6 +56,7 @@ export default function SkillGoalList({id}: SkillGoalsDataProps) {
         return (
             <div className="my-5">
                 <Title text={skillGoals.title} />
+                <MiniForceGraph skillGoals={skillGoals} />
                 <ForceGraph skillGoals={skillGoals} />
             </div>
         )

@@ -2,7 +2,7 @@ from api.models import Goal
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from api.serializers import GoalSerializer, EditGoalSerializer
+from api.serializers import GoalSerializer, EditGoalSerializer, GoalWithFullPrerequisites
 from rest_framework.parsers import JSONParser
 
 
@@ -32,7 +32,7 @@ def goal_detail(request, goal_id):
         return Response(status=404)
     
     if request.method == 'GET':
-        serializer = GoalSerializer(goal)
+        serializer = GoalWithFullPrerequisites(goal)
         return Response(serializer.data)
     
     elif request.method == 'PUT':
