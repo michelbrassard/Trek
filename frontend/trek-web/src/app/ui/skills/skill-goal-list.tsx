@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Title from "../dashboard/title";
 import ForceGraph from "./force-graph";
 import TonalButton from "../buttons/tonal-button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
 interface SkillGoalsDataProps {
@@ -68,6 +68,10 @@ export default function SkillGoalList({id}: SkillGoalsDataProps) {
         router.push("/dashboard/skills");
     }
 
+    const handleNewGoal = () => {
+        router.push(`${id}/goals/create`);
+    }
+
     if (error) return <div>{error}</div>
 
     if (skillGoals) {
@@ -76,8 +80,11 @@ export default function SkillGoalList({id}: SkillGoalsDataProps) {
                 <div className="flex row justify-between">
                     <Title text={skillGoals.title} />
                     <div className="flex row gap-2">
+                        <TonalButton isSecondary={true} onClick={handleNewGoal}>
+                            <Plus size={16}/>New Goal
+                        </TonalButton>
                         <TonalButton isSecondary={true} onClick={handleEdit}>
-                            Edit<Pencil size={16}/>
+                            Edit Skill<Pencil size={16}/>
                         </TonalButton>
                         <TonalButton isDanger={true} onClick={handleDelete}>
                             Delete<Trash2 size={16} />
