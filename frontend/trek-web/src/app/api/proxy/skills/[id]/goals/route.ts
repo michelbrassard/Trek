@@ -29,7 +29,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
     const body = await request.text();
     const {id} = await params;
-    const res = await fetch(`http://localhost:8000/skills/${id}/goals`, {
+    const res = await fetch(`http://localhost:8000/skills/${id}/goals/`, {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,

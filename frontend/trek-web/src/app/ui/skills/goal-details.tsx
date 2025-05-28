@@ -4,6 +4,8 @@ import axios from "axios";
 import Title from "../dashboard/title"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import TonalButton from "../buttons/tonal-button";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface GoalDetailsProps {
     skillId: string
@@ -63,14 +65,24 @@ export default function GoalDetailsOverview({skillId: id, goalId}: GoalDetailsPr
         } catch (error) {
             console.error("Failed to delete goal:", error);
         }
-        router.push(`skills/${id}`);
+        router.push(`/dashboard/skills/${id}`);
     }
 
     if (error) return <div>{error}</div>
 
     if (goalDetails) return(
         <div className="my-5">
-            <Title text={goalDetails.title} />
+                <div className="flex row justify-between">
+                    <Title text={goalDetails.title} />
+                    <div className="flex row gap-2">
+                        <TonalButton isSecondary={true} onClick={handleEdit}>
+                            Edit<Pencil size={16}/>
+                        </TonalButton>
+                        <TonalButton isDanger={true} onClick={handleDelete}>
+                            Delete<Trash2 size={16} />
+                        </TonalButton>
+                    </div>
+                </div>
             <div>
                 <p>{goalDetails.description}</p>
                 <p className="mb-2 font-bold">Prerequisites:</p>

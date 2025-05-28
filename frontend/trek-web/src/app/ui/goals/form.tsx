@@ -12,20 +12,21 @@ import TextArea from "../form/textarea";
 interface GoalFormProps {
     formTitle: string,
     isEdit: boolean,
-    id?: string
+    skillId?: string,
+    goalId?: string
 }
 
-export default function GoalForm({formTitle, isEdit, id}: GoalFormProps) {
+export default function GoalForm({formTitle, isEdit, skillId, goalId}: GoalFormProps) {
     const [error, setError] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const router = useRouter();
 
     useEffect(() => {
-        if (isEdit && id) {
+        if (isEdit && goalId) {
             const fetchData = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:3000/api/proxy/skills/${id}`, {
+                    const response = await axios.get(`http://localhost:3000/api/proxy/skills/${skillId}/${goalId}`, {
                         withCredentials: true,
                     });
                     setTitle(response.data.title);
@@ -37,7 +38,7 @@ export default function GoalForm({formTitle, isEdit, id}: GoalFormProps) {
             };
             fetchData()
         }
-      }, [id, isEdit]);
+      }, [goalId, isEdit, skillId]);
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -55,18 +56,18 @@ export default function GoalForm({formTitle, isEdit, id}: GoalFormProps) {
 
         try {
             if (isEdit) {
-                await axios.put(`http://localhost:3000/api/proxy/skills/${id}/detail`,
+                await axios.put(`http://localhost:3000/api/proxy/skills/${skillId}/${goalId}`,
                     responseBody,
                     { withCredentials: true }
                 );
-                router.push(`/dashboard/skills/${id}`);
+                router.push(`/dashboard/skills/${skillId}/goals/${goalId}`);
             }
             else {
-                await axios.post('http://localhost:3000/api/proxy/skills',
+                await axios.post(`http://localhost:3000/api/proxy/skills/${skillId}/goals`,
                     responseBody,
                     { withCredentials: true }
                 );
-                router.push("/dashboard/skills");
+                router.push(`/dashboard/skills/${skillId}`);
             }
             
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

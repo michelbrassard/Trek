@@ -21,7 +21,7 @@ class GoalSerializer(serializers.ModelSerializer):
 class EditGoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
-        exclude = ["id"]
+        exclude = ["id", "isCompleted", "completedAt", "skillId"]
         
 class PrerequisiteGoal(serializers.ModelSerializer):
     id = serializers.UUIDField(source='prerequisiteGoalId.id')

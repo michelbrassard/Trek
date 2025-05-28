@@ -41,7 +41,7 @@ def goal_detail(request, goal_id):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.error, status=400)
+        return Response(serializer.errors, status=400)
     
     elif request.method == 'DELETE':
         try:
