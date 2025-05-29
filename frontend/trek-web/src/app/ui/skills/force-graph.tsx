@@ -91,7 +91,9 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
         const container = d3.select<Element, unknown>(svgRef.current);
         container.selectAll("*").remove();
         const zoomLayer = container.append("g")
+        
         let selectedParent: Node | null = null
+        let selectedParentCircle: SVGCircleElement | null = null
 
         container.call(
             d3.zoom()
@@ -168,7 +170,7 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             .attr("stroke-dasharray", "10,5")
             .attr("stroke-linecap", "round")
             .attr("stroke-dashoffset", 0)
-            .on("click", function (event, selectedNode) {
+            .attr("cursor", "pointer").on("click", function (event, selectedNode) {
                 if(selectedParent) {
                     setSecondGoal(selectedNode);
                     links.push({ source: selectedParent.id, target: selectedNode.id });
@@ -179,6 +181,8 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
 
                     setFirstGoal(null)
                     setSecondGoal(null)
+                    d3.select(selectedParentCircle)
+                        .attr("class", "stroke-transparent")
 
                     //send new connection to database
 
@@ -186,13 +190,18 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
                 } else {
                     setFirstGoal(selectedNode);
                     selectedParent = selectedNode;
+                    d3.select(this)
+                        .attr("class", "stroke-blue-500/40");
+                    selectedParentCircle = this as SVGCircleElement
                 }
             })
-            .on("mouseover", function () {
+            .on("mouseover", function (event, node) {
+                if (selectedParent === node) return
                 d3.select(this)
                     .attr("class", "stroke-neutral-500/40");
             })
-            .on("mouseout", function () {
+            .on("mouseout", function (event, node) {
+                if (selectedParent === node) return
                 d3.select(this)
                     .attr("class", "stroke-transparent");
             });
