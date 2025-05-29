@@ -55,6 +55,8 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
     const svgRef = useRef<SVGSVGElement | null>(null);
     const [hoveredElement, setHoveredElement] = useState<Node | null>(null)
     const router = useRouter()
+    const [firstGoal, setFirstGoal] = useState<Node | null>()
+    const [secondGoal, setSecondGoal] = useState<Node | null>()
 
     useEffect(() => {
         if (!svgRef.current) return;
@@ -67,11 +69,29 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
                 {source: prereq.id, target:goal.id, value: 0}
             ))
         );
+        function getSource(link: Link): Node | undefined {
+            return nodes.find(n => n === link.source)
+        }
+        function getTarget(link: Link): Node | undefined {
+            return nodes.find(n => n === link.target)
+        }
+        function getCompletionStateStyling(node: Node): string {
+            const foundLink = links.find(link => link.target === node)
+
+            if (!foundLink) {
+                return "fill-neutral-500"
+            }
+
+            return (typeof foundLink.source !== "string" && foundLink.source.isCompleted) ? 
+            "fill-neutral-500"
+            : 
+            "fill-neutral-200 dark:fill-neutral-800";
+        }
 
         const container = d3.select<Element, unknown>(svgRef.current);
         container.selectAll("*").remove();
-
         const zoomLayer = container.append("g")
+        let selectedParent: Node | null = null
 
         container.call(
             d3.zoom()
@@ -80,26 +100,17 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
                     zoomLayer.attr("transform", event.transform);
                 })
             );
-
         const simulation = d3
-            .forceSimulation<Node>([...nodes]) // clone to prevent mutation
+            .forceSimulation<Node>(nodes)
             .force(
                 "link",
                 d3
-                    .forceLink<Node, Link>([...links])
+                    .forceLink<Node, Link>(links)
                     .id(d => d.id)
                     .distance(100)
             )
             .force("charge", d3.forceManyBody().strength(-100))
             .force("center", d3.forceCenter(width / 2, height / 2));
-
-        
-        function getSource(link: Link): Node | undefined {
-            return nodes.find(n => n === link.source)
-        }
-        function getTarget(link: Link): Node | undefined {
-            return nodes.find(n => n === link.target)
-        }
 
         const link = zoomLayer
             .append("g")
@@ -116,7 +127,6 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             .attr("stroke-width", 2)
             .attr("stroke-linecap", "round")
             .attr("stroke-dasharray", link => {
-                
                 const source = getSource(link)
                 const target = getTarget(link)
 
@@ -124,20 +134,14 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
                     return "5,5" 
                 }
                 else if(!source?.isCompleted) {
-                    return "0.5,4"
+                    return "1,19"
                 }
-
-                return "0,0"
+                return "17,3"
             })
             .attr("stroke-dashoffset", 10);
         
-        const animatedLinks = link.filter(d => {
-            const source = getSource(d);
-            return typeof source !== "string" && !!source && source.isCompleted === true;
-        });
-        
         function animateLoop() {
-            animatedLinks
+            link
                 .attr("stroke-dashoffset", 10)
                 .transition()
                 .duration(1000)
@@ -147,28 +151,60 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
         }
         animateLoop();
 
-        function getCompletionStateStyling(node: Node): string {
-            const foundLink = links.find(link => link.target === node)
-
-            if (!foundLink) {
-                return "fill-neutral-500"
-            }
-
-            return (typeof foundLink.source !== "string" && foundLink.source.isCompleted) ? 
-            "fill-neutral-500"
-            : 
-            "fill-neutral-200 dark:fill-neutral-800";
-        }
-
         const node = zoomLayer
             .append("g")
             .selectAll<SVGGElement, Node>("g")
             .data(nodes)
             .join("g")
-            .attr("cursor", "pointer").on("click", function(_, d) {
-                router.push(`${skillGoals.id}/goals/${d.id}`)
-            })
             .call(drag(simulation));
+        
+        node 
+            .append("circle")
+            .attr("cx", 0)
+            .attr("cy", 0)
+            .attr("r", 40)
+            .attr("fill", "transparent")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "10,5")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-dashoffset", 0)
+            .on("click", function (event, selectedNode) {
+                if(selectedParent) {
+                    setSecondGoal(selectedNode);
+                    links.push({ source: selectedParent.id, target: selectedNode.id });
+
+                    (simulation.force("link") as d3.ForceLink<Node, Link> | undefined)?.links(links);
+                    simulation.alpha(1).restart();
+                    selectedParent = null;
+
+                    setFirstGoal(null)
+                    setSecondGoal(null)
+
+                    //send new connection to database
+
+                    //Update SVG 
+                } else {
+                    setFirstGoal(selectedNode);
+                    selectedParent = selectedNode;
+                }
+            })
+            .on("mouseover", function () {
+                d3.select(this)
+                    .attr("class", "stroke-neutral-500/40");
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                    .attr("class", "stroke-transparent");
+            });
+        
+        function animateDash(circle: d3.Selection<SVGCircleElement, Node, SVGGElement, unknown>) {
+            let offset = 1;
+            d3.timer(() => {
+                offset = (offset + 1) % 103;
+                circle.attr("stroke-dashoffset", offset);
+            });
+        }
+        animateDash(node.select("circle"));
 
         node
             .append("circle")
@@ -176,6 +212,9 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             .attr("cy", 0)
             .attr("r", 20)
             .attr("class", d => clsx("transition-all", (d.isCompleted ? "fill-green-500" : getCompletionStateStyling(d))))
+            .attr("cursor", "pointer").on("click", function(_, d) {
+                router.push(`${skillGoals.id}/goals/${d.id}`)
+            })
             .on("mouseover", function (event, node) {
                 setHoveredElement(node)
                 d3.select(this)
@@ -245,6 +284,10 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
                 style={{ maxWidth: "100%", height: "auto" }} 
                 className="mt-2 rounded-2xl bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] border border-neutral-200 dark:border-neutral-800"
             />
+            <div className="absolute right-0 top-0">
+                {firstGoal && <div>Parent: {firstGoal.title}</div>}
+                {secondGoal && <div>Child: {secondGoal.title}</div>}
+            </div>
             <AnimatePresence>
                 {hoveredElement &&
                     <motion.div 
