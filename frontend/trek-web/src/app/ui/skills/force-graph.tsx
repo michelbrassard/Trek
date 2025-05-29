@@ -54,8 +54,6 @@ interface ForceGraphProps {
 export default function ForceGraph({ skillGoals, width = 800, height = 600 }: ForceGraphProps) {
     const svgRef = useRef<SVGSVGElement | null>(null);
     const [hoveredElement, setHoveredElement] = useState<Node | null>(null)
-    const [hoveredX, setHoveredX] = useState<number>()
-    const [hoveredY, setHoveredY] = useState<number>()
     const router = useRouter()
 
     useEffect(() => {
@@ -70,8 +68,18 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             ))
         );
 
-        const container = d3.select(svgRef.current);
+        const container = d3.select<Element, unknown>(svgRef.current);
         container.selectAll("*").remove();
+
+        const zoomLayer = container.append("g")
+
+        container.call(
+            d3.zoom()
+                .scaleExtent([0.1, 5])
+                .on("zoom", (event) => {
+                    zoomLayer.attr("transform", event.transform);
+                })
+            );
 
         const simulation = d3
             .forceSimulation<Node>([...nodes]) // clone to prevent mutation
@@ -93,7 +101,7 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             return nodes.find(n => n === link.target)
         }
 
-        const link = container
+        const link = zoomLayer
             .append("g")
             .selectAll("line")
             .data(links)
@@ -108,6 +116,7 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             .attr("stroke-width", 2)
             .attr("stroke-linecap", "round")
             .attr("stroke-dasharray", link => {
+                
                 const source = getSource(link)
                 const target = getTarget(link)
 
@@ -151,14 +160,15 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             "fill-neutral-200 dark:fill-neutral-800";
         }
 
-        const node = container
+        const node = zoomLayer
             .append("g")
-            .selectAll("g")
+            .selectAll<SVGGElement, Node>("g")
             .data(nodes)
             .join("g")
             .attr("cursor", "pointer").on("click", function(_, d) {
                 router.push(`${skillGoals.id}/goals/${d.id}`)
-            });
+            })
+            .call(drag(simulation));
 
         node
             .append("circle")
@@ -168,8 +178,6 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             .attr("class", d => clsx("transition-all", (d.isCompleted ? "fill-green-500" : getCompletionStateStyling(d))))
             .on("mouseover", function (event, node) {
                 setHoveredElement(node)
-                setHoveredX(node.x! + 20)
-                setHoveredY(node.y! + 20)
                 d3.select(this)
                     .attr("r", 22);
             })
@@ -186,26 +194,40 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
             .text(d => d.title)
             .attr("class", "dark:fill-white fill-black capitalize");
         
-        //simulation
-        // simulation.on("tick", () => {
-        //     link
-        //         .attr("x1", d => (typeof d.source === "object" ? d.source.x ?? 0 : 0))
-        //         .attr("y1", d => (typeof d.source === "object" ? d.source.y ?? 0 : 0))
-        //         .attr("x2", d => (typeof d.target === "object" ? d.target.x ?? 0 : 0))
-        //         .attr("y2", d => (typeof d.target === "object" ? d.target.y ?? 0 : 0));
+        simulation.on("tick", () => {
+            link
+                .attr("x1", d => (typeof d.source === "object" ? d.source.x ?? 0 : 0))
+                .attr("y1", d => (typeof d.source === "object" ? d.source.y ?? 0 : 0))
+                .attr("x2", d => (typeof d.target === "object" ? d.target.x ?? 0 : 0))
+                .attr("y2", d => (typeof d.target === "object" ? d.target.y ?? 0 : 0));
 
-        //     node.attr("transform", d => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
-        // });
+            node.attr("transform", d => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
+        });
 
-        //instant rearrange, no animation
-        while (simulation.alpha() > 0.01) simulation.tick();
-        link
-            .attr("x1", d => (typeof d.source === "object" ? d.source.x ?? 0 : 0))
-            .attr("y1", d => (typeof d.source === "object" ? d.source.y ?? 0 : 0))
-            .attr("x2", d => (typeof d.target === "object" ? d.target.x ?? 0 : 0))
-            .attr("y2", d => (typeof d.target === "object" ? d.target.y ?? 0 : 0));
+        function drag(simulation: d3.Simulation<Node, undefined>) {
+            function dragstarted(this: Element, event: d3.D3DragEvent<Element, d3.SimulationNodeDatum, d3.SimulationNodeDatum>, d: d3.SimulationNodeDatum) {
+                if (!event.active) simulation.alphaTarget(0.1).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
 
-        node.attr("transform", d => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
+            function dragged(this: Element, event: d3.D3DragEvent<Element, d3.SimulationNodeDatum, d3.SimulationNodeDatum>, d: d3.SimulationNodeDatum) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(this: Element, event: d3.D3DragEvent<Element, d3.SimulationNodeDatum, d3.SimulationNodeDatum>, d: d3.SimulationNodeDatum) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+
+            return d3
+                .drag<SVGGElement, Node>()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended);
+        }
 
         return () => {
             simulation.stop();
@@ -216,21 +238,23 @@ export default function ForceGraph({ skillGoals, width = 800, height = 600 }: Fo
         <div className="relative">
             <svg 
                 ref={svgRef} 
-                width={width} 
-                height={height} 
+                viewBox={`0 0 ${width} ${height}`} 
+                preserveAspectRatio="none" 
+                width="100%" 
+                height="100%"
                 style={{ maxWidth: "100%", height: "auto" }} 
-                className="bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px]"
+                className="mt-2 rounded-2xl bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] border border-neutral-200 dark:border-neutral-800"
             />
             <AnimatePresence>
                 {hoveredElement &&
                     <motion.div 
-                        style={{ left: (hoveredX), top: hoveredY, position: 'absolute' }}
+                        style={{ left: (0), top: 0, position: 'absolute' }}
                         initial={{ opacity: 0, scale: 1.1 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <div className="backdrop-blur-md bg-neutral-100/60 dark:bg-neutral-900/60 py-2 px-3 rounded-xl min-w-[200px] border border-neutral-200 dark:border-neutral-800">
+                        <div className="backdrop-blur-md bg-neutral-100/60 dark:bg-neutral-900/60 py-2 px-3 rounded-xl min-w-[200px] border border-neutral-200 dark:border-neutral-800 m-2">
                             <h2 className="text-[10px] font-medium text-neutral-500 uppercase">{hoveredElement.title}</h2>
                             <p>{hoveredElement.description}</p>
                         </div>
