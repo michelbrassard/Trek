@@ -1,7 +1,6 @@
 # Trek
 
-A prototype for a training management platform.
-Also, it as exercise for creating web applications.
+A prototype for a training management platform. (Exercise for creating web applications.)
 
 ## Backend
 
