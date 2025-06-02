@@ -2,6 +2,14 @@
 
 A prototype for a training management platform. (Exercise for creating web applications.)
 
+## Logo
+
+<img src="images/logo.png" alt="Logo" width="90"/> &nbsp;&nbsp;&nbsp;
+<img src="images/icon.png" alt="Icon" width="80"/>
+
+Arrow up "progress"
+and the letter the "T" for "Trek" or "Tracking"
+
 ## Backend
 
 - Python Django REST Framework
@@ -46,3 +54,5 @@ Frontend: page -> components -> proxy -> direct api call
 ## Attention
 
 Be careful with trailing / in the links, the urls in the backend expect /, but not on the frontend...
+
+
