@@ -11,6 +11,7 @@ Arrow up "progress"
 and the letter the "T" for "Trek" or "Tracking"
 
 - Figma: <https://www.figma.com/design/8uj17xCKdOpIE9AFyEs9wL/Trek?node-id=0-1&t=IgD0GrY15Xuw54Go-1>
+- There are multiple pages
 
 ## Backend
 
