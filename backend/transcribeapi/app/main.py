@@ -7,6 +7,10 @@ import os
 from PIL import Image
 import io
 
+# Load model and processor
+# processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+# model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
+
 import cv2
 import pytesseract
 from pytesseract import Output
@@ -44,25 +48,26 @@ async def extract_text(
         "content": text
     }
 
-@app.post("/extract/handwriting")
-async def extract_handwriting(
-    type: str = Form(...), 
-    file: UploadFile = File(...)
-):
-    return {
-        "type": type,
-        "filename": file.filename
-        }
+# @app.post("/extract/handwriting")
+# async def extract_handwriting(
+#     type: str = Form(...), 
+#     file: UploadFile = File(...)
+# ):
+#     text = await parse_handwriting(file)
+#     return {
+#         "filename": file.filename,
+#         "content": text
+#     }
 
-@app.post("/extract/audio")
-async def extract_audio(
-    type: str = Form(...), 
-    file: UploadFile = File(...)
-):
-    return {
-        "type": type,
-        "filename": file.filename
-    }
+# @app.post("/extract/audio")
+# async def extract_audio(
+#     type: str = Form(...), 
+#     file: UploadFile = File(...)
+# ):
+#     return {
+#         "type": type,
+#         "filename": file.filename
+#     }
 
 
 if __name__ == "__main__":
@@ -92,5 +97,4 @@ async def parse_text(file):
                 "block_num": data['block_num'][i],
                 "page_num": data['page_num'][i],
             })
-    
     return structured_output

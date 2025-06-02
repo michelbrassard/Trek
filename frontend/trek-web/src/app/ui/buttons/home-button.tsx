@@ -3,7 +3,7 @@
 import { Home } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function BackButton() {
+export default function HomeButton() {
     const router = useRouter();
 
     return (

@@ -54,10 +54,6 @@ def search_data(request):
                 Q(date_of_birth__icontains=query)
             ).distinct()[:5]
             
-            print(searched_workouts)
-            print(searched_competitions)
-            print(searched_athletes)
-            
             results = (
                 list(SearchedWorkoutSerializer(searched_workouts, many=True).data) + 
                 list(SearchedCompetitionSerializer(searched_competitions, many=True).data) + 

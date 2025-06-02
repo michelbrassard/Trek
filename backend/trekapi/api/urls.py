@@ -61,6 +61,13 @@ urlpatterns = [
     path('progress/<uuid:progress_id>/save/', views.save_new_version),
     path('progress/<uuid:progress_id>/versions/', views.progress_with_all_content_versions),
     
+    #skill
+    path('skills/', views.skill_list),
+    path('skills/<uuid:skill_id>/', views.skill_goals),
+    path('skills/<uuid:skill_id>/detail/', views.skill_detail),
+    path('skills/<uuid:skill_id>/goals/', views.goal_list),
+    path('skills/goals/<uuid:goal_id>/', views.goal_detail),
+    
 ]
 
 # if settings.DEBUG:

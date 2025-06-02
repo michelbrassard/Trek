@@ -17,7 +17,6 @@ db.sqlite3  # Ignore SQLite database file
 .venv
 
 # IDE & Editor Files
-.vscode/
 .idea/
 *.sublime-workspace
 

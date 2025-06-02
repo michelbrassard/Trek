@@ -1,0 +1,69 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start All",
+        "dependsOn": [
+          "Start Models",
+          "Start Backend",
+          "Start Frontend",
+        ],
+        "problemMatcher": [],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Start Both Backend and Frontend",
+        "dependsOn": [
+          "Start Backend",
+          "Start Frontend"
+        ],
+        "problemMatcher": [],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Start Models",
+        "type": "shell",
+        "command": "cd backend && source venv/bin/activate && cd transcribeapi && cd app && uvicorn main:app --reload --port 8001",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": [],
+        "presentation": {
+          "panel": "new"
+        }
+      },
+      {
+        "label": "Start Backend",
+        "type": "shell",
+        "command": "cd backend && source venv/bin/activate && cd trekapi && python manage.py runserver",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": [],
+        "presentation": {
+          "panel": "new"
+        }
+      },
+      {
+        "label": "Start Frontend",
+        "type": "shell",
+        "command": "cd frontend/trek-web && npm run dev",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": [],
+        "presentation": {
+          "panel": "new"
+        }
+      }
+    ]
+  }

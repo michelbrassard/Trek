@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import TrekLogo from "../logo/trek-logo";
-import { ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, StickyNote, Users, Video, LibraryBig } from "lucide-react";
+import { ChartLine, Dumbbell, LayoutDashboard, LucideIcon, Medal, StickyNote, Users, Video, LibraryBig, Hexagon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -53,6 +53,7 @@ export default function DashboardNavigationLinks({styles, isDesktop, toggleNavig
         { href: "/dashboard/resources", label: "Resources", icon: LibraryBig, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/notes", label: "Notes", icon: StickyNote, roles: ["COACH", "ATHLETE"] },
         { href: "/dashboard/media", label: "Media", icon: Video, roles: ["COACH"] },
+        { href: "/dashboard/skills", label: "Skills", icon: Hexagon, roles: ["COACH", "ATHLETE"] },
         // progress page...?
     ];
 

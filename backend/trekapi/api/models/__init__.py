@@ -5,3 +5,5 @@ from .competition import *
 from .note import *
 from .resource import *
 from .progress import *
+from .skill import *
+from .routine import *

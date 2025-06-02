@@ -29,7 +29,7 @@ export default function TextArea({hasProblems, name, label, id, alertMessage, va
         resizeTextArea()
     }, [value]);
     
-    const textareaStyle = "px-3 w-full block py-1 focus:outline-none focus:ring-0 placeholder-neutral-500 bg-neutral-100 dark:bg-neutral-900 rounded-xl resize-none" 
+    const textareaStyle = "px-3 w-full block py-2 focus:outline-none focus:ring-0 placeholder-neutral-500 bg-neutral-100 dark:bg-neutral-900 rounded-xl resize-none" 
     const labelStyle = "uppercase text-[10px] font-medium text-neutral-500"
     const alertStyle = "border-red-500 dark:border-red-500"
 
