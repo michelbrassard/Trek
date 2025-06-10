@@ -94,7 +94,7 @@ export default function Canvas() {
             let startY = 0
 
             const rectangeX = 30
-            const rectangeY =  canvasHeight - 70
+            let rectangeY =  canvasHeight - 70
             const rectangleWidth = canvasWidth - rectangeX * 2
             const rectangleHeight = 15
 
@@ -114,40 +114,58 @@ export default function Canvas() {
                     context.roundRect(rectangeX, rectangeY, rectangleWidth, rectangleHeight, 20)
                     context.fillStyle = "red";
                     context.fill()
+                    context.stroke()
+
+                    if (clicked) {
+                        rectangeY = mouseY
+                        context.clearRect(0, 0, columnCanvas.width, columnCanvas.height);
+                        context.roundRect(rectangeX, -mouseY, rectangleWidth, rectangleHeight, 20)
+                        context.fillStyle = "green";
+                        context.fill()
+                        context.stroke()
+                    }
                 }
                 else {
                     context.clearRect(0, 0, columnCanvas.width, columnCanvas.height);
                     context.roundRect(rectangeX, rectangeY, rectangleWidth, rectangleHeight, 20)
                     context.fillStyle = "#3b82f6";
                     context.fill()
+                    context.stroke()
                 }
 
             });
 
-            columnCanvas.addEventListener('mousedown', (event: MouseEvent) => {
+            columnCanvas.addEventListener('mousedown', () => {
                 clicked = true
-                startX = event.clientX - columnCanvas.getBoundingClientRect().left
-                startY = event.clientY - columnCanvas.getBoundingClientRect().top
-
             });
-
-            columnCanvas.addEventListener("mousemove", (event: MouseEvent) => {
-                if (!clicked) {
-                    return
-                }
-                
-                x = event.clientX - columnCanvas.getBoundingClientRect().left
-                y = event.clientY - columnCanvas.getBoundingClientRect().top
-                
-                context.beginPath();
-                context.moveTo(startX, startY)
-                context.lineTo(x, y);
-                context.stroke()
-            })
-
-            columnCanvas.addEventListener("mouseup", () => {
+            columnCanvas.addEventListener('mouseup', () => {
                 clicked = false
             })
+
+            // columnCanvas.addEventListener('mousedown', (event: MouseEvent) => {
+            //     clicked = true
+            //     startX = event.clientX - columnCanvas.getBoundingClientRect().left
+            //     startY = event.clientY - columnCanvas.getBoundingClientRect().top
+
+            // });
+
+            // columnCanvas.addEventListener("mousemove", (event: MouseEvent) => {
+            //     if (!clicked) {
+            //         return
+            //     }
+                
+            //     x = event.clientX - columnCanvas.getBoundingClientRect().left
+            //     y = event.clientY - columnCanvas.getBoundingClientRect().top
+                
+            //     context.beginPath();
+            //     context.moveTo(startX, startY)
+            //     context.lineTo(x, y);
+            //     context.stroke()
+            // })
+
+            // columnCanvas.addEventListener("mouseup", () => {
+            //     clicked = false
+            // })
         }
 
         loadLineCanvas()
