@@ -93,23 +93,42 @@ export default function Canvas() {
             let startX = 0
             let startY = 0
 
-            context.lineWidth = 10
-            context.lineCap = "round";
-            context.beginPath();
+            const rectangeX = 30
+            const rectangeY =  canvasHeight - 70
+            const rectangleWidth = canvasWidth - rectangeX * 2
+            const rectangleHeight = 15
+
+            context.roundRect(rectangeX, rectangeY, rectangleWidth, rectangleHeight, 20)
             context.fillStyle = "#3b82f6";
-            context.strokeStyle = "#3b82f6";
-            context.moveTo(30, canvasHeight - 70)
-            context.lineTo(canvasWidth - 30, canvasHeight - 70);
-            context.stroke()
+            context.fill()
+
+            columnCanvas.addEventListener('mousemove', (event: MouseEvent) => {
+                const mouseX = event.clientX - columnCanvas.getBoundingClientRect().left
+                const mouseY = event.clientY - columnCanvas.getBoundingClientRect().top
+
+                if(
+                    (mouseX >= rectangeX && mouseX <= rectangeX + rectangleWidth) &&
+                    (mouseY >= rectangeY && mouseY <= rectangeY + rectangleHeight)
+                ) {
+                    context.clearRect(0, 0, columnCanvas.width, columnCanvas.height);
+                    context.roundRect(rectangeX, rectangeY, rectangleWidth, rectangleHeight, 20)
+                    context.fillStyle = "red";
+                    context.fill()
+                }
+                else {
+                    context.clearRect(0, 0, columnCanvas.width, columnCanvas.height);
+                    context.roundRect(rectangeX, rectangeY, rectangleWidth, rectangleHeight, 20)
+                    context.fillStyle = "#3b82f6";
+                    context.fill()
+                }
+
+            });
 
             columnCanvas.addEventListener('mousedown', (event: MouseEvent) => {
                 clicked = true
                 startX = event.clientX - columnCanvas.getBoundingClientRect().left
                 startY = event.clientY - columnCanvas.getBoundingClientRect().top
 
-                context.lineWidth = 8
-                context.lineCap = "round";
-                context.strokeStyle = "red";
             });
 
             columnCanvas.addEventListener("mousemove", (event: MouseEvent) => {
