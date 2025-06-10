@@ -3,73 +3,154 @@
 import { useEffect, useRef } from "react";
 
 export default function Canvas() {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const lineCanvasRef = useRef<HTMLCanvasElement>(null);
+    const columnCanvasRef = useRef<HTMLCanvasElement>(null);
+    const value = useRef(0)
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        let clicked = false
+        const loadLineCanvas = () => {
+            const lineCanvas = lineCanvasRef.current;
+            let clicked = false
 
-        if (!canvas) {
-            return
-        }
-
-        canvas.style.width = `${1000}px`;
-        canvas.style.height = `${600}px`;
-
-        const context = canvas.getContext('2d');
-        const scale = window.devicePixelRatio;
-
-        canvas.width = Math.floor(1000 * scale);
-        canvas.height = Math.floor(600 * scale);
-
-        if (!context) return
-        
-        context.scale(scale, scale);
-
-        let x = 0
-        let startX = 0
-        let startY = 0
-        let lineText = "0"
-
-        canvas.addEventListener('mousedown', (event: MouseEvent) => {
-            clicked = true
-            startX = event.clientX - canvas.getBoundingClientRect().left
-            startY = event.clientY - canvas.getBoundingClientRect().top
-
-            context.lineWidth = 8
-            context.lineCap = "round";
-        });
-
-        canvas.addEventListener("mousemove", (event: MouseEvent) => {
-            if (!clicked) {
+            if (!lineCanvas) {
                 return
             }
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            x = event.clientX - canvas.getBoundingClientRect().left
-            
+
+            const lineCanvasWidth = 800
+            const lineCanvasHeight = 300
+            lineCanvas.style.width = `${lineCanvasWidth}px`;
+            lineCanvas.style.height = `${lineCanvasHeight}px`;
+
+            const context = lineCanvas.getContext('2d');
+            const scale = window.devicePixelRatio;
+
+            lineCanvas.width = Math.floor(lineCanvasWidth * scale);
+            lineCanvas.height = Math.floor(lineCanvasHeight * scale);
+
+            if (!context) return
+            context.scale(scale, scale);
+
+            let x = 0
+            let startX = 0
+            let startY = 0
+
+            lineCanvas.addEventListener('mousedown', (event: MouseEvent) => {
+                clicked = true
+                startX = event.clientX - lineCanvas.getBoundingClientRect().left
+                startY = event.clientY - lineCanvas.getBoundingClientRect().top
+
+                context.lineWidth = 8
+                context.lineCap = "round";
+                context.fillStyle = "#3b82f6";
+                context.strokeStyle = "#3b82f6";
+            });
+
+            lineCanvas.addEventListener("mousemove", (event: MouseEvent) => {
+                if (!clicked) {
+                    return
+                }
+                context.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+                x = event.clientX - lineCanvas.getBoundingClientRect().left
+                
+                context.beginPath();
+                
+                context.moveTo(startX, startY)
+                context.lineTo(x, startY);
+                context.stroke()
+
+                value.current = Math.abs(x - startX) * 10
+                context.fillText(`${value.current}`, Math.max(x, startX) - 10 ,startY - 15)
+            })
+
+            lineCanvas.addEventListener("mouseup", () => {
+                clicked = false
+            })
+        }
+
+        const loadColumnCanvas = () => {
+            const columnCanvas = columnCanvasRef.current;
+            let clicked = false
+
+            if (!columnCanvas) {
+                return
+            }
+
+            const canvasWidth = 800
+            const canvasHeight = 300
+            columnCanvas.style.width = `${canvasWidth}px`;
+            columnCanvas.style.height = `${canvasHeight}px`;
+            const context = columnCanvas.getContext('2d');
+            const scale = window.devicePixelRatio;
+
+            columnCanvas.width = Math.floor(canvasWidth * scale);
+            columnCanvas.height = Math.floor(canvasHeight * scale);
+
+            if (!context) return
+            context.scale(scale, scale);
+
+            let x = 0
+            let y = 0
+            let startX = 0
+            let startY = 0
+
+            context.lineWidth = 10
+            context.lineCap = "round";
             context.beginPath();
             context.fillStyle = "#3b82f6";
             context.strokeStyle = "#3b82f6";
-            context.moveTo(startX, startY)
-            context.lineTo(x, startY);
+            context.moveTo(30, canvasHeight - 70)
+            context.lineTo(canvasWidth - 30, canvasHeight - 70);
             context.stroke()
 
-            context.fillText(`${Math.abs(x - startX) * 10}`, Math.max(x, startX) - 10 ,startY - 15)
-        })
+            columnCanvas.addEventListener('mousedown', (event: MouseEvent) => {
+                clicked = true
+                startX = event.clientX - columnCanvas.getBoundingClientRect().left
+                startY = event.clientY - columnCanvas.getBoundingClientRect().top
 
-        canvas.addEventListener("mouseup", () => {
-            clicked = false
-        })
+                context.lineWidth = 8
+                context.lineCap = "round";
+                context.strokeStyle = "red";
+            });
+
+            columnCanvas.addEventListener("mousemove", (event: MouseEvent) => {
+                if (!clicked) {
+                    return
+                }
+                
+                x = event.clientX - columnCanvas.getBoundingClientRect().left
+                y = event.clientY - columnCanvas.getBoundingClientRect().top
+                
+                context.beginPath();
+                context.moveTo(startX, startY)
+                context.lineTo(x, y);
+                context.stroke()
+            })
+
+            columnCanvas.addEventListener("mouseup", () => {
+                clicked = false
+            })
+        }
+
+        loadLineCanvas()
+        loadColumnCanvas()
+        
 
     }, [])
 
     return(
-        <div>
+        <div className="flex flex-col gap-2">
             <canvas 
-                ref={canvasRef}
-                id="experiement" 
-                width="1000" 
-                height="600"
+                ref={lineCanvasRef}
+                id="line" 
+                width="800" 
+                height="300"
+                className="mt-2 rounded-2xl bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] border border-neutral-200 dark:border-neutral-800"
+            ></canvas>
+            <canvas 
+                ref={columnCanvasRef}
+                id="column" 
+                width="800" 
+                height="300"
                 className="mt-2 rounded-2xl bg-[radial-gradient(circle,_#ddd_1px,_transparent_1px)] dark:bg-[radial-gradient(circle,_#222_1px,_transparent_1px)] [background-size:20px_20px] border border-neutral-200 dark:border-neutral-800"
             ></canvas>
         </div>
