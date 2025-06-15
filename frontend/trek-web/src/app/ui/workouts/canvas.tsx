@@ -88,10 +88,10 @@ export default function Canvas() {
             if (!context) return
             context.scale(scale, scale);
 
-            let x = 0
-            let y = 0
-            let startX = 0
-            let startY = 0
+            // let x = 0
+            // let y = 0
+            // let startX = 0
+            // let startY = 0
 
             const rectangeX = 30
             let rectangeY =  canvasHeight - 70
