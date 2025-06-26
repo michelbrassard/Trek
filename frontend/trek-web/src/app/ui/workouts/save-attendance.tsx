@@ -116,20 +116,21 @@ export default function WorkoutAttendance({id} : WorkoutAttendanceDataProps) {
     }
 
     return(
-        <form onSubmit={handleSaveAttendence}>
-            <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 mb-5">
+        <form onSubmit={handleSaveAttendence} className="my-5">
+            <h2 className="font-bold text-2xl mb-4">Attendance</h2>
+            <div className="flex flex-wrap">
                 {athleteList.map((athlete) => (
                     <div 
                         key={athlete.id} 
                         className={clsx(
-                            "m-1 px-4 py-2 border rounded-xl transition-colors cursor-pointer overflow-x text-ellipsis",
+                            "w-fit m-1 px-4 py-2 border rounded-xl transition-colors cursor-pointer overflow-x text-ellipsis",
                             selectedAthletes.has(athlete.id)
                                 ? "border-green-500 bg-green-100 dark:bg-green-900"
                                 : "border-neutral-300 dark:border-neutral-700 hover:border-blue-500 hover:bg-blue-50 hover:dark:bg-blue-950"
                             )}
                             onClick={() => toggleSelection(athlete.id)}
                     >
-                        <p>{`${athlete.first_name} ${athlete.last_name}`}</p>
+                        <p className="text-sm">{`${athlete.first_name} ${athlete.last_name}`}</p>
                         <p className="text-xs text-neutral-500">{athlete.email}</p>
                     </div>
                 ))}

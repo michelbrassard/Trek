@@ -58,7 +58,7 @@ export default function WorkoutOverviewData({id}: WorkoutOverviewDataProps) {
     }
     
     return(
-        <div className="my-5">
+        <div className="my-5 min-w-[600px]">
             {overview ? 
             <div>
                 <div className="flex row justify-between">
