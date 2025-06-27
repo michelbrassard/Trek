@@ -7,8 +7,11 @@ export default async function WorkoutDetails({ params }: { params: { id: string 
     return(
         <div>
             <BackButton />
-            <WorkoutOverviewData id={id} />
-            <WorkoutAttendance id={id} />
+            <div className="flex flex-row gap-8">
+                <WorkoutOverviewData id={id} />
+                <WorkoutAttendance id={id} />
+            </div>
+            
         </div>
     );
 }
