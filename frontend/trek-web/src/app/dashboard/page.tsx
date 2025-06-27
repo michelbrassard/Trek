@@ -56,7 +56,7 @@ export default function Overview() {
         value={text}
         rows={0} 
       />
-      <div className="whitespace-pre">{parseMDToHTML(text)}</div>
+      <div className="whitespace-pre text-wrap">{parseMDToHTML(text)}</div>
     </div>
   );
 }
