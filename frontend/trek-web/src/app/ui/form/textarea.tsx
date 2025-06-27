@@ -15,6 +15,7 @@ interface TextAreaProps {
 }
 
 export default function TextArea({hasProblems, name, label, id, alertMessage, value, onChange}: TextAreaProps) {
+    //MD editor?
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const resizeTextArea = () => {
