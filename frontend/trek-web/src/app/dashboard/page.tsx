@@ -48,15 +48,18 @@ export default function Overview() {
       <TestModelFastApi />
       
       <p className="text-lg font-bold">Testing the .md editor</p>
-      <DotMDEditor 
-        label={".md Editor"} 
-        id={"editor"} 
-        name={"editor"} 
-        onChange={(e) => setText(e.target.value)} 
-        value={text}
-        rows={0} 
-      />
-      <div className="whitespace-pre text-wrap">{parseMDToHTML(text)}</div>
+      <div className="columns-2">
+        <DotMDEditor 
+          label={".md Editor"} 
+          id={"editor"} 
+          name={"editor"} 
+          onChange={(e) => setText(e.target.value)} 
+          value={text}
+          rows={0} 
+        />
+        
+        <div className="whitespace-pre text-wrap">{parseMDToHTML(text)}</div>
+      </div>
     </div>
   );
 }

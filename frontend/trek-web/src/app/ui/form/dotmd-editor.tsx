@@ -25,6 +25,22 @@ export default function DotMDEditor({hasProblems, name, label, id, alertMessage,
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Tab' ) {
+            e.preventDefault()
+
+            const target = e.target as HTMLTextAreaElement;
+            const { selectionStart, selectionEnd, value } = target;
+
+            const newValue = value.substring(0, selectionStart) + '\t' + value.substring(selectionEnd);
+            target.value = newValue;
+
+            requestAnimationFrame(() => {
+                target.selectionStart = target.selectionEnd = selectionStart + 1;
+            });
+        }
+    }
+
     useLayoutEffect(() => {
         resizeTextArea()
     }, [value]);
@@ -49,6 +65,7 @@ export default function DotMDEditor({hasProblems, name, label, id, alertMessage,
                 onChange={onChange}
                 required
                 placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
+                onKeyDown={handleKeyDown}
             >
             </textarea>
             {hasProblems && <p className="text-red-500 text-xs mt-1 ml-1">{alertMessage}</p>}
