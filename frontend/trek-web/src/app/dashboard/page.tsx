@@ -58,7 +58,10 @@ export default function Overview() {
           rows={0} 
         />
         
-        <div className="whitespace-pre text-wrap">{parseMDToHTML(text)}</div>
+        <div className="whitespace-pre text-wrap">
+          {text ? parseMDToHTML(text) : <p className="opacity-30">Text...</p> }
+          
+        </div>
       </div>
     </div>
   );
