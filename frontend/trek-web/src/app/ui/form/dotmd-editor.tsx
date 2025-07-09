@@ -11,7 +11,8 @@ interface DotMDEditorProps {
     value?: string,
     name: string,
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    rows: number
+    rows: number, 
+    isList?: boolean
 }
 
 export default function DotMDEditor({hasProblems, name, label, id, alertMessage, value, onChange}: DotMDEditorProps) {
@@ -38,6 +39,11 @@ export default function DotMDEditor({hasProblems, name, label, id, alertMessage,
             requestAnimationFrame(() => {
                 target.selectionStart = target.selectionEnd = selectionStart + 1;
             });
+        }
+        if (e.key === 'Enter') {
+            e.preventDefault()
+
+
         }
     }
 

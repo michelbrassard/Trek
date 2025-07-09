@@ -8,6 +8,7 @@ import DotMDEditor from "../ui/form/dotmd-editor";
 export default function Overview() {
 
   const [text, setText] = useState("");
+  const [isList, setIsList] = useState(true)
 
   const parseMDToHTML = (mdText: string): ReactNode => {
     const lines = mdText.split("\n")
@@ -30,6 +31,9 @@ export default function Overview() {
       }
       else if (line.trim().startsWith("###### ")) {
         return <h6 key={index} className="text-sm mt-1 font-bold">{line.replaceAll("#", "").trimStart()}</h6>;
+      }
+      else if (line.trim().startsWith("- ")) {
+        return <p key={index} className="text-red-800 dark:text-red-200">{line}</p>
       }
       
       else {
