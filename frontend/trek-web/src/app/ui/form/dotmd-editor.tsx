@@ -1,7 +1,7 @@
 "use client"
 
 import clsx from "clsx";
-import { useRef, useLayoutEffect, ReactNode, useState } from 'react';
+import { useRef, useLayoutEffect, ReactNode } from 'react';
 
 interface DotMDEditorProps {
     hasProblems?: boolean,
@@ -17,7 +17,7 @@ interface DotMDEditorProps {
 
 export default function DotMDEditor({hasProblems, name, label, id, alertMessage, value, onChange}: DotMDEditorProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    // const [isList, setIsList] = useState(true)
+    let isList = false
 
     const resizeTextArea = () => {
         const textarea = textareaRef.current;
@@ -49,13 +49,13 @@ export default function DotMDEditor({hasProblems, name, label, id, alertMessage,
           else if (line.trim().startsWith("###### ")) {
             return <h6 key={index} className="text-sm mt-1 font-bold">{line.replaceAll("#", "").trimStart()}</h6>;
           }
-          else if (line.trim().startsWith("- ")) {
+          if (line.trim().startsWith("- ")) {
+            isList = true 
             return <p key={index} className="text-red-800 dark:text-red-200">{line}</p>
           }
           
-          else {
-            return <p key={index} className="text-neutral-800 dark:text-neutral-200">{line}</p>;
-          }
+          isList = false 
+          return <p key={index} className="text-neutral-800 dark:text-neutral-200">{line}</p>;
         });
     
         return renderedLines
@@ -74,6 +74,26 @@ export default function DotMDEditor({hasProblems, name, label, id, alertMessage,
             requestAnimationFrame(() => {
                 target.selectionStart = target.selectionEnd = selectionStart + 1;
             });
+        }
+        if (e.key === 'Enter' && isList) {
+            e.preventDefault()
+
+            const target = e.target as HTMLTextAreaElement;
+            const { selectionStart, selectionEnd, value } = target;
+            
+            const prevScroll = target.scrollTop;
+            
+            const newValue = value.substring(0, selectionStart) + '\n- ' + value.substring(selectionEnd);
+            target.value = newValue;
+
+            target.scrollTop = prevScroll;
+
+            requestAnimationFrame(() => {
+                target.selectionStart = target.selectionEnd = selectionStart + 3;
+                target.scrollTop = prevScroll;
+                resizeTextArea()
+            });
+            
         }
     }
 
