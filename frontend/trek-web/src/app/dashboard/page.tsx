@@ -4,6 +4,7 @@ import { useState } from "react";
 import Title from "../ui/dashboard/title";
 import TestModelFastApi from "../ui/DELETEME/test";
 import DotMDEditor from "../ui/form/dotmd-editor";
+import TextEditor from "../ui/form/text-editor-content-editable";
 
 export default function Overview() {
 
@@ -25,6 +26,8 @@ export default function Overview() {
           value={text}
           rows={0} 
       />
+      <p className="text-lg font-bold">Testing the text editor with contentEditable</p>
+      <TextEditor />
     </div>
   );
 }
