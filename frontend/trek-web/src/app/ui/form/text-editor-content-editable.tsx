@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import TonalButton from "../buttons/tonal-button";
-import { Bold } from "lucide-react";
+import { Bold, Italic } from "lucide-react";
 
 export default function TextEditor() {
     const divRef = useRef<HTMLDivElement>(null);
@@ -24,22 +24,17 @@ export default function TextEditor() {
         console.log('Selected text:', selectedText);
     };
   
-    function unwrapSelection(range: Range, tagsToUnwrap: string[]) {
-        const selectedContents = range.cloneContents();
+    function unwrapSelection(node: Node | null) {
+        if (!node) return; 
         const fragment = document.createDocumentFragment();
         
-        selectedContents.childNodes.forEach((node) => {
-            if (
-                node.nodeType === Node.ELEMENT_NODE &&
-                tagsToUnwrap.includes((node as Element).nodeName)
-            ) {
-                node.childNodes.forEach((child) => fragment.appendChild(child.cloneNode(true)));
-            } else {
-                fragment.appendChild(node.cloneNode(true));
-            }
+        node.childNodes.forEach((child) => {
+            fragment.appendChild(child.cloneNode(true));
         });
-        range.deleteContents();
-        range.insertNode(fragment);
+
+        const parent = node.parentNode;
+        parent?.insertBefore(fragment, node)
+        parent?.removeChild(node)
     }
 
     const toggleBold = () => {
@@ -49,25 +44,52 @@ export default function TextEditor() {
         const range = selection.getRangeAt(0);
         if (range.collapsed) return; 
 
-        // Check if selection is already bold
         let isBold = false;
-        let ancestor = selection.anchorNode;
-        while (ancestor && ancestor !== document.body) {
-            if (ancestor.nodeName === 'STRONG' || ancestor.nodeName === 'B') {
+        let node = selection.anchorNode;
+        while (node && node !== document.body) {
+            if (node.nodeName === 'STRONG' || node.nodeName === 'B') {
                 isBold = true;
                 break;
             }
-            ancestor = ancestor.parentNode;
+            node = node.parentNode;
         }
+
         if (isBold) {
-            unwrapSelection(range, ['STRONG', 'B']);
+            unwrapSelection(node);
         } else {
             const strong = document.createElement('strong');
             range.surroundContents(strong);
         }
+        window.getSelection()?.removeAllRanges();
     };
 
-  return (
+    const toggleItalic = () => {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
+
+        const range = selection.getRangeAt(0);
+        if (range.collapsed) return; 
+
+        let isItalic = false;
+        let node = selection.anchorNode;
+        while (node && node !== document.body) {
+            if (node.nodeName === 'EM' || node.nodeName === 'I') {
+                isItalic = true;
+                break;
+            }
+            node = node.parentNode;
+        }
+
+        if (isItalic) {
+            unwrapSelection(node);
+        } else {
+            const strong = document.createElement('em');
+            range.surroundContents(strong);
+        }
+        window.getSelection()?.removeAllRanges();
+    };
+
+    return (
         <div>
             <div
                 ref={divRef}
@@ -75,13 +97,19 @@ export default function TextEditor() {
                 suppressContentEditableWarning={true}
                 style={{ border: '1px solid #ccc', padding: '8px', minHeight: '100px' }}
             >
-                Edit me!
+                Edit me! <strong>Test</strong>
             </div>
             <button onClick={handleSave}>Save</button>
             <button onClick={handleGetSelection}>Get Selection</button>
-            <TonalButton onClick={toggleBold} isSecondary={true}>
-                <Bold size={16}/>
-            </TonalButton>
+            <div className="flex flex-row gap-1">
+                <TonalButton onClick={toggleBold} isSecondary={true}>
+                    <Bold size={12} />
+                </TonalButton>
+                <TonalButton onClick={toggleItalic} isSecondary={true}>
+                    <Italic size={12}/>
+                </TonalButton>
+            </div>
+            
         </div>
-  );
+    );
 }
