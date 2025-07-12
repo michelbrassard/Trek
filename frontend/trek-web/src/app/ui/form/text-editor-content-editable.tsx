@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import TonalButton from "../buttons/tonal-button";
-import { Bold, Italic } from "lucide-react";
+import { Bold, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6, Italic } from "lucide-react";
 
 export default function TextEditor() {
     const divRef = useRef<HTMLDivElement>(null);
@@ -37,56 +37,44 @@ export default function TextEditor() {
         parent?.removeChild(node)
     }
 
-    const toggleBold = () => {
+    const toggleStyle = (element: string, classNames: string[]) => {
         const selection = window.getSelection();
         if (!selection || selection.rangeCount === 0) return;
 
         const range = selection.getRangeAt(0);
         if (range.collapsed) return; 
 
-        let isBold = false;
+        let isStyled = false;
         let node = selection.anchorNode;
         while (node && node !== document.body) {
-            if (node.nodeName === 'STRONG' || node.nodeName === 'B') {
-                isBold = true;
+            if (node.nodeName === element.toUpperCase()) {
+                isStyled = true;
                 break;
             }
             node = node.parentNode;
         }
 
-        if (isBold) {
+        if (isStyled) {
             unwrapSelection(node);
-        } else {
-            const strong = document.createElement('strong');
-            range.surroundContents(strong);
-        }
-        window.getSelection()?.removeAllRanges();
-    };
+        } 
+        else {
+            const extracted = range.extractContents();
 
-    const toggleItalic = () => {
-        const selection = window.getSelection();
-        if (!selection || selection.rangeCount === 0) return;
+            const styledTags = document.createElement(element);
 
-        const range = selection.getRangeAt(0);
-        if (range.collapsed) return; 
-
-        let isItalic = false;
-        let node = selection.anchorNode;
-        while (node && node !== document.body) {
-            if (node.nodeName === 'EM' || node.nodeName === 'I') {
-                isItalic = true;
-                break;
+            if (classNames.length > 0) {
+                styledTags.classList.add(...classNames); 
             }
-            node = node.parentNode;
-        }
+            styledTags.appendChild(extracted);
 
-        if (isItalic) {
-            unwrapSelection(node);
-        } else {
-            const strong = document.createElement('em');
-            range.surroundContents(strong);
+            range.insertNode(styledTags);
+
+            //reset selection
+            selection.removeAllRanges();
+            range.setStartAfter(styledTags);
+            range.setEndAfter(styledTags);
+            selection.addRange(range);
         }
-        window.getSelection()?.removeAllRanges();
     };
 
     return (
@@ -102,11 +90,29 @@ export default function TextEditor() {
             <button onClick={handleSave}>Save</button>
             <button onClick={handleGetSelection}>Get Selection</button>
             <div className="flex flex-row gap-1">
-                <TonalButton onClick={toggleBold} isSecondary={true}>
+                <TonalButton onClick={() => toggleStyle("strong", [])} isSecondary={true}>
                     <Bold size={12} />
                 </TonalButton>
-                <TonalButton onClick={toggleItalic} isSecondary={true}>
+                <TonalButton onClick={() => toggleStyle("em", [])} isSecondary={true}>
                     <Italic size={12}/>
+                </TonalButton>
+                <TonalButton onClick={() => toggleStyle("h1", ['text-3xl', 'font-bold', 'mt-4'])} isSecondary={true}>
+                    <Heading1 size={12}/>
+                </TonalButton>
+                <TonalButton onClick={() => toggleStyle("h2", ['text-2xl', 'font-bold', 'mt-3'])} isSecondary={true}>
+                    <Heading2 size={12}/>
+                </TonalButton>
+                <TonalButton onClick={() => toggleStyle("h3", ['text-xl', 'font-bold', 'mt-2'])} isSecondary={true}>
+                    <Heading3 size={12}/>
+                </TonalButton>
+                <TonalButton onClick={() => toggleStyle("h4", ['text-lg', 'font-bold', 'mt-2'])} isSecondary={true}>
+                    <Heading4 size={12}/>
+                </TonalButton>
+                <TonalButton onClick={() => toggleStyle("h5", ['text-md', 'font-bold', 'mt-1'])} isSecondary={true}>
+                    <Heading5 size={12}/>
+                </TonalButton>
+                <TonalButton onClick={() => toggleStyle("h6", ['text-sm', 'font-bold', 'mt-1'])} isSecondary={true}>
+                    <Heading6 size={12}/>
                 </TonalButton>
             </div>
             
