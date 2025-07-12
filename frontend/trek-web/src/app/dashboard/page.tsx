@@ -8,7 +8,7 @@ import TextEditor from "../ui/form/text-editor-content-editable";
 
 export default function Overview() {
 
-  const [text, setText] = useState("");
+  const [text, setText] = useState("# START");
 
   return (
     <div>
@@ -17,7 +17,7 @@ export default function Overview() {
       <p className="text-lg font-bold">Testing models? (disabled)</p>
       <TestModelFastApi />
       
-      <p className="text-lg font-bold">Testing the .md editor</p>
+      <hr className="my-4"></hr>
       <DotMDEditor 
           label={".md Editor"} 
           id={"editor"} 
@@ -26,8 +26,12 @@ export default function Overview() {
           value={text}
           rows={0} 
       />
-      <p className="text-lg font-bold">Testing the text editor with contentEditable</p>
-      <TextEditor />
+      <hr className="my-4"></hr>
+      <TextEditor 
+        onChange={setText}
+        value={text} 
+        label={"text editor"}
+      />
     </div>
   );
 }

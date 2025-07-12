@@ -1,7 +1,7 @@
 "use client"
 
 import clsx from "clsx";
-import { useRef, useLayoutEffect, ReactNode } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 
 interface DotMDEditorProps {
     hasProblems?: boolean,
@@ -17,7 +17,6 @@ interface DotMDEditorProps {
 
 export default function DotMDEditor({hasProblems, name, label, id, alertMessage, value, onChange}: DotMDEditorProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    let isList = false
 
     const resizeTextArea = () => {
         const textarea = textareaRef.current;
@@ -27,39 +26,39 @@ export default function DotMDEditor({hasProblems, name, label, id, alertMessage,
         }
     };
 
-    const parseMDToHTML = (mdText: string): ReactNode => {
-        const lines = mdText.split("\n")
+    // const parseMDToHTML = (mdText: string): ReactNode => {
+    //     const lines = mdText.split("\n")
         
-        const renderedLines = lines.map((line: string, index: number) => {
-          if (line.trim().startsWith("# ")) {
-            return <h1 key={index} className="text-3xl mt-4 font-bold">{line.replaceAll("#", "").trimStart()}</h1>;
-          }
-          else if (line.trim().startsWith("## ")) {
-            return <h2 key={index} className="text-2xl mt-3 font-bold">{line.replaceAll("#", "").trimStart()}</h2>;
-          }
-          else if (line.trim().startsWith("### ")) {
-            return <h3 key={index} className="text-xl mt-2 font-bold">{line.replaceAll("#", "").trimStart()}</h3>;
-          }
-          else if (line.trim().startsWith("#### ")) {
-            return <h4 key={index} className="text-lg mt-2 font-bold">{line.replaceAll("#", "").trimStart()}</h4>;
-          }
-          else if (line.trim().startsWith("##### ")) {
-            return <h5 key={index} className="text-md mt-1 font-bold">{line.replaceAll("#", "").trimStart()}</h5>;
-          }
-          else if (line.trim().startsWith("###### ")) {
-            return <h6 key={index} className="text-sm mt-1 font-bold">{line.replaceAll("#", "").trimStart()}</h6>;
-          }
-          if (line.trim().startsWith("- ")) {
-            isList = true 
-            return <p key={index} className="text-red-800 dark:text-red-200">{line}</p>
-          }
+    //     const renderedLines = lines.map((line: string, index: number) => {
+    //       if (line.trim().startsWith("# ")) {
+    //         return <h1 key={index} className="text-3xl mt-4 font-bold">{line.replaceAll("#", "").trimStart()}</h1>;
+    //       }
+    //       else if (line.trim().startsWith("## ")) {
+    //         return <h2 key={index} className="text-2xl mt-3 font-bold">{line.replaceAll("#", "").trimStart()}</h2>;
+    //       }
+    //       else if (line.trim().startsWith("### ")) {
+    //         return <h3 key={index} className="text-xl mt-2 font-bold">{line.replaceAll("#", "").trimStart()}</h3>;
+    //       }
+    //       else if (line.trim().startsWith("#### ")) {
+    //         return <h4 key={index} className="text-lg mt-2 font-bold">{line.replaceAll("#", "").trimStart()}</h4>;
+    //       }
+    //       else if (line.trim().startsWith("##### ")) {
+    //         return <h5 key={index} className="text-md mt-1 font-bold">{line.replaceAll("#", "").trimStart()}</h5>;
+    //       }
+    //       else if (line.trim().startsWith("###### ")) {
+    //         return <h6 key={index} className="text-sm mt-1 font-bold">{line.replaceAll("#", "").trimStart()}</h6>;
+    //       }
+    //       if (line.trim().startsWith("- ")) {
+    //         isList = true 
+    //         return <p key={index} className="text-red-800 dark:text-red-200">{line}</p>
+    //       }
           
-          isList = false 
-          return <p key={index} className="text-neutral-800 dark:text-neutral-200">{line}</p>;
-        });
+    //       isList = false 
+    //       return <p key={index} className="text-neutral-800 dark:text-neutral-200">{line}</p>;
+    //     });
     
-        return renderedLines
-      }
+    //     return renderedLines
+    //   }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Tab' ) {
@@ -75,7 +74,7 @@ export default function DotMDEditor({hasProblems, name, label, id, alertMessage,
                 target.selectionStart = target.selectionEnd = selectionStart + 1;
             });
         }
-        if (e.key === 'Enter' && isList) {
+        if (e.key === 'Enter') {
             e.preventDefault()
 
             const target = e.target as HTMLTextAreaElement;
@@ -106,32 +105,25 @@ export default function DotMDEditor({hasProblems, name, label, id, alertMessage,
     const alertStyle = "border-red-500 dark:border-red-500"
 
     return(
-        <div className="columns-2">
-            <div>
-                <label htmlFor={id} className={labelStyle}>{label}</label>
-                <textarea
-                    ref={textareaRef}
-                    id={id} 
-                    name={name} 
-                    value={value ? value : ''} 
-                    className={clsx(
-                        editorStyle,
-                        hasProblems && alertStyle
-                    )}
-                    onInput={resizeTextArea}
-                    onChange={onChange}
-                    required
-                    placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
-                    onKeyDown={handleKeyDown}
-                >
-                </textarea>
-                {hasProblems && <p className="text-red-500 text-xs mt-1 ml-1">{alertMessage}</p>}
-            </div>
-            <div>
-                <div className="whitespace-pre text-wrap">
-                    {value ? parseMDToHTML(value) : <p className="opacity-30">Text...</p> }
-                </div>
-            </div>
-        </div>
+          <div>
+            <label htmlFor={id} className={labelStyle}>{label}</label>
+            <textarea
+                ref={textareaRef}
+                id={id} 
+                name={name} 
+                value={value ? value : ''} 
+                className={clsx(
+                    editorStyle,
+                    hasProblems && alertStyle
+                )}
+                onInput={resizeTextArea}
+                onChange={onChange}
+                required
+                placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
+                onKeyDown={handleKeyDown}
+            >
+            </textarea>
+            {hasProblems && <p className="text-red-500 text-xs mt-1 ml-1">{alertMessage}</p>}
+          </div>
     );
 }
