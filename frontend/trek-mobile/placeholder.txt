@@ -1,1 +1,2 @@
-This is a placeholder for later
+The mobile version will be used on a separate repository
+- 19.7.2025.
